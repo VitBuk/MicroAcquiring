@@ -2,9 +2,7 @@ package lv.lpb.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.GenericEntity;
@@ -13,7 +11,7 @@ import javax.ws.rs.core.Response;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 
-@Path("/json/merchants")
+@Path("/merchants")
 public class JSONService {
 
 //    @GET
@@ -41,10 +39,7 @@ public class JSONService {
 
         merchantList.add(merchant);
         merchantList.add(merchant2);
-        
-//        System.out.println("z-z-z-z-z");
-//        System.out.println(merchant);
-//        System.out.println(merchant2);
+
         return Response.ok(list).build();
     }
 
@@ -57,5 +52,4 @@ public class JSONService {
 //        return Response.status(201).entity(result).build();
 //
 //    }
-
 }
