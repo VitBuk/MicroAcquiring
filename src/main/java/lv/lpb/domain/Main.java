@@ -9,7 +9,7 @@ public class Main {
 
         Merchant merchant = new Merchant();
         Merchant merchant2 = new Merchant();
-        merchant2.addCurrency(Currency.RUB);
+        merchant2.add(Currency.RUB);
 
         merchantList.add(merchant);
         merchantList.add(merchant2);

@@ -5,14 +5,15 @@ import java.util.List;
 
 public class Merchant {
     
-    private List<Currency> currencyList = new ArrayList<>();
+    private final List<Currency> currencyList;
     
     public Merchant() {
+        this.currencyList = new ArrayList<>();
         currencyList.add(Currency.EUR);
         currencyList.add(Currency.USD);
     }
     
-    public void addCurrency(Currency currency) {
+    public void add(Currency currency) {
         currencyList.add(currency);
     }
     
