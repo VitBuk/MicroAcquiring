@@ -10,6 +10,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
@@ -42,13 +43,8 @@ public class TransactionsService {
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(@FormParam(value = "id") Long id) {
+    public Response add(Transaction transaction) {
         TransactionHistory transactionHistory = new TransactionHistory();
-        Transaction transaction = new Transaction();
-        transaction.setId(id);
-        transaction.setAmount(BigDecimal.ZERO);
-        transaction.setCurrency(Currency.EUR);
-        transaction.setMerchant(new Merchant(1L));
         transactionHistory.add(transaction);
         
         return Response.ok(transaction).build();
@@ -68,4 +64,5 @@ public class TransactionsService {
 //        
 //        return Response.ok(transaction).build();
 //    }
+
 }

@@ -15,12 +15,6 @@ public class Main {
 //        List<Transaction> transactions = transactionHistory.getByMerchant(merchant);
 //        System.out.println("equals: " + merchant.equals(merchant2));
 //        System.out.println("transactions: " + transactions);
-        String id = "1";
-        Long merchantId = Long.parseLong(id);
-        Merchants merchants = new Merchants();
-        Merchant merchant = merchants.getById(merchantId);
-        
-        System.out.println(merchant);
         
     }
 }

@@ -1,7 +1,9 @@
 package lv.lpb.domain;
 
 import java.math.BigDecimal;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Transaction {
     private Long id;
     private Merchant merchant;

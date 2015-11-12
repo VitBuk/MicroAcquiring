@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class Merchant {
-    private final Long id;
-    private final List<Currency> currencyList;
+    private Long id;
+    private List<Currency> currencyList;
+    
+    public Merchant() {
+    }
     
     public Merchant(Long id) {
         this.id = id; 
