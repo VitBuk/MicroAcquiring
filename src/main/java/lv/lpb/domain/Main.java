@@ -1,20 +1,26 @@
 package lv.lpb.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main (String[] args) {
-        List<Merchant> merchantList = new ArrayList<Merchant>();
-
-        Merchant merchant = new Merchant();
-        Merchant merchant2 = new Merchant();
-        merchant2.add(Currency.RUB);
-
-        merchantList.add(merchant);
-        merchantList.add(merchant2);
+//        String id = "1";
+//        Long merchantId = Long.parseLong(id);
+//        Merchant merchant = new Merchant(merchantId);
+//        Merchant merchant2 = new Merchant(1L);
+//        merchant2.add(Currency.EUR);
+//        merchant2.add(Currency.USD);
+//        TransactionHistory transactionHistory = new TransactionHistory();
+//        
+//        List<Transaction> transactions = transactionHistory.getByMerchant(merchant);
+//        System.out.println("equals: " + merchant.equals(merchant2));
+//        System.out.println("transactions: " + transactions);
+        String id = "1";
+        Long merchantId = Long.parseLong(id);
+        Merchants merchants = new Merchants();
+        Merchant merchant = merchants.getById(merchantId);
         
-        System.out.println(merchantList);
+        System.out.println(merchant);
         
     }
 }
