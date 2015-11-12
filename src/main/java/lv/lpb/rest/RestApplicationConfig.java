@@ -9,7 +9,7 @@ import javax.ws.rs.core.Application;
  * @author Ainars Vigulis <ainars.vigulis@lpb.lv>
  * @version 1.0.0
  */
-@ApplicationPath("/rest")
+@ApplicationPath("")
 public class RestApplicationConfig extends Application {
 
     @Override

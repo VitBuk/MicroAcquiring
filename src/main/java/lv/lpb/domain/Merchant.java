@@ -7,6 +7,7 @@ import java.util.Objects;
 public class Merchant {
     private Long id;
     private List<Currency> currencyList;
+//    private Status status;
     
     public Merchant() {
     }
@@ -30,6 +31,10 @@ public class Merchant {
         return currencyList;
     }
 
+    public boolean allowedCurrency(Currency currency) {
+        return currencyList.contains(currency);
+    }
+    
     @Override
     public String toString() {
         return "Merchant{" + "id=" + id + '}';

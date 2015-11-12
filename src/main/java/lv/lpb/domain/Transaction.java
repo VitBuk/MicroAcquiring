@@ -9,7 +9,7 @@ public class Transaction {
     private Merchant merchant;
     private BigDecimal amount;
     private Currency currency; 
-//    private Status status;
+    private TransactionStatus transactionStatus;
 //    private String discription;
 
     public Long getId() {
@@ -44,8 +44,16 @@ public class Transaction {
         this.currency = currency;
     }
 
+    public TransactionStatus getTransactionStatus() {
+        return transactionStatus;
+    }
+
+    public void setTransactionStatus(TransactionStatus transactionStatus) {
+        this.transactionStatus = transactionStatus;
+    }
+
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchant=" + merchant + ", amount=" + amount + ", currency=" + currency + '}';
+        return "Transaction{" + "id=" + id + ", merchant=" + merchant + ", amount=" + amount + ", currency=" + currency + ", transactionStatus=" + transactionStatus + '}';
     }
 }
