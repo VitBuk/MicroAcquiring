@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class CancelInfo {
+    
     private Long transactionId;
     private BigDecimal amount;
     private Currency currency;

@@ -27,14 +27,4 @@ public class MerchantsService {
         
         return Response.ok(merchant).build();
     }
-    
-    @POST
-    @Path("")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response add(Merchant merchant) {
-        Merchants.add(merchant);
-        
-        return Response.ok(merchant).build();
-    }
 }

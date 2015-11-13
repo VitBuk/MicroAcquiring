@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
+import lv.lpb.domain.MerchantStatus;
 
 public class Merchants {
 
@@ -32,16 +33,25 @@ public class Merchants {
         return null;
     }
 
+    public static void update(Merchant merchant) {
+        merchants.remove(getById(merchant.getId()));
+        merchants.add(merchant);
+    }
+    
     private static void generateMerchants() {
         Merchant merchant1 = new Merchant(1L);
-        merchants.add(merchant1);
         merchant1.add(Currency.JPY);
+        merchant1.setStatus(MerchantStatus.ACTIVE);
+        add(merchant1);
         Merchant merchant2 = new Merchant(2L);
         merchant2.add(Currency.RUB);
-        merchants.add(merchant2);
+        merchant2.setStatus(MerchantStatus.ACTIVE);
+        add(merchant2);
         Merchant merchant3 = new Merchant(3L);
-        merchants.add(merchant3);
+        add(merchant3);
         merchant3.add(Currency.GBP);
-        merchant3.add(Currency.RUB);
+        merchant3.add(Currency.RUB); 
+        merchant3.setStatus(MerchantStatus.ACTIVE);
+        
     }
 }

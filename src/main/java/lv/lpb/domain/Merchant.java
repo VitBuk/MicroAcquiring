@@ -3,11 +3,13 @@ package lv.lpb.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement
 public class Merchant {
     private Long id;
     private List<Currency> currencyList;
-//    private Status status;
+    private MerchantStatus status;
     
     public Merchant() {
     }
@@ -34,12 +36,20 @@ public class Merchant {
     public boolean allowedCurrency(Currency currency) {
         return currencyList.contains(currency);
     }
-    
-    @Override
-    public String toString() {
-        return "Merchant{" + "id=" + id + '}';
+
+    public MerchantStatus getStatus() {
+        return status;
     }
 
+    public void setStatus(MerchantStatus status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", merchantStatus=" + status + '}';
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

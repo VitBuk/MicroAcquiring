@@ -16,35 +16,55 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.database.Transactions;
 import lv.lpb.domain.CancelInfo;
+import lv.lpb.domain.MerchantStatus;
 import lv.lpb.domain.TransactionStatus;
 
 @Path("/transactions")
 public class TransactionsService {
-    
+
     @GET
-    @Path("/merchant/{merchantId}")
+    @Path("/merchants/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchantHistory(@PathParam("merchantId") String id) {
-        Long merchantId = Long.parseLong(id);
-        Merchant merchant = Merchants.getById(merchantId);
-        List<Transaction> transactions = Transactions.getByMerchant(merchant);
-        
+        Merchant merchant = Merchants.getById(Long.parseLong(id));
+        List<Transaction> transactions = Transactions.getByMerchantId(Long.parseLong(id));
+
         if (transactions.isEmpty()) {
             if (merchant == null) {
-                return Response.status(404).entity("Merchant is not exist").build();
-            } 
-            
-            return Response.status(404).entity("This merchant has not transactions").build();
+                return Response.status(404).entity(Errors.MERCH_NOT_EXIST).build();
+            }
+
+            return Response.status(404).entity(Errors.MERCH_HAVENT_TRAN).build();
         }
-        
+
         return Response.ok(transactions).build();
+    }
+
+    @POST
+    @Path("/merchants/{merchantId}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response add(@PathParam("merchantId") String id, Transaction transaction) {
+        Merchant merchant = Merchants.getById(Long.parseLong(id));
+        
+        if (merchant.getStatus() == MerchantStatus.INACTIVE) {
+            return Response.status(404).entity(Errors.MERCH_INACTIVE).build();
+        }
+        if (!merchant.allowedCurrency(transaction.getCurrency())) {
+            return Response.status(400).entity(Errors.UNALLOWED_CURRENCY).build();
+        }
+
+        transaction.setMerchantId(Long.parseLong(id));
+        Transactions.add(transaction);
+
+        return Response.ok(transaction).build();
     }
     
     @PUT
-    @Path("{transactionId}")
+    @Path("merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cancelTransaction(CancelInfo cancelInfo) {
+    public Response cancelTransaction(@PathParam("merchantId") String id, CancelInfo cancelInfo) {
         Transaction transaction = Transactions.getById(cancelInfo.getTransactionId());
         
         if(transaction.getTransactionStatus() == TransactionStatus.CLOSE) {
@@ -61,8 +81,7 @@ public class TransactionsService {
             return Response.status(400).entity("You wanna cancel transaction for 0 amount, lol").build();
         }
         
-        Merchant merchant = transaction.getMerchant();
-        if (!merchant.allowedCurrency(cancelInfo.getCurrency())) {
+        if (transaction.getCurrency() != cancelInfo.getCurrency()) {
             return Response.status(400).entity("Wrong currency").build();
         }
         
@@ -77,18 +96,43 @@ public class TransactionsService {
         return Response.ok(transaction).build();
     }
     
-    @POST
-    @Path("")
+    /* Alterntive cancelTransaction 
+    @PUT
+    @Path("merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(Transaction transaction) {
-        Merchant merchant = transaction.getMerchant();
-        if (!merchant.allowedCurrency(transaction.getCurrency())) {
-            return Response.status(400).entity("That type of currency not allowed").build();
+    public Response cancelTransaction(@PathParam("merchantId") String merchantId, Transaction transaction) {
+        transaction.setMerchantId(Long.parseLong(merchantId));
+        Transaction transactionFromDB = Transactions.getById(transaction.getId());
+
+        if (transactionFromDB.getTransactionStatus() == TransactionStatus.CLOSE) {
+            return Response.status(400).entity(Errors.CANCEL_CLOSED).build();
         }
+        if (transactionFromDB.getTransactionStatus() == TransactionStatus.CANCEL) {
+            return Response.status(400).entity(Errors.CANCEL_CANCELED).build();
+        }
+
+        if (transaction.getAmount().compareTo(BigDecimal.ZERO) == -1
+                || transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+            return Response.status(400).entity(Errors.CANCEL_LIMIT_EXCESS).build();
+        }
+        if (transactionFromDB.getAmount().compareTo(transaction.getAmount()) == 0) {
+            return Response.status(400).entity(Errors.CANCEL_ZERO).build();
+        }
+
+        if (transactionFromDB.getCurrency() != transaction.getCurrency()) {
+            return Response.status(400).entity(Errors.CANCEL_WRONG_CURRENCY).build();
+        }
+
+        Transactions.update(transaction);
         
-        Transactions.add(transaction);
-                
+        if (transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
+            transaction.setTransactionStatus(TransactionStatus.CANCEL);
+        } else {
+            transaction.setTransactionStatus(TransactionStatus.CANCEL_PART);
+        }
+
         return Response.ok(transaction).build();
     }
+    */
 }

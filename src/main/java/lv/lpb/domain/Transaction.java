@@ -6,12 +6,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Transaction {
     private Long id;
-    private Merchant merchant;
+    private Long merchantId;
     private BigDecimal amount;
     private Currency currency; 
     private TransactionStatus transactionStatus;
-//    private String discription;
-
+   
     public Long getId() {
         return id;
     }
@@ -20,12 +19,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Merchant getMerchant() {
-        return merchant;
+    public Long getMerchantId() {
+        return merchantId;
     }
 
-    public void setMerchant(Merchant merchant) {
-        this.merchant = merchant;
+    public void setMerchantId(Long merchantId) {
+        this.merchantId = merchantId;
     }
 
     public BigDecimal getAmount() {
@@ -54,6 +53,6 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchant=" + merchant + ", amount=" + amount + ", currency=" + currency + ", transactionStatus=" + transactionStatus + '}';
+        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", transactionStatus=" + transactionStatus + '}';
     }
 }
