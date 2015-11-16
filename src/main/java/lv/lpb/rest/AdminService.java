@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.Merchants;
 import lv.lpb.database.Transactions;
+import lv.lpb.domain.Exporter;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 
@@ -66,5 +67,25 @@ public class AdminService {
         }
         
         return Response.ok(transactions).build();
+    }
+    
+    @GET
+    @Path("/merchants/export")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response exportMerchants() {
+        List<Merchant> merchants = Merchants.getMerchants();
+        Exporter exporter = new Exporter(merchants);
+        
+        return Response.ok(exporter).build();
+    }
+    
+    @GET
+    @Path("/transactions/export")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response exportTransactions() {
+        List<Transaction> transactions = Transactions.getTransactions();
+        Exporter exporter = new Exporter(transactions);
+        
+        return Response.ok(exporter).build();
     }
 }

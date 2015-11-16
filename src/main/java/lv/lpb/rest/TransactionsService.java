@@ -55,7 +55,7 @@ public class TransactionsService {
         }
 
         transaction.setMerchantId(Long.parseLong(id));
-        transaction.setLocalDate(LocalDate.now());
+        transaction.setInitDate(LocalDate.now());
         Transactions.add(transaction);
 
         return Response.ok(transaction).build();
@@ -86,18 +86,20 @@ public class TransactionsService {
             return Response.status(400).entity(Errors.CANCEL_WRONG_CURRENCY).build();
         }
         
+        if (Period.between(transaction.getInitDate(), LocalDate.now()).getDays() > 3) {
+            return Response.status(400).entity(Errors.CANCEL_OVERDUE).build();
+        }
+        
         transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
         
         if(transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-            transaction.setStatus(Transaction.Status.CLOSE);
+            transaction.setStatus(Transaction.Status.CANCEL);
         } else {
             transaction.setStatus(Transaction.Status.CANCEL_PART);
         }
         
-        if (Period.between(transaction.getLocalDate(), LocalDate.now()).getDays() > 3) {
-            return Response.status(400).entity(Errors.CANCEL_OVERDUE).build();
-        }
-        
+        transaction.setUpdated(LocalDate.now());
+           
         return Response.ok(transaction).build();
     }
     
