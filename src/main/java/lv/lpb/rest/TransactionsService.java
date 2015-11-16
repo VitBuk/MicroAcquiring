@@ -1,6 +1,8 @@
 package lv.lpb.rest;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,8 +18,6 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.database.Transactions;
 import lv.lpb.domain.CancelInfo;
-import lv.lpb.domain.MerchantStatus;
-import lv.lpb.domain.TransactionStatus;
 
 @Path("/transactions")
 public class TransactionsService {
@@ -47,7 +47,7 @@ public class TransactionsService {
     public Response add(@PathParam("merchantId") String id, Transaction transaction) {
         Merchant merchant = Merchants.getById(Long.parseLong(id));
         
-        if (merchant.getStatus() == MerchantStatus.INACTIVE) {
+        if (merchant.getStatus() == Merchant.Status.INACTIVE) {
             return Response.status(404).entity(Errors.MERCH_INACTIVE).build();
         }
         if (!merchant.allowedCurrency(transaction.getCurrency())) {
@@ -55,6 +55,7 @@ public class TransactionsService {
         }
 
         transaction.setMerchantId(Long.parseLong(id));
+        transaction.setLocalDate(LocalDate.now());
         Transactions.add(transaction);
 
         return Response.ok(transaction).build();
@@ -67,30 +68,34 @@ public class TransactionsService {
     public Response cancelTransaction(@PathParam("merchantId") String id, CancelInfo cancelInfo) {
         Transaction transaction = Transactions.getById(cancelInfo.getTransactionId());
         
-        if(transaction.getTransactionStatus() == TransactionStatus.CLOSE) {
-            return Response.status(400).entity("You cant cancel closed transaction").build();
+        if(transaction.getStatus() == Transaction.Status.CLOSE) {
+            return Response.status(400).entity(Errors.CANCEL_CLOSED).build();
         }
-        if(transaction.getTransactionStatus() == TransactionStatus.CANCEL) {
-            return Response.status(400).entity("You cant cancel canceled transaction").build();
+        if(transaction.getStatus() == Transaction.Status.CANCEL) {
+            return Response.status(400).entity(Errors.CANCEL_CANCELED).build();
         }
         
         if (transaction.getAmount().compareTo(cancelInfo.getAmount()) == -1) {
-            return Response.status(400).entity("Cancelable amount bigger than transaction amount").build();
+            return Response.status(400).entity(Errors.CANCEL_LIMIT_EXCESS).build();
         }
         if (cancelInfo.getAmount() == BigDecimal.ZERO) {
-            return Response.status(400).entity("You wanna cancel transaction for 0 amount, lol").build();
+            return Response.status(400).entity(Errors.CANCEL_ZERO).build();
         }
         
         if (transaction.getCurrency() != cancelInfo.getCurrency()) {
-            return Response.status(400).entity("Wrong currency").build();
+            return Response.status(400).entity(Errors.CANCEL_WRONG_CURRENCY).build();
         }
         
         transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
         
         if(transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-            transaction.setTransactionStatus(TransactionStatus.CANCEL);
+            transaction.setStatus(Transaction.Status.CLOSE);
         } else {
-            transaction.setTransactionStatus(TransactionStatus.CANCEL_PART);
+            transaction.setStatus(Transaction.Status.CANCEL_PART);
+        }
+        
+        if (Period.between(transaction.getLocalDate(), LocalDate.now()).getDays() > 3) {
+            return Response.status(400).entity(Errors.CANCEL_OVERDUE).build();
         }
         
         return Response.ok(transaction).build();
@@ -105,10 +110,10 @@ public class TransactionsService {
         transaction.setMerchantId(Long.parseLong(merchantId));
         Transaction transactionFromDB = Transactions.getById(transaction.getId());
 
-        if (transactionFromDB.getTransactionStatus() == TransactionStatus.CLOSE) {
+        if (transactionFromDB.getStatus()== Transaction.Status.CLOSE) {
             return Response.status(400).entity(Errors.CANCEL_CLOSED).build();
         }
-        if (transactionFromDB.getTransactionStatus() == TransactionStatus.CANCEL) {
+        if (transactionFromDB.getStatus()== Transaction.Status.CANCEL) {
             return Response.status(400).entity(Errors.CANCEL_CANCELED).build();
         }
 
@@ -127,12 +132,12 @@ public class TransactionsService {
         Transactions.update(transaction);
         
         if (transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-            transaction.setTransactionStatus(TransactionStatus.CANCEL);
+            transaction.setStatus(Transaction.Status.CANCEL);
         } else {
-            transaction.setTransactionStatus(TransactionStatus.CANCEL_PART);
+            transaction.setStatus(Transaction.Status.CANCEL_PART);
         }
 
         return Response.ok(transaction).build();
-    }
-    */
+    } */
+    
 }

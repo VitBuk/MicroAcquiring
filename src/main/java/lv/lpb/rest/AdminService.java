@@ -13,7 +13,6 @@ import javax.ws.rs.core.Response;
 import lv.lpb.database.Merchants;
 import lv.lpb.database.Transactions;
 import lv.lpb.domain.Merchant;
-import lv.lpb.domain.MerchantStatus;
 import lv.lpb.domain.Transaction;
 
 @Path("/admin")
@@ -38,7 +37,7 @@ public class AdminService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addMerchant(Merchant merchant) {
         // id produces by database\
-        merchant.setStatus(MerchantStatus.ACTIVE);
+        merchant.setStatus(Merchant.Status.ACTIVE);
         Merchants.add(merchant);
         
         return Response.ok(merchant).build();
@@ -48,7 +47,7 @@ public class AdminService {
     @Path("merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response switchOffMerchant(@PathParam("merchantId") String id, MerchantStatus status) {
+    public Response switchOffMerchant(@PathParam("merchantId") String id, Merchant.Status status) {
         
         Merchant merchant = Merchants.getById(Long.parseLong(id));
         merchant.setStatus(status);

@@ -3,13 +3,11 @@ package lv.lpb.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class Merchant {
     private Long id;
     private List<Currency> currencyList;
-    private MerchantStatus status;
+    private Status status;
     
     public Merchant() {
     }
@@ -37,17 +35,17 @@ public class Merchant {
         return currencyList.contains(currency);
     }
 
-    public MerchantStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(MerchantStatus status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
     @Override
     public String toString() {
-        return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", merchantStatus=" + status + '}';
+        return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", status=" + status + '}';
     }
     
     @Override
@@ -71,4 +69,8 @@ public class Merchant {
         }
         return true;
     } 
+    
+    public static enum Status {
+        ACTIVE, INACTIVE;
+    }
 }

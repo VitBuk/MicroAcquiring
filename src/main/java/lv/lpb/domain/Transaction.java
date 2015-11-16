@@ -1,16 +1,17 @@
 package lv.lpb.domain;
 
 import java.math.BigDecimal;
-import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
 
-@XmlRootElement
 public class Transaction {
+
     private Long id;
     private Long merchantId;
     private BigDecimal amount;
-    private Currency currency; 
-    private TransactionStatus transactionStatus;
-   
+    private Currency currency;
+    private Status status;
+    private LocalDate localDate;
+
     public Long getId() {
         return id;
     }
@@ -43,16 +44,42 @@ public class Transaction {
         this.currency = currency;
     }
 
-    public TransactionStatus getTransactionStatus() {
-        return transactionStatus;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setTransactionStatus(TransactionStatus transactionStatus) {
-        this.transactionStatus = transactionStatus;
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public LocalDate getLocalDate() {
+        return localDate;
+    }
+
+    public void setLocalDate(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", transactionStatus=" + transactionStatus + '}';
+        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", localDate=" + localDate + '}';
+    }
+    
+    public static enum Status {
+        INIT("Initialized"),
+        CANCEL("Canceled"),
+        CANCEL_PART("Canceled in part"),
+        CLOSE("Closed");
+
+        private String name;
+
+        Status(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }
