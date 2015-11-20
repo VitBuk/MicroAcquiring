@@ -93,7 +93,7 @@ public class Transaction {
     public static enum Status {
         INIT("Initialized"),
         CANCEL("Canceled"),
-        CANCEL_PART("Canceled in part"),
+        CANCEL_PART("Canceled in a part"),
         CLOSE("Closed");
 
         private String name;

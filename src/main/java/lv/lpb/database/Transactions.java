@@ -49,6 +49,25 @@ public class Transactions {
 
         return list;
     }
+    
+    public static List<Transaction> getByMerchantId(Long merchantId, Integer offset, Integer limit) {
+        List<Transaction> list = new ArrayList<>();
+        System.out.println("offset: " + offset);
+        System.out.println("limit: " + limit);
+        if (limit > transactions.size()) {
+            limit = transactions.size();
+        }
+        
+        for (Transaction transaction : transactions.subList(offset, limit)) {
+            if (transaction.getMerchantId().equals(merchantId)) {
+                list.add(transaction);
+            }
+        }
+        
+        System.out.println("Transactions: " + list);
+        
+         return list;
+    }
 
     private static void generateHistory() {
         Transaction transaction1 = new Transaction();

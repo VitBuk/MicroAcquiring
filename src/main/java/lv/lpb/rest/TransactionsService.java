@@ -3,7 +3,10 @@ package lv.lpb.rest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,23 +14,54 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.Merchants;
+import lv.lpb.database.Transactions;
+import lv.lpb.database.TransactionsManager;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
-import lv.lpb.database.Transactions;
 import lv.lpb.domain.CancelInfo;
+import lv.lpb.domain.Currency;
 
 @Path("/transactions")
 public class TransactionsService {
 
+    public static class FilterParams {
+        @QueryParam("id") String transactionId;
+        @QueryParam("currency") Currency currency;
+        @QueryParam("status") Transaction.Status status;
+        @QueryParam("initDate") LocalDate initDate;
+    }
+    
+     public static class PageParams {
+         @QueryParam("offset") Integer offset; 
+         @QueryParam("limit") Integer limit;            
+         @QueryParam("sort") String sortParams;
+         @QueryParam("order") String order;
+    }
+    
     @GET
     @Path("/merchants/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMerchantHistory(@PathParam("merchantId") String id) {
+    public Response getMerchantTransactions(
+           @PathParam("merchantId") String id, 
+           @BeanParam PageParams pageParams, 
+           @BeanParam FilterParams filterParams) { 
+        
         Merchant merchant = Merchants.getById(Long.parseLong(id));
-        List<Transaction> transactions = Transactions.getByMerchantId(Long.parseLong(id));
+        Map<String,Object> filterParamsMap = new HashMap<String, Object>();
+        filterParamsMap.put("merchantId", Long.parseLong(id));
+        filterParamsMap.put("id", filterParams.transactionId);
+        filterParamsMap.put("currency", filterParams.currency);
+        filterParamsMap.put("status", filterParams.status);
+        filterParamsMap.put("initDate", filterParams.initDate);
+        
+        System.out.println(filterParamsMap.toString());
+            
+        List<Transaction> transactions = TransactionsManager.getTransactions
+        (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);
 
         if (transactions.isEmpty()) {
             if (merchant == null) {

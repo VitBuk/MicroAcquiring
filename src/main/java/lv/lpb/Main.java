@@ -46,12 +46,6 @@ public class Main {
 //        //Convert object to JSON string and pretty print
 //        jsonInString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(transaction);
 //        System.out.println(jsonInString);
-        
-        List<Transaction> transactionList = new ArrayList<>();
-        transactionList.add(transaction);
-        transactionList.add(transaction);
-        Exporter exporter = new Exporter(transactionList);
-        System.out.println(exporter);
-        
+       
     }
 }
