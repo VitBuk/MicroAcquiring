@@ -1,6 +1,9 @@
 package lv.lpb.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -11,7 +14,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.Merchants;
+import lv.lpb.database.MerchantsManager;
 import lv.lpb.database.Transactions;
+import lv.lpb.database.TransactionsManager;
 import lv.lpb.domain.Exporter;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
@@ -22,8 +27,22 @@ public class AdminService {
     @GET
     @Path("/merchants")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMerchants() {
-        List<Merchant> merchants = Merchants.getMerchants();
+    public Response getMerchants(
+            @BeanParam Merchant.PageParams pageParams, 
+            @BeanParam Merchant.FilterParams filterParams) {
+        
+        Map<String, Object> filterParamsMap = new HashMap<>();
+        filterParamsMap.put(Merchant.FilterParams.ID, filterParams.merchantId);
+        filterParamsMap.put(Merchant.FilterParams.STATUS, filterParams.status);
+        
+        Map<String, String> pageParamsMap = new HashMap<>();
+        pageParamsMap.put(Merchant.PageParams.SORT, pageParams.sortParams);
+        pageParamsMap.put(Merchant.PageParams.ORDER, pageParams.order);
+        pageParamsMap.put(Merchant.PageParams.OFFSET, String.valueOf(pageParams.offset));
+        pageParamsMap.put(Merchant.PageParams.LIMIT, String.valueOf(pageParams.limit));
+        
+        System.out.println("filterParams: " + filterParams);
+        List<Merchant> merchants = MerchantsManager.getMerchants(filterParamsMap, pageParamsMap);
         
         if (merchants.isEmpty()) {
             return Response.status(204).entity(Errors.MERCHS_ZERO).build();
@@ -37,7 +56,7 @@ public class AdminService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addMerchant(Merchant merchant) {
-        // id produces by database\
+        // id produces by database
         merchant.setStatus(Merchant.Status.ACTIVE);
         Merchants.add(merchant);
         
@@ -59,8 +78,18 @@ public class AdminService {
     @GET
     @Path("/transactions")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getTransactions() {
-        List<Transaction> transactions = Transactions.getTransactions();
+    public Response getTransactions(
+            @BeanParam Transaction.PageParams pageParams,
+            @BeanParam Transaction.FilterParams filterParams) {
+        Map<String, Object> filterParamsMap = new HashMap<>();
+        filterParamsMap.put(Transaction.FilterParams.ID, filterParams.transactionId);
+        filterParamsMap.put(Transaction.FilterParams.MERCHANT_ID, filterParams.merchantId);
+        filterParamsMap.put(Transaction.FilterParams.CURRENCY, filterParams.currency);
+        filterParamsMap.put(Transaction.FilterParams.STATUS, filterParams.status);
+        filterParamsMap.put(Transaction.FilterParams.INIT_DATE, filterParams.initDate);
+        
+        List<Transaction> transactions = TransactionsManager.getTransactions
+        (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);
         
         if (transactions.isEmpty()) {
             return Response.status(204).entity(Errors.TRANS_ZERO).build();

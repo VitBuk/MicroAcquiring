@@ -9,10 +9,6 @@ import lv.lpb.domain.Transaction;
 public class TransactionsManager {
     private static List<Transaction> transactions;
     
-    private static void getTransactionsFromDB() {
-        transactions = Transactions.getTransactions();
-    }
-    
     public static List<Transaction> getTransactions(Map<String, Object> filterParams, String sortParam, String order, Integer offset, Integer limit){
         transactions = new ArrayList<Transaction>();
         filter(filterParams);

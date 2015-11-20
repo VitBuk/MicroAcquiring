@@ -3,9 +3,7 @@ package lv.lpb.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.ws.rs.QueryParam;
 
 
 //@XmlRootElement(name="Transaction")
@@ -106,5 +104,31 @@ public class Transaction {
         public String toString() {
             return name;
         }
+    }
+    
+     public static class FilterParams {
+        public static final String ID = "id";
+        public static final String MERCHANT_ID = "merchantId";
+        public static final String CURRENCY = "currency";
+        public static final String STATUS = "status";
+        public static final String INIT_DATE = "initDate";
+        
+        public @QueryParam("id") String transactionId;
+        public @QueryParam("merchantId") String merchantId;
+        public @QueryParam("currency") Currency currency;
+        public @QueryParam("status") Transaction.Status status;
+        public @QueryParam("initDate") LocalDate initDate;
+    }
+    
+     public static class PageParams {
+         public static final String OFFSET = "offset";
+         public static final String LIMIT = "limit";
+         public static final String SORT = "sort";
+         public static final String ORDER = "order";
+         
+         public @QueryParam("offset") Integer offset; 
+         public @QueryParam("limit") Integer limit;            
+         public @QueryParam("sort") String sortParams;
+         public @QueryParam("order") String order;
     }
 }
