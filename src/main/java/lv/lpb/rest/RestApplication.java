@@ -10,7 +10,7 @@ import javax.ws.rs.core.Application;
  * @version 1.0.0
  */
 @ApplicationPath("")
-public class RestApplicationConfig extends Application {
+public class RestApplication extends Application {
 
     @Override
     public Map<String, Object> getProperties() {

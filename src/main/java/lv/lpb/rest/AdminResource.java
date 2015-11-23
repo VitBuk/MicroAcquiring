@@ -22,7 +22,7 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 
 @Path("/admin")
-public class AdminService {
+public class AdminResource {
     
     @GET
     @Path("/merchants")

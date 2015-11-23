@@ -10,7 +10,7 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.database.Merchants;
 
 @Path("/merchants")
-public class MerchantsService {
+public class MerchantsResource {
     
     @GET
     @Path("/{merchantId}")

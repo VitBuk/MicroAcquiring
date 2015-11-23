@@ -24,19 +24,19 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.domain.CancelInfo;
 
 @Path("/transactions")
-public class TransactionsService {
+public class TransactionsResource {
     
     @GET
     @Path("/merchants/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchantTransactions(
-           @PathParam("merchantId") String id, 
+           @PathParam("merchantId") Long id, 
            @BeanParam Transaction.PageParams pageParams, 
            @BeanParam Transaction.FilterParams filterParams) { 
         
-        Merchant merchant = Merchants.getById(Long.parseLong(id));
+        Merchant merchant = Merchants.getById(id);
         Map<String,Object> filterParamsMap = new HashMap<String, Object>();
-        filterParamsMap.put(Transaction.FilterParams.MERCHANT_ID, Long.parseLong(id));
+        filterParamsMap.put(Transaction.FilterParams.MERCHANT_ID, id);
         filterParamsMap.put(Transaction.FilterParams.ID, filterParams.transactionId);
         filterParamsMap.put(Transaction.FilterParams.CURRENCY, filterParams.currency);
         filterParamsMap.put(Transaction.FilterParams.STATUS, filterParams.status);
@@ -62,8 +62,8 @@ public class TransactionsService {
     @Path("/merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response add(@PathParam("merchantId") String id, Transaction transaction) {
-        Merchant merchant = Merchants.getById(Long.parseLong(id));
+    public Response add(@PathParam("merchantId") Long id, Transaction transaction) {
+        Merchant merchant = Merchants.getById(id);
         
         if (merchant.getStatus() == Merchant.Status.INACTIVE) {
             return Response.status(404).entity(Errors.MERCH_INACTIVE).build();
@@ -72,7 +72,7 @@ public class TransactionsService {
             return Response.status(400).entity(Errors.UNALLOWED_CURRENCY).build();
         }
 
-        transaction.setMerchantId(Long.parseLong(id));
+        transaction.setMerchantId(id);
         transaction.setInitDate(LocalDate.now());
         Transactions.add(transaction);
 
@@ -83,7 +83,7 @@ public class TransactionsService {
     @Path("merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cancelTransaction(@PathParam("merchantId") String id, CancelInfo cancelInfo) {
+    public Response cancelTransaction(@PathParam("merchantId") Long id, CancelInfo cancelInfo) {
         Transaction transaction = Transactions.getById(cancelInfo.getTransactionId());
         
         if(transaction.getStatus() == Transaction.Status.CLOSE) {
@@ -120,44 +120,4 @@ public class TransactionsService {
            
         return Response.ok(transaction).build();
     }
-    
-    /* Alterntive cancelTransaction 
-    @PUT
-    @Path("merchants/{merchantId}")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response cancelTransaction(@PathParam("merchantId") String merchantId, Transaction transaction) {
-        transaction.setMerchantId(Long.parseLong(merchantId));
-        Transaction transactionFromDB = Transactions.getById(transaction.getId());
-
-        if (transactionFromDB.getStatus()== Transaction.Status.CLOSE) {
-            return Response.status(400).entity(Errors.CANCEL_CLOSED).build();
-        }
-        if (transactionFromDB.getStatus()== Transaction.Status.CANCEL) {
-            return Response.status(400).entity(Errors.CANCEL_CANCELED).build();
-        }
-
-        if (transaction.getAmount().compareTo(BigDecimal.ZERO) == -1
-                || transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-            return Response.status(400).entity(Errors.CANCEL_LIMIT_EXCESS).build();
-        }
-        if (transactionFromDB.getAmount().compareTo(transaction.getAmount()) == 0) {
-            return Response.status(400).entity(Errors.CANCEL_ZERO).build();
-        }
-
-        if (transactionFromDB.getCurrency() != transaction.getCurrency()) {
-            return Response.status(400).entity(Errors.CANCEL_WRONG_CURRENCY).build();
-        }
-
-        Transactions.update(transaction);
-        
-        if (transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-            transaction.setStatus(Transaction.Status.CANCEL);
-        } else {
-            transaction.setStatus(Transaction.Status.CANCEL_PART);
-        }
-
-        return Response.ok(transaction).build();
-    } */
-    
 }

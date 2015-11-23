@@ -10,6 +10,7 @@ public class TransactionsManager {
     private static List<Transaction> transactions;
     
     public static List<Transaction> getTransactions(Map<String, Object> filterParams, String sortParam, String order, Integer offset, Integer limit){
+        
         transactions = new ArrayList<Transaction>();
         filter(filterParams);
         sort(sortParam, order);
