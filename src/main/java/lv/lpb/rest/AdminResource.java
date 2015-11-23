@@ -20,6 +20,9 @@ import lv.lpb.database.TransactionsManager;
 import lv.lpb.domain.Exporter;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
+import lv.lpb.rest.params.MerchantFilterParams;
+import lv.lpb.rest.params.PageParams;
+import lv.lpb.rest.params.TransactionFilterParams;
 
 @Path("/admin")
 public class AdminResource {
@@ -28,18 +31,18 @@ public class AdminResource {
     @Path("/merchants")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchants(
-            @BeanParam Merchant.PageParams pageParams, 
-            @BeanParam Merchant.FilterParams filterParams) {
+            @BeanParam PageParams pageParams, 
+            @BeanParam MerchantFilterParams filterParams) {
         
         Map<String, Object> filterParamsMap = new HashMap<>();
-        filterParamsMap.put(Merchant.FilterParams.ID, filterParams.merchantId);
-        filterParamsMap.put(Merchant.FilterParams.STATUS, filterParams.status);
+        filterParamsMap.put(MerchantFilterParams.ID, filterParams.merchantId);
+        filterParamsMap.put(MerchantFilterParams.STATUS, filterParams.status);
         
         Map<String, String> pageParamsMap = new HashMap<>();
-        pageParamsMap.put(Merchant.PageParams.SORT, pageParams.sortParams);
-        pageParamsMap.put(Merchant.PageParams.ORDER, pageParams.order);
-        pageParamsMap.put(Merchant.PageParams.OFFSET, String.valueOf(pageParams.offset));
-        pageParamsMap.put(Merchant.PageParams.LIMIT, String.valueOf(pageParams.limit));
+        pageParamsMap.put(PageParams.SORT, pageParams.sortParams);
+        pageParamsMap.put(PageParams.ORDER, pageParams.order);
+        pageParamsMap.put(PageParams.OFFSET, String.valueOf(pageParams.offset));
+        pageParamsMap.put(PageParams.LIMIT, String.valueOf(pageParams.limit));
         
         System.out.println("filterParams: " + filterParams);
         List<Merchant> merchants = MerchantsManager.getMerchants(filterParamsMap, pageParamsMap);
@@ -79,14 +82,14 @@ public class AdminResource {
     @Path("/transactions")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTransactions(
-            @BeanParam Transaction.PageParams pageParams,
-            @BeanParam Transaction.FilterParams filterParams) {
+            @BeanParam PageParams pageParams,
+            @BeanParam TransactionFilterParams filterParams) {
         Map<String, Object> filterParamsMap = new HashMap<>();
-        filterParamsMap.put(Transaction.FilterParams.ID, filterParams.transactionId);
-        filterParamsMap.put(Transaction.FilterParams.MERCHANT_ID, filterParams.merchantId);
-        filterParamsMap.put(Transaction.FilterParams.CURRENCY, filterParams.currency);
-        filterParamsMap.put(Transaction.FilterParams.STATUS, filterParams.status);
-        filterParamsMap.put(Transaction.FilterParams.INIT_DATE, filterParams.initDate);
+        filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);
+        filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, filterParams.merchantId);
+        filterParamsMap.put(TransactionFilterParams.CURRENCY, filterParams.currency);
+        filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
+        filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
         
         List<Transaction> transactions = TransactionsManager.getTransactions
         (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);

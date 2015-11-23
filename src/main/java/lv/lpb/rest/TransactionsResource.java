@@ -22,6 +22,8 @@ import lv.lpb.database.TransactionsManager;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.domain.CancelInfo;
+import lv.lpb.rest.params.PageParams;
+import lv.lpb.rest.params.TransactionFilterParams;
 
 @Path("/transactions")
 public class TransactionsResource {
@@ -31,16 +33,16 @@ public class TransactionsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchantTransactions(
            @PathParam("merchantId") Long id, 
-           @BeanParam Transaction.PageParams pageParams, 
-           @BeanParam Transaction.FilterParams filterParams) { 
+           @BeanParam PageParams pageParams, 
+           @BeanParam TransactionFilterParams filterParams) { 
         
         Merchant merchant = Merchants.getById(id);
         Map<String,Object> filterParamsMap = new HashMap<String, Object>();
-        filterParamsMap.put(Transaction.FilterParams.MERCHANT_ID, id);
-        filterParamsMap.put(Transaction.FilterParams.ID, filterParams.transactionId);
-        filterParamsMap.put(Transaction.FilterParams.CURRENCY, filterParams.currency);
-        filterParamsMap.put(Transaction.FilterParams.STATUS, filterParams.status);
-        filterParamsMap.put(Transaction.FilterParams.INIT_DATE, filterParams.initDate);
+        filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, id);
+        filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);
+        filterParamsMap.put(TransactionFilterParams.CURRENCY, filterParams.currency);
+        filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
+        filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
         
         System.out.println(filterParamsMap.toString());
             

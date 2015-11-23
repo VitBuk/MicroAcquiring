@@ -5,6 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import lv.lpb.domain.Merchant;
+import lv.lpb.rest.params.PageParams;
 
 public class MerchantsManager {
 
@@ -15,9 +16,9 @@ public class MerchantsManager {
         
         System.out.println("filterParams: " + filterParams);
         filter (filterParams);
-        sort(pageParams.get(Merchant.PageParams.SORT), pageParams.get(Merchant.PageParams.ORDER));
-        merchantsByOffset(Integer.parseInt(pageParams.get(Merchant.PageParams.OFFSET)), 
-                Integer.parseInt(pageParams.get(Merchant.PageParams.LIMIT)));
+        sort(pageParams.get(PageParams.SORT), pageParams.get(PageParams.ORDER));
+        merchantsByOffset(Integer.parseInt(pageParams.get(PageParams.OFFSET)), 
+                Integer.parseInt(pageParams.get(PageParams.LIMIT)));
         
         return merchants;
     }

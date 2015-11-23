@@ -15,9 +15,8 @@ public class MerchantsResource {
     @GET
     @Path("/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getMerchant(@PathParam("merchantId") String id) {
-        Long merchantId = Long.parseLong(id);
-        Merchant merchant = Merchants.getById(merchantId);
+    public Response getMerchant(@PathParam("merchantId") Long id) {
+        Merchant merchant = Merchants.getById(id);
         
         if (merchant == null) {
             return Response.status(404).entity("Merchant is not exist").build();

@@ -3,7 +3,6 @@ package lv.lpb.domain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.ws.rs.QueryParam;
 
 public class Merchant {
     private Long id;
@@ -73,25 +72,5 @@ public class Merchant {
     
     public static enum Status {
         ACTIVE, INACTIVE;
-    }
-    
-     public static class FilterParams {
-        public static final String ID = "id";
-        public static final String STATUS = "status";
-        
-        public @QueryParam("id") Long merchantId;
-        public @QueryParam("status") Transaction.Status status;
-    }
-    
-     public static class PageParams {
-         public static final String OFFSET = "offset";
-         public static final String LIMIT = "limit";
-         public static final String SORT = "sort";
-         public static final String ORDER = "order";
-         
-         public @QueryParam("offset") Integer offset; 
-         public @QueryParam("limit") Integer limit;            
-         public @QueryParam("sort") String sortParams;
-         public @QueryParam("order") String order;
     }
 }
