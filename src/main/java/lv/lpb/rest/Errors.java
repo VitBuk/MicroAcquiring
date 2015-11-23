@@ -9,7 +9,6 @@ public class Errors {
     public static final String CANCEL_OVERDUE = "You cant cancel transaction, cause it was initialized more than three days ago";
     
     public static final String MERCH_NOT_EXIST = "Merchant is not exist";
-    public static final String MERCH_HAVENT_TRAN = "This merchant has not transactions";
     
     public static final String MERCH_INACTIVE = "This merchant is inactive";
     public static final String UNALLOWED_CURRENCY = "That type of currency not allowed";

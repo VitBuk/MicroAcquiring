@@ -57,7 +57,7 @@ public class Transactions {
         transaction1.setAmount(new BigDecimal(10));
         transaction1.setCurrency(Currency.EUR);
         transaction1.setStatus(Transaction.Status.INIT);
-        transaction1.setInitDate(LocalDate.of(2015, Month.NOVEMBER, 1));
+        transaction1.setCreatedDate(LocalDate.of(2015, Month.NOVEMBER, 1));
         transactions.add(transaction1);
 
         Transaction transaction2 = new Transaction();
@@ -66,7 +66,7 @@ public class Transactions {
         transaction2.setAmount(new BigDecimal(12));
         transaction2.setCurrency(Currency.USD);
         transaction2.setStatus(Transaction.Status.INIT);
-        transaction2.setInitDate(LocalDate.of(LocalDate.now().getYear(),
+        transaction2.setCreatedDate(LocalDate.of(LocalDate.now().getYear(),
                 LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth() - 2));
         transactions.add(transaction2);
 
@@ -76,7 +76,7 @@ public class Transactions {
         transaction3.setAmount(new BigDecimal(35));
         transaction3.setCurrency(Currency.RUB);
         transaction3.setStatus(Transaction.Status.INIT);
-        transaction3.setInitDate(LocalDate.of(2015, Month.NOVEMBER, 17));
+        transaction3.setCreatedDate(LocalDate.of(2015, Month.NOVEMBER, 17));
         transactions.add(transaction3);
 
         Transaction transaction4 = new Transaction();
@@ -85,7 +85,7 @@ public class Transactions {
         transaction4.setAmount(new BigDecimal(99));
         transaction4.setCurrency(Currency.EUR);
         transaction4.setStatus(Transaction.Status.CLOSE);
-        transaction4.setInitDate(LocalDate.of(2015, Month.NOVEMBER, 10));
+        transaction4.setCreatedDate(LocalDate.of(2015, Month.NOVEMBER, 10));
         transactions.add(transaction4);
 
         Transaction transaction5 = new Transaction();
@@ -94,7 +94,7 @@ public class Transactions {
         transaction5.setAmount(new BigDecimal(112));
         transaction5.setCurrency(Currency.USD);
         transaction5.setStatus(Transaction.Status.INIT);
-        transaction5.setInitDate(LocalDate.of(1970, Month.AUGUST, 20));
+        transaction5.setCreatedDate(LocalDate.of(1970, Month.AUGUST, 20));
         transactions.add(transaction5);
     }
 }

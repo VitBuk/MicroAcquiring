@@ -36,7 +36,6 @@ public class TransactionsResource {
            @BeanParam PageParams pageParams, 
            @BeanParam TransactionFilterParams filterParams) { 
         
-        Merchant merchant = Merchants.getById(id);
         Map<String,Object> filterParamsMap = new HashMap<String, Object>();
         filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, id);
         filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);
@@ -49,12 +48,8 @@ public class TransactionsResource {
         List<Transaction> transactions = TransactionsManager.getTransactions
         (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);
 
-        if (transactions.isEmpty()) {
-            if (merchant == null) {
-                return Response.status(404).entity(Errors.MERCH_NOT_EXIST).build();
-            }
-
-            return Response.status(404).entity(Errors.MERCH_HAVENT_TRAN).build();
+        if (Merchants.getById(id) == null) {
+            return Response.status(404).entity(Errors.MERCH_NOT_EXIST).build();
         }
 
         return Response.ok(transactions).build();
@@ -75,7 +70,7 @@ public class TransactionsResource {
         }
 
         transaction.setMerchantId(id);
-        transaction.setInitDate(LocalDate.now());
+        transaction.setCreatedDate(LocalDate.now());
         Transactions.add(transaction);
 
         return Response.ok(transaction).build();
@@ -106,7 +101,7 @@ public class TransactionsResource {
             return Response.status(400).entity(Errors.CANCEL_WRONG_CURRENCY).build();
         }
         
-        if (Period.between(transaction.getInitDate(), LocalDate.now()).getDays() > 3) {
+        if (Period.between(transaction.getCreatedDate(), LocalDate.now()).getDays() > 3) {
             return Response.status(400).entity(Errors.CANCEL_OVERDUE).build();
         }
         

@@ -35,9 +35,9 @@ public class TransactionsManager {
         }
         
         if ("initDate".equals(sortParam)) {
-            transactions.sort(Comparator.comparing(Transaction::getInitDate));
+            transactions.sort(Comparator.comparing(Transaction::getCreatedDate));
             if("reverse".equals(order)) {
-                transactions.sort(Comparator.comparing(Transaction::getInitDate).reversed());
+                transactions.sort(Comparator.comparing(Transaction::getCreatedDate).reversed());
             }
         }
         
@@ -49,7 +49,7 @@ public class TransactionsManager {
             if (filterParams.get("merchantId") == null || filterParams.get("merchantId").equals(transaction.getMerchantId())) {
                 if (filterParams.get("currency") == null || filterParams.get("currency").equals(transaction.getCurrency())) {
                     if (filterParams.get("status") == null || filterParams.get("status").equals(transaction.getStatus())) {
-                        if (filterParams.get("initDate") == null || filterParams.get("initDate").equals(transaction.getInitDate())) {
+                        if (filterParams.get("initDate") == null || filterParams.get("initDate").equals(transaction.getCreatedDate())) {
                             transactions.add(transaction);
                         }
                     }
