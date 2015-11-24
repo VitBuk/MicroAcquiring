@@ -2,7 +2,7 @@ package lv.lpb.rest.params;
 
 import javax.ws.rs.QueryParam;
 
-public abstract class PageParams {
+public class PageParams {
     public static final String OFFSET = "offset";
     public static final String LIMIT = "limit";
     public static final String SORT = "sort";

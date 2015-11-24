@@ -16,7 +16,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.Merchants;
+import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.Transactions;
 import lv.lpb.database.TransactionsManager;
 import lv.lpb.domain.Merchant;
@@ -27,6 +27,8 @@ import lv.lpb.rest.params.TransactionFilterParams;
 
 @Path("/transactions")
 public class TransactionsResource {
+    
+     private MerchantCollectionDAO merchantCollectionDAO = new MerchantCollectionDAO().getInstance();
     
     @GET
     @Path("/merchants/{merchantId}")
@@ -43,12 +45,10 @@ public class TransactionsResource {
         filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
         filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
         
-        System.out.println(filterParamsMap.toString());
-            
         List<Transaction> transactions = TransactionsManager.getTransactions
         (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);
 
-        if (Merchants.getById(id) == null) {
+        if (merchantCollectionDAO.get(id) == null) {
             return Response.status(404).entity(Errors.MERCH_NOT_EXIST).build();
         }
 
@@ -60,7 +60,7 @@ public class TransactionsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(@PathParam("merchantId") Long id, Transaction transaction) {
-        Merchant merchant = Merchants.getById(id);
+        Merchant merchant = merchantCollectionDAO.get(id);
         
         if (merchant.getStatus() == Merchant.Status.INACTIVE) {
             return Response.status(404).entity(Errors.MERCH_INACTIVE).build();

@@ -6,17 +6,19 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Merchant;
-import lv.lpb.database.Merchants;
 
 @Path("/merchants")
 public class MerchantsResource {
+    
+    private MerchantCollectionDAO merchantCollectionDAO = new MerchantCollectionDAO().getInstance();
     
     @GET
     @Path("/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchant(@PathParam("merchantId") Long id) {
-        Merchant merchant = Merchants.getById(id);
+        Merchant merchant = merchantCollectionDAO.get(id);
         
         if (merchant == null) {
             return Response.status(404).entity("Merchant is not exist").build();

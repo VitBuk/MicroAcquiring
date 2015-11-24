@@ -13,8 +13,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.Merchants;
-import lv.lpb.database.MerchantsManager;
+import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.Transactions;
 import lv.lpb.database.TransactionsManager;
 import lv.lpb.domain.Exporter;
@@ -27,6 +26,8 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/admin")
 public class AdminResource {
     
+     private MerchantCollectionDAO merchantCollectionDAO = new MerchantCollectionDAO().getInstance();
+    
     @GET
     @Path("/merchants")
     @Produces(MediaType.APPLICATION_JSON)
@@ -38,14 +39,13 @@ public class AdminResource {
         filterParamsMap.put(MerchantFilterParams.ID, filterParams.merchantId);
         filterParamsMap.put(MerchantFilterParams.STATUS, filterParams.status);
         
-        Map<String, String> pageParamsMap = new HashMap<>();
+        Map<String, Object> pageParamsMap = new HashMap<>();
         pageParamsMap.put(PageParams.SORT, pageParams.sortParams);
         pageParamsMap.put(PageParams.ORDER, pageParams.order);
-        pageParamsMap.put(PageParams.OFFSET, String.valueOf(pageParams.offset));
-        pageParamsMap.put(PageParams.LIMIT, String.valueOf(pageParams.limit));
+        pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
+        pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
         
-        System.out.println("filterParams: " + filterParams);
-        List<Merchant> merchants = MerchantsManager.getMerchants(filterParamsMap, pageParamsMap);
+        List<Merchant> merchants = merchantCollectionDAO.getByParams(filterParamsMap, pageParamsMap);
         
         if (merchants.isEmpty()) {
             return Response.status(204).entity(Errors.MERCHS_ZERO).build();
@@ -61,7 +61,7 @@ public class AdminResource {
     public Response addMerchant(Merchant merchant) {
         // id produces by database
         merchant.setStatus(Merchant.Status.ACTIVE);
-        Merchants.add(merchant);
+        merchantCollectionDAO.create(merchant);
         
         return Response.ok(merchant).build();
     }
@@ -70,9 +70,9 @@ public class AdminResource {
     @Path("merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response switchOffMerchant(@PathParam("merchantId") String id, Merchant.Status status) {
+    public Response switchOffMerchant(@PathParam("merchantId") Long id, Merchant.Status status) {
         
-        Merchant merchant = Merchants.getById(Long.parseLong(id));
+        Merchant merchant = merchantCollectionDAO.get(id);
         merchant.setStatus(status);
         
         return Response.ok(merchant).build();
@@ -92,7 +92,7 @@ public class AdminResource {
         filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
         
         List<Transaction> transactions = TransactionsManager.getTransactions
-        (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);
+        (filterParamsMap, pageParams.sortParams, pageParams.order, Integer.valueOf(pageParams.offset), Integer.valueOf(pageParams.limit));
         
         if (transactions.isEmpty()) {
             return Response.status(204).entity(Errors.TRANS_ZERO).build();
@@ -105,7 +105,7 @@ public class AdminResource {
     @Path("/merchants/export")
     @Produces(MediaType.APPLICATION_JSON)
     public Response exportMerchants() {
-        List<Merchant> merchants = Merchants.getMerchants();
+        List<Merchant> merchants = merchantCollectionDAO.getAll();
         Exporter exporter = new Exporter(merchants);
         
         return Response.ok(exporter).build();
