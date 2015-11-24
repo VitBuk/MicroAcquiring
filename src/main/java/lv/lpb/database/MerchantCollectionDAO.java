@@ -16,20 +16,7 @@ public class MerchantCollectionDAO implements DAO<Merchant> {
     private static final MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO();
 
     static {
-        //init test merchants
-        Merchant merchant1 = new Merchant(1L);
-        merchant1.add(Currency.JPY);
-        merchant1.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant1);
-        Merchant merchant2 = new Merchant(2L);
-        merchant2.add(Currency.RUB);
-        merchant2.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant2);
-        Merchant merchant3 = new Merchant(3L);
-        merchant3.add(Currency.GBP);
-        merchant3.add(Currency.RUB);
-        merchant3.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant3);
+        generateMerchants();
     }
 
     public MerchantCollectionDAO getInstance() {
@@ -77,12 +64,10 @@ public class MerchantCollectionDAO implements DAO<Merchant> {
                     (Integer) pageParams.get(PageParams.LIMIT));
         }
 
-        System.out.println(merchantsByParams);
         return merchantsByParams;
     }
 
     private List<Merchant> filter(List<Merchant> merchantsByParams, Map<String, Object> filterParams) {
-        System.out.println(merchantsByParams);
         for (Merchant merchant : getAll()) {
             if (filterParams.get("id") == null || filterParams.get("id").equals(merchant.getId())) {
                 if (filterParams.get("status") == null || filterParams.get("status").equals(merchant.getStatus())) {
@@ -113,11 +98,30 @@ public class MerchantCollectionDAO implements DAO<Merchant> {
     }
 
     private List<Merchant> getByOffset(List<Merchant> merchantsByParams, Integer offset, Integer limit) {
-        if (limit > merchantsByParams.size()) {
-            limit = merchantsByParams.size();
+        Integer border = offset + limit;
+        if (border > merchantsByParams.size()) {
+            border = merchantsByParams.size();
         }
-        merchantsByParams = merchantsByParams.subList(offset, limit);
+        merchantsByParams = merchantsByParams.subList(offset, border);
         
         return merchantsByParams;
+    }
+    
+    private static void generateMerchants() {
+        Merchant merchant1 = new Merchant(1L);
+        merchant1.add(Currency.JPY);
+        merchant1.setStatus(Merchant.Status.ACTIVE);
+        merchantDAO.create(merchant1);
+        
+        Merchant merchant2 = new Merchant(2L);
+        merchant2.add(Currency.RUB);
+        merchant2.setStatus(Merchant.Status.ACTIVE);
+        merchantDAO.create(merchant2);
+        
+        Merchant merchant3 = new Merchant(3L);
+        merchant3.add(Currency.GBP);
+        merchant3.add(Currency.RUB);
+        merchant3.setStatus(Merchant.Status.ACTIVE);
+        merchantDAO.create(merchant3);
     }
 }

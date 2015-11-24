@@ -17,8 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.MerchantCollectionDAO;
-import lv.lpb.database.Transactions;
-import lv.lpb.database.TransactionsManager;
+import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.domain.CancelInfo;
@@ -28,7 +27,8 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/transactions")
 public class TransactionsResource {
     
-     private MerchantCollectionDAO merchantCollectionDAO = new MerchantCollectionDAO().getInstance();
+     private MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO().getInstance();
+     private TransactionCollectionDAO transactionDAO = new TransactionCollectionDAO().getInstance();
     
     @GET
     @Path("/merchants/{merchantId}")
@@ -38,17 +38,22 @@ public class TransactionsResource {
            @BeanParam PageParams pageParams, 
            @BeanParam TransactionFilterParams filterParams) { 
         
-        Map<String,Object> filterParamsMap = new HashMap<String, Object>();
+        Map<String,Object> filterParamsMap = new HashMap<>();
         filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, id);
         filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);
         filterParamsMap.put(TransactionFilterParams.CURRENCY, filterParams.currency);
         filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
         filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
         
-        List<Transaction> transactions = TransactionsManager.getTransactions
-        (filterParamsMap, pageParams.sortParams, pageParams.order, pageParams.offset, pageParams.limit);
+        Map<String, Object> pageParamsMap = new HashMap<>();
+        pageParamsMap.put(PageParams.SORT, pageParams.sort);
+        pageParamsMap.put(PageParams.ORDER, pageParams.order);
+        pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
+        pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
+        
+        List<Transaction> transactions = transactionDAO.getByParams(filterParamsMap, pageParamsMap);
 
-        if (merchantCollectionDAO.get(id) == null) {
+        if (merchantDAO.get(id) == null) {
             return Response.status(404).entity(Errors.MERCH_NOT_EXIST).build();
         }
 
@@ -60,7 +65,7 @@ public class TransactionsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response add(@PathParam("merchantId") Long id, Transaction transaction) {
-        Merchant merchant = merchantCollectionDAO.get(id);
+        Merchant merchant = merchantDAO.get(id);
         
         if (merchant.getStatus() == Merchant.Status.INACTIVE) {
             return Response.status(404).entity(Errors.MERCH_INACTIVE).build();
@@ -71,7 +76,7 @@ public class TransactionsResource {
 
         transaction.setMerchantId(id);
         transaction.setCreatedDate(LocalDate.now());
-        Transactions.add(transaction);
+        transactionDAO.create(transaction);
 
         return Response.ok(transaction).build();
     }
@@ -81,7 +86,7 @@ public class TransactionsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response cancelTransaction(@PathParam("merchantId") Long id, CancelInfo cancelInfo) {
-        Transaction transaction = Transactions.getById(cancelInfo.getTransactionId());
+        Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
         
         if(transaction.getStatus() == Transaction.Status.CLOSE) {
             return Response.status(400).entity(Errors.CANCEL_CLOSED).build();

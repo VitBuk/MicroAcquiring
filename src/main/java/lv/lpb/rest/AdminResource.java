@@ -14,8 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.MerchantCollectionDAO;
-import lv.lpb.database.Transactions;
-import lv.lpb.database.TransactionsManager;
+import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.Exporter;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
@@ -26,7 +25,8 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/admin")
 public class AdminResource {
     
-     private MerchantCollectionDAO merchantCollectionDAO = new MerchantCollectionDAO().getInstance();
+     private MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO().getInstance();
+     private TransactionCollectionDAO transactionDAO = new TransactionCollectionDAO().getInstance();
     
     @GET
     @Path("/merchants")
@@ -40,12 +40,12 @@ public class AdminResource {
         filterParamsMap.put(MerchantFilterParams.STATUS, filterParams.status);
         
         Map<String, Object> pageParamsMap = new HashMap<>();
-        pageParamsMap.put(PageParams.SORT, pageParams.sortParams);
+        pageParamsMap.put(PageParams.SORT, pageParams.sort);
         pageParamsMap.put(PageParams.ORDER, pageParams.order);
         pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
         pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
         
-        List<Merchant> merchants = merchantCollectionDAO.getByParams(filterParamsMap, pageParamsMap);
+        List<Merchant> merchants = merchantDAO.getByParams(filterParamsMap, pageParamsMap);
         
         if (merchants.isEmpty()) {
             return Response.status(204).entity(Errors.MERCHS_ZERO).build();
@@ -61,7 +61,7 @@ public class AdminResource {
     public Response addMerchant(Merchant merchant) {
         // id produces by database
         merchant.setStatus(Merchant.Status.ACTIVE);
-        merchantCollectionDAO.create(merchant);
+        merchantDAO.create(merchant);
         
         return Response.ok(merchant).build();
     }
@@ -72,7 +72,7 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response switchOffMerchant(@PathParam("merchantId") Long id, Merchant.Status status) {
         
-        Merchant merchant = merchantCollectionDAO.get(id);
+        Merchant merchant = merchantDAO.get(id);
         merchant.setStatus(status);
         
         return Response.ok(merchant).build();
@@ -91,8 +91,13 @@ public class AdminResource {
         filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
         filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
         
-        List<Transaction> transactions = TransactionsManager.getTransactions
-        (filterParamsMap, pageParams.sortParams, pageParams.order, Integer.valueOf(pageParams.offset), Integer.valueOf(pageParams.limit));
+        Map<String, Object> pageParamsMap = new HashMap<>();
+        pageParamsMap.put(PageParams.SORT, pageParams.sort);
+        pageParamsMap.put(PageParams.ORDER, pageParams.order);
+        pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
+        pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
+        
+        List<Transaction> transactions = transactionDAO.getByParams(filterParamsMap, pageParamsMap);
         
         if (transactions.isEmpty()) {
             return Response.status(204).entity(Errors.TRANS_ZERO).build();
@@ -105,7 +110,7 @@ public class AdminResource {
     @Path("/merchants/export")
     @Produces(MediaType.APPLICATION_JSON)
     public Response exportMerchants() {
-        List<Merchant> merchants = merchantCollectionDAO.getAll();
+        List<Merchant> merchants = merchantDAO.getAll();
         Exporter exporter = new Exporter(merchants);
         
         return Response.ok(exporter).build();
@@ -115,7 +120,7 @@ public class AdminResource {
     @Path("/transactions/export")
     @Produces(MediaType.APPLICATION_JSON)
     public Response exportTransactions() {
-        List<Transaction> transactions = Transactions.getTransactions();
+        List<Transaction> transactions = transactionDAO.getAll();
         Exporter exporter = new Exporter(transactions);
         
         return Response.ok(exporter).build();

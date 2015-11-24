@@ -10,6 +10,6 @@ public class PageParams {
     
     public @QueryParam("offset") Integer offset; 
     public @QueryParam("limit") Integer limit;            
-    public @QueryParam("sort") String sortParams;
+    public @QueryParam("sort") String sort;
     public @QueryParam("order") String order;
 }

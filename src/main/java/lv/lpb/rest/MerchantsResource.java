@@ -12,13 +12,13 @@ import lv.lpb.domain.Merchant;
 @Path("/merchants")
 public class MerchantsResource {
     
-    private MerchantCollectionDAO merchantCollectionDAO = new MerchantCollectionDAO().getInstance();
+    private MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO().getInstance();
     
     @GET
     @Path("/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchant(@PathParam("merchantId") Long id) {
-        Merchant merchant = merchantCollectionDAO.get(id);
+        Merchant merchant = merchantDAO.get(id);
         
         if (merchant == null) {
             return Response.status(404).entity("Merchant is not exist").build();
