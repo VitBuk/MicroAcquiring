@@ -1,5 +1,6 @@
 package lv.lpb.rest;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -11,8 +12,13 @@ import lv.lpb.domain.Merchant;
 
 @Path("/merchants")
 public class MerchantsResource {
+
+    private MerchantCollectionDAO merchantDAO;
     
-    private MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO().getInstance();
+    @Inject
+    public MerchantsResource(MerchantCollectionDAO merchantDAO) {
+        this.merchantDAO = merchantDAO;
+    }
     
     @GET
     @Path("/{merchantId}")

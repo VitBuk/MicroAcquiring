@@ -5,24 +5,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 
+@ApplicationScoped
 public class MerchantCollectionDAO implements DAO<Merchant> {
 
     private List<Merchant> merchants = new CopyOnWriteArrayList();
 
-    private static final MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO();
-
-    static {
-        generateMerchants();
+    @PostConstruct
+    public void init() {
+        generateMerchants();    
     }
-
-    public MerchantCollectionDAO getInstance() {
-        return merchantDAO;
-    }
-
+    
     @Override
     public Merchant create(Merchant merchant) {
         merchants.add(merchant);
@@ -107,21 +105,21 @@ public class MerchantCollectionDAO implements DAO<Merchant> {
         return merchantsByParams;
     }
     
-    private static void generateMerchants() {
+    private void generateMerchants() {
         Merchant merchant1 = new Merchant(1L);
         merchant1.add(Currency.JPY);
         merchant1.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant1);
+        create(merchant1);
         
         Merchant merchant2 = new Merchant(2L);
         merchant2.add(Currency.RUB);
         merchant2.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant2);
+        create(merchant2);
         
         Merchant merchant3 = new Merchant(3L);
         merchant3.add(Currency.GBP);
         merchant3.add(Currency.RUB);
         merchant3.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant3);
+        create(merchant3);
     }
 }

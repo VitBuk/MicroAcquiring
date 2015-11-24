@@ -8,8 +8,8 @@ public class PageParams {
     public static final String SORT = "sort";
     public static final String ORDER = "order";
     
-    public @QueryParam("offset") Integer offset; 
-    public @QueryParam("limit") Integer limit;            
-    public @QueryParam("sort") String sort;
-    public @QueryParam("order") String order;
+    public @QueryParam(OFFSET) Integer offset; 
+    public @QueryParam(LIMIT) Integer limit;            
+    public @QueryParam(SORT) String sort;
+    public @QueryParam(ORDER) String order;
 }

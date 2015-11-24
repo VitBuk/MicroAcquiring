@@ -6,6 +6,7 @@ import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,9 +28,16 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/transactions")
 public class TransactionsResource {
     
-     private MerchantCollectionDAO merchantDAO = new MerchantCollectionDAO().getInstance();
-     private TransactionCollectionDAO transactionDAO = new TransactionCollectionDAO().getInstance();
+    private MerchantCollectionDAO merchantDAO;
     
+    private TransactionCollectionDAO transactionDAO;
+
+    @Inject
+    public TransactionsResource(MerchantCollectionDAO merchantDAO, TransactionCollectionDAO transactionDAO) {
+        this.merchantDAO = merchantDAO;
+        this.transactionDAO = transactionDAO;
+    }
+  
     @GET
     @Path("/merchants/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)

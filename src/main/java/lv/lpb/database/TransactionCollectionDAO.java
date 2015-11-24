@@ -8,22 +8,20 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
 
+@ApplicationScoped
 public class TransactionCollectionDAO implements DAO<Transaction> {
 
     private List<Transaction> transactions = new CopyOnWriteArrayList();
 
-    private static final TransactionCollectionDAO transactionDAO = new TransactionCollectionDAO();
-
-    static {
+    @PostConstruct
+    public void init() {
         generateTransactions();
-    }
-
-    public TransactionCollectionDAO getInstance() {
-        return transactionDAO;
     }
 
     @Override
@@ -115,7 +113,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         return transactionsByParams;
     }
 
-    private static void generateTransactions() {
+    private void generateTransactions() {
         Transaction transaction1 = new Transaction();
         transaction1.setId(1L);
         transaction1.setMerchantId(1L);
@@ -123,7 +121,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction1.setCurrency(Currency.EUR);
         transaction1.setStatus(Transaction.Status.INIT);
         transaction1.setCreated(LocalDate.of(2015, Month.NOVEMBER, 1));
-        transactionDAO.create(transaction1);
+        create(transaction1);
 
         Transaction transaction2 = new Transaction();
         transaction2.setId(2L);
@@ -133,7 +131,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction2.setStatus(Transaction.Status.INIT);
         transaction2.setCreated(LocalDate.of(LocalDate.now().getYear(),
                 LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth() - 2));
-        transactionDAO.create(transaction2);
+        create(transaction2);
 
         Transaction transaction3 = new Transaction();
         transaction3.setId(3L);
@@ -142,7 +140,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction3.setCurrency(Currency.RUB);
         transaction3.setStatus(Transaction.Status.INIT);
         transaction3.setCreated(LocalDate.of(2015, Month.NOVEMBER, 17));
-        transactionDAO.create(transaction3);
+        create(transaction3);
 
         Transaction transaction4 = new Transaction();
         transaction4.setId(4L);
@@ -151,7 +149,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction4.setCurrency(Currency.EUR);
         transaction4.setStatus(Transaction.Status.CLOSE);
         transaction4.setCreated(LocalDate.of(2015, Month.NOVEMBER, 10));
-        transactionDAO.create(transaction4);
+        create(transaction4);
 
         Transaction transaction5 = new Transaction();
         transaction5.setId(5L);
@@ -160,6 +158,6 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction5.setCurrency(Currency.USD);
         transaction5.setStatus(Transaction.Status.INIT);
         transaction5.setCreated(LocalDate.of(1970, Month.AUGUST, 20));
-        transactionDAO.create(transaction5);
+        create(transaction5);
     }
 }

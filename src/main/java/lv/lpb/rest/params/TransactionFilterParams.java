@@ -12,9 +12,9 @@ public class TransactionFilterParams {
     public static final String STATUS = "status";
     public static final String INIT_DATE = "initDate";
         
-    public @QueryParam("id") String transactionId;
-    public @QueryParam("merchantId") String merchantId;
-    public @QueryParam("currency") Currency currency;
-    public @QueryParam("status") Transaction.Status status;
-    public @QueryParam("initDate") LocalDate initDate;
+    public @QueryParam(ID) String transactionId;
+    public @QueryParam(MERCHANT_ID) String merchantId;
+    public @QueryParam(CURRENCY) Currency currency;
+    public @QueryParam(STATUS) Transaction.Status status;
+    public @QueryParam(INIT_DATE) LocalDate initDate;
 }
