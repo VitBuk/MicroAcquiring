@@ -75,7 +75,7 @@ public class TransactionsResource {
         }
 
         transaction.setMerchantId(id);
-        transaction.setCreatedDate(LocalDate.now());
+        transaction.setCreated(LocalDate.now());
         transactionDAO.create(transaction);
 
         return Response.ok(transaction).build();
@@ -106,7 +106,7 @@ public class TransactionsResource {
             return Response.status(400).entity(Errors.CANCEL_WRONG_CURRENCY).build();
         }
         
-        if (Period.between(transaction.getCreatedDate(), LocalDate.now()).getDays() > 3) {
+        if (Period.between(transaction.getCreated(), LocalDate.now()).getDays() > 3) {
             return Response.status(400).entity(Errors.CANCEL_OVERDUE).build();
         }
         

@@ -76,7 +76,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
             if (filterParams.get("merchantId") == null || filterParams.get("merchantId").equals(transaction.getMerchantId())) {
                 if (filterParams.get("currency") == null || filterParams.get("currency").equals(transaction.getCurrency())) {
                     if (filterParams.get("status") == null || filterParams.get("status").equals(transaction.getStatus())) {
-                        if (filterParams.get("initDate") == null || filterParams.get("initDate").equals(transaction.getCreatedDate())) {
+                        if (filterParams.get("initDate") == null || filterParams.get("initDate").equals(transaction.getCreated())) {
                             transactionsByParams.add(transaction);
                         }
                     }
@@ -96,9 +96,9 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         }
         
         if ("initDate".equals(sortParam)) {
-            transactionsByParams.sort(Comparator.comparing(Transaction::getCreatedDate));
+            transactionsByParams.sort(Comparator.comparing(Transaction::getCreated));
             if("reverse".equals(order)) {
-                transactionsByParams.sort(Comparator.comparing(Transaction::getCreatedDate).reversed());
+                transactionsByParams.sort(Comparator.comparing(Transaction::getCreated).reversed());
             }
         }
         
@@ -122,7 +122,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction1.setAmount(new BigDecimal(10));
         transaction1.setCurrency(Currency.EUR);
         transaction1.setStatus(Transaction.Status.INIT);
-        transaction1.setCreatedDate(LocalDate.of(2015, Month.NOVEMBER, 1));
+        transaction1.setCreated(LocalDate.of(2015, Month.NOVEMBER, 1));
         transactionDAO.create(transaction1);
 
         Transaction transaction2 = new Transaction();
@@ -131,7 +131,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction2.setAmount(new BigDecimal(12));
         transaction2.setCurrency(Currency.USD);
         transaction2.setStatus(Transaction.Status.INIT);
-        transaction2.setCreatedDate(LocalDate.of(LocalDate.now().getYear(),
+        transaction2.setCreated(LocalDate.of(LocalDate.now().getYear(),
                 LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth() - 2));
         transactionDAO.create(transaction2);
 
@@ -141,7 +141,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction3.setAmount(new BigDecimal(35));
         transaction3.setCurrency(Currency.RUB);
         transaction3.setStatus(Transaction.Status.INIT);
-        transaction3.setCreatedDate(LocalDate.of(2015, Month.NOVEMBER, 17));
+        transaction3.setCreated(LocalDate.of(2015, Month.NOVEMBER, 17));
         transactionDAO.create(transaction3);
 
         Transaction transaction4 = new Transaction();
@@ -150,7 +150,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction4.setAmount(new BigDecimal(99));
         transaction4.setCurrency(Currency.EUR);
         transaction4.setStatus(Transaction.Status.CLOSE);
-        transaction4.setCreatedDate(LocalDate.of(2015, Month.NOVEMBER, 10));
+        transaction4.setCreated(LocalDate.of(2015, Month.NOVEMBER, 10));
         transactionDAO.create(transaction4);
 
         Transaction transaction5 = new Transaction();
@@ -159,7 +159,7 @@ public class TransactionCollectionDAO implements DAO<Transaction> {
         transaction5.setAmount(new BigDecimal(112));
         transaction5.setCurrency(Currency.USD);
         transaction5.setStatus(Transaction.Status.INIT);
-        transaction5.setCreatedDate(LocalDate.of(1970, Month.AUGUST, 20));
+        transaction5.setCreated(LocalDate.of(1970, Month.AUGUST, 20));
         transactionDAO.create(transaction5);
     }
 }

@@ -19,7 +19,7 @@ public class Transaction {
     //@XmlElement(name="status")
     private Status status;
    // @XmlElement(name="initDate")
-    private LocalDate createdDate;
+    private LocalDate created;
 //    @XmlTransient
     @JsonIgnore
     private LocalDate updated; // last status update time
@@ -66,12 +66,12 @@ public class Transaction {
         this.status = status;
     }
 
-    public LocalDate getCreatedDate() {
-        return createdDate;
+    public LocalDate getCreated() {
+        return created;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
-        this.createdDate = createdDate;
+    public void setCreated(LocalDate created) {
+        this.created = created;
     }
 
     public LocalDate getUpdated() {
@@ -84,7 +84,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", initDate=" + createdDate + '}';
+        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", initDate=" + created + '}';
     }
     
     public static enum Status {
