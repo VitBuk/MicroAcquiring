@@ -13,11 +13,11 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 
-@Named
+@Named("AdminService_CDI")
 public class AdminService {
     
-    private MerchantCollectionDAO merchantDAO;
-    private TransactionCollectionDAO transactionDAO;
+    private @Named("Merchant_CDI") MerchantCollectionDAO merchantDAO;
+    private @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO;
     
     @Inject
     public AdminService(MerchantCollectionDAO merchantDAO, TransactionCollectionDAO transactionDAO) {

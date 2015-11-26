@@ -3,6 +3,7 @@ package lv.lpb.rest;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,7 +23,7 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/admin")
 public class AdminResource {
 
-    private AdminService adminService;
+    private @Named("AdminService_CDI") AdminService adminService;
 
     @Inject
     public AdminResource(AdminService adminService) {

@@ -3,6 +3,7 @@ package lv.lpb.rest;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,7 +23,7 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/transactions")
 public class TransactionsResource {
 
-    private TransactionsService transactionsService;
+    private @Named("TransactionsService_CDI") TransactionsService transactionsService;
 
     @Inject
     public TransactionsResource(TransactionsService transactionsService) {

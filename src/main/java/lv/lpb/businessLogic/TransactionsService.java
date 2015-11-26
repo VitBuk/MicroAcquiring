@@ -8,7 +8,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.MerchantCollectionDAO;
+import lv.lpb.database.CDI.MerchantCollectionDAOImpl;
+import lv.lpb.database.CDI.TransactionCollectionDAOImpl;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.CancelInfo;
 import lv.lpb.domain.Merchant;
@@ -17,14 +18,14 @@ import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 import lv.lpb.rest.params.TransactionFilterParams;
 
-@Named
+@Named("TransactionsService_CDI")
 public class TransactionsService {
     
-    private TransactionCollectionDAO transactionDAO;
-    private MerchantCollectionDAO merchantDAO;
+    private @Named("Merchant_CDI") MerchantCollectionDAOImpl merchantDAO;
+    private @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO;
     
     @Inject
-    public TransactionsService(TransactionCollectionDAO transactionDAO, MerchantCollectionDAO merchantDAO) {
+    public TransactionsService(TransactionCollectionDAOImpl transactionDAO, MerchantCollectionDAOImpl merchantDAO) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
     }
