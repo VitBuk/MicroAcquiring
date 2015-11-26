@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
@@ -19,17 +20,22 @@ import lv.lpb.rest.errorHandling.Errors;
 import lv.lpb.rest.params.TransactionFilterParams;
 
 @Named("TransactionsService_CDI")
+@RequestScoped
 public class TransactionsService {
-    
+
     private MerchantCollectionDAOImpl merchantDAO;
     private TransactionCollectionDAO transactionDAO;
-    
+
+    public TransactionsService() {
+    }
+
     @Inject
-    public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAOImpl transactionDAO, @Named("Merchant_CDI") MerchantCollectionDAOImpl merchantDAO) {
+    public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAOImpl transactionDAO, @Named(
+                               "Merchant_CDI") MerchantCollectionDAOImpl merchantDAO) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
     }
-    
+
     public Transaction create(Long merchantId, Transaction transaction) {
         Merchant merchant = merchantDAO.get(merchantId);
 
@@ -43,10 +49,10 @@ public class TransactionsService {
         transaction.setMerchantId(merchantId);
         transaction.setCreated(LocalDate.now());
         transactionDAO.create(transaction);
-        
+
         return transaction;
     }
-    
+
     public Transaction cancel(CancelInfo cancelInfo) {
         Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
 
@@ -59,7 +65,7 @@ public class TransactionsService {
 
         if (transaction.getAmount().compareTo(cancelInfo.getAmount()) == -1) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_LIMIT_EXCESS);
-            
+
         }
         if (cancelInfo.getAmount() == BigDecimal.ZERO) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_ZERO);
@@ -74,15 +80,15 @@ public class TransactionsService {
         }
 
         transactionDAO.update(transaction);
-        
+
         return transaction;
     }
-    
+
     public List<Transaction> getByMerchant(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         List<Transaction> transactions = transactionDAO.getByParams(filterParams, pageParams);
 
         if (merchantDAO.get((Long) filterParams.get(TransactionFilterParams.MERCHANT_ID)) == null) {
-            throw new AppException(Response.Status.BAD_REQUEST.getStatusCode() ,Errors.MERCH_NOT_EXIST);
+            throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.MERCH_NOT_EXIST);
         }
 
         return transactions;
