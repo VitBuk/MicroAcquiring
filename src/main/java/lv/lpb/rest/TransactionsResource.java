@@ -18,6 +18,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lv.lpb.businessLogic.TransactionsService;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.Merchant;
@@ -33,11 +34,15 @@ public class TransactionsResource {
     private MerchantCollectionDAO merchantDAO;
 
     private TransactionCollectionDAO transactionDAO;
+    
+    private TransactionsService transactionsService;
 
     @Inject
-    public TransactionsResource(MerchantCollectionDAO merchantDAO, TransactionCollectionDAO transactionDAO) {
+    public TransactionsResource(MerchantCollectionDAO merchantDAO,
+            TransactionCollectionDAO transactionDAO, TransactionsService transactionsService) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
+        this.transactionsService = transactionsService;
     }
 
     @GET
@@ -121,16 +126,8 @@ public class TransactionsResource {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_OVERDUE);
         }
 
-        //BL service inject to this resource
-        transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
-
-        if (transaction.getAmount().compareTo(BigDecimal.ZERO) == 0) {
-            transaction.setStatus(Transaction.Status.CANCEL);
-        } else {
-            transaction.setStatus(Transaction.Status.CANCEL_PART);
-        }
-
-        transaction.setUpdated(LocalDate.now());
+        transaction = transactionsService.cancel(transaction, cancelInfo);
+        transactionDAO.update(transaction);
 
         return Response.ok(transaction).build();
     }

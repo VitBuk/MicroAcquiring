@@ -83,6 +83,7 @@ public class AdminResource {
 
         Merchant merchant = merchantDAO.get(id);
         merchant.setStatus(status);
+        merchantDAO.update(merchant);
 
         return Response.ok(merchant).build();
     }
