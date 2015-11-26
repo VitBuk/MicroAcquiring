@@ -23,10 +23,10 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/transactions")
 public class TransactionsResource {
 
-    private @Named("TransactionsService_CDI") TransactionsService transactionsService;
+    private TransactionsService transactionsService;
 
     @Inject
-    public TransactionsResource(TransactionsService transactionsService) {
+    public TransactionsResource(@Named("TransactionsService_CDI") TransactionsService transactionsService) {
         this.transactionsService = transactionsService;
     }
 

@@ -16,11 +16,11 @@ import lv.lpb.rest.errorHandling.Errors;
 @Named("AdminService_CDI")
 public class AdminService {
     
-    private @Named("Merchant_CDI") MerchantCollectionDAO merchantDAO;
-    private @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO;
+    private MerchantCollectionDAO merchantDAO;
+    private TransactionCollectionDAO transactionDAO;
     
     @Inject
-    public AdminService(MerchantCollectionDAO merchantDAO, TransactionCollectionDAO transactionDAO) {
+    public AdminService(@Named("Merchant_CDI") MerchantCollectionDAO merchantDAO, @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
     }

@@ -8,7 +8,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.CDI.MerchantCollectionDAOImpl;
+import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
@@ -16,10 +16,10 @@ import lv.lpb.rest.errorHandling.Errors;
 @Path("/merchants")
 public class MerchantsResource {
 
-    private @Named("Merchant_CDI") MerchantCollectionDAOImpl merchantDAO;
+    private MerchantCollectionDAO merchantDAO;
     
     @Inject
-    public MerchantsResource(MerchantCollectionDAOImpl merchantDAO) {
+    public MerchantsResource(@Named("Merchant_CDI") MerchantCollectionDAO merchantDAO) {
         this.merchantDAO = merchantDAO;
     }
     

@@ -23,10 +23,10 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/admin")
 public class AdminResource {
 
-    private @Named("AdminService_CDI") AdminService adminService;
+    private AdminService adminService;
 
     @Inject
-    public AdminResource(AdminService adminService) {
+    public AdminResource(@Named("AdminService_CDI") AdminService adminService) {
         this.adminService = adminService;
     }
 

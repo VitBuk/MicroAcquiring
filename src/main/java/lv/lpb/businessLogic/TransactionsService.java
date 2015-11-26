@@ -21,11 +21,11 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Named("TransactionsService_CDI")
 public class TransactionsService {
     
-    private @Named("Merchant_CDI") MerchantCollectionDAOImpl merchantDAO;
-    private @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO;
+    private MerchantCollectionDAOImpl merchantDAO;
+    private TransactionCollectionDAO transactionDAO;
     
     @Inject
-    public TransactionsService(TransactionCollectionDAOImpl transactionDAO, MerchantCollectionDAOImpl merchantDAO) {
+    public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAOImpl transactionDAO, @Named("Merchant_CDI") MerchantCollectionDAOImpl merchantDAO) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
     }
