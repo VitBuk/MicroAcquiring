@@ -1,8 +1,6 @@
 package lv.lpb.rest;
 
-import lv.lpb.rest.errorHandling.Errors;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.inject.Inject;
 import javax.ws.rs.BeanParam;
@@ -15,12 +13,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.MerchantCollectionDAO;
-import lv.lpb.database.TransactionCollectionDAO;
-import lv.lpb.domain.Exporter;
+import lv.lpb.businessLogic.AdminService;
 import lv.lpb.domain.Merchant;
-import lv.lpb.domain.Transaction;
-import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
@@ -28,13 +22,11 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Path("/admin")
 public class AdminResource {
 
-    private MerchantCollectionDAO merchantDAO;
-    private TransactionCollectionDAO transactionDAO;
+    private AdminService adminService;
 
     @Inject
-    public AdminResource(MerchantCollectionDAO merchantDAO, TransactionCollectionDAO transactionDAO) {
-        this.merchantDAO = merchantDAO;
-        this.transactionDAO = transactionDAO;
+    public AdminResource(AdminService adminService) {
+        this.adminService = adminService;
     }
 
     @GET
@@ -54,13 +46,7 @@ public class AdminResource {
         pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
         pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
 
-        List<Merchant> merchants = merchantDAO.getByParams(filterParamsMap, pageParamsMap);
-
-        if (merchants.isEmpty()) {
-            throw new AppException(Response.Status.NO_CONTENT.getStatusCode(), Errors.MERCHS_ZERO);
-        }
-
-        return Response.ok(merchants).build();
+        return Response.ok(adminService.getMerchants(filterParamsMap, pageParamsMap)).build();
     }
 
     @POST
@@ -69,10 +55,8 @@ public class AdminResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addMerchant(Merchant merchant) {
         // id produces by database
-        merchant.setStatus(Merchant.Status.ACTIVE);
-        merchantDAO.create(merchant);
 
-        return Response.ok(merchant).build();
+        return Response.ok(adminService.addMerchant(merchant)).build();
     }
 
     @PUT
@@ -80,12 +64,7 @@ public class AdminResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response switchOffMerchant(@PathParam("merchantId") Long id, Merchant.Status status) {
-
-        Merchant merchant = merchantDAO.get(id);
-        merchant.setStatus(status);
-        merchantDAO.update(merchant);
-
-        return Response.ok(merchant).build();
+        return Response.ok(adminService.switchOffMerchant(id, status)).build();
     }
 
     @GET
@@ -107,32 +86,20 @@ public class AdminResource {
         pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
         pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
 
-        List<Transaction> transactions = transactionDAO.getByParams(filterParamsMap, pageParamsMap);
-
-        if (transactions.isEmpty()) {
-            throw new AppException(Response.Status.NO_CONTENT.getStatusCode(), Errors.TRANS_ZERO);
-        }
-
-        return Response.ok(transactions).build();
+        return Response.ok(adminService.getTransactions(filterParamsMap, pageParamsMap)).build();
     }
 
     @GET
     @Path("/merchants/export")
     @Produces(MediaType.APPLICATION_JSON)
     public Response exportMerchants() {
-        List<Merchant> merchants = merchantDAO.getAll();
-        Exporter exporter = new Exporter(merchants);
-
-        return Response.ok(exporter).build();
+        return Response.ok(adminService.exportMerchants()).build();
     }
 
     @GET
     @Path("/transactions/export")
     @Produces(MediaType.APPLICATION_JSON)
     public Response exportTransactions() {
-        List<Transaction> transactions = transactionDAO.getAll();
-        Exporter exporter = new Exporter(transactions);
-
-        return Response.ok(exporter).build();
+        return Response.ok(adminService.exportTransactions()).build();
     }
 }
