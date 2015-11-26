@@ -1,5 +1,6 @@
 package lv.lpb.rest;
 
+import lv.lpb.rest.errorHandling.Errors;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.Exporter;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
+import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
@@ -35,7 +37,6 @@ public class AdminResource {
         this.transactionDAO = transactionDAO;
     }
 
-    
     @GET
     @Path("/merchants")
     @Produces(MediaType.APPLICATION_JSON)
@@ -56,7 +57,7 @@ public class AdminResource {
         List<Merchant> merchants = merchantDAO.getByParams(filterParamsMap, pageParamsMap);
 
         if (merchants.isEmpty()) {
-            return Response.status(204).entity(Errors.MERCHS_ZERO).build();
+            throw new AppException(Response.Status.NO_CONTENT.getStatusCode(), Errors.MERCHS_ZERO);
         }
 
         return Response.ok(merchants).build();
@@ -108,7 +109,7 @@ public class AdminResource {
         List<Transaction> transactions = transactionDAO.getByParams(filterParamsMap, pageParamsMap);
 
         if (transactions.isEmpty()) {
-            return Response.status(204).entity(Errors.TRANS_ZERO).build();
+            throw new AppException(Response.Status.NO_CONTENT.getStatusCode(), Errors.TRANS_ZERO);
         }
 
         return Response.ok(transactions).build();

@@ -9,6 +9,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Merchant;
+import lv.lpb.rest.errorHandling.AppException;
+import lv.lpb.rest.errorHandling.Errors;
 
 @Path("/merchants")
 public class MerchantsResource {
@@ -27,7 +29,7 @@ public class MerchantsResource {
         Merchant merchant = merchantDAO.get(id);
         
         if (merchant == null) {
-            return Response.status(404).entity("Merchant is not exist").build();
+            throw new AppException(Response.Status.NOT_FOUND.getStatusCode(), Errors.MERCH_NOT_EXIST);            
         }
         
         return Response.ok(merchant).build();

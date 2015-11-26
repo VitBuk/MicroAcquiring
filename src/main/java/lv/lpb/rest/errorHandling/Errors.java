@@ -1,4 +1,4 @@
-package lv.lpb.rest;
+package lv.lpb.rest.errorHandling;
 
 public class Errors {
     public static final String CANCEL_CLOSED = "You cant cancel closed transaction";

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-
 //@XmlRootElement(name="Transaction")
 public class Transaction {
 
@@ -18,9 +17,9 @@ public class Transaction {
     private Currency currency;
     //@XmlElement(name="status")
     private Status status;
-   // @XmlElement(name="initDate")
+    // @XmlElement(name="initDate")
     private LocalDate created;
-//    @XmlTransient
+    // @XmlTransient
     @JsonIgnore
     private LocalDate updated; // last status update time
 
@@ -84,7 +83,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", initDate=" + created + '}';
+        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + '}';
     }
     
     public static enum Status {
