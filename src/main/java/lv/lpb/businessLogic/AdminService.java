@@ -2,7 +2,7 @@ package lv.lpb.businessLogic;
 
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
@@ -14,8 +14,8 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 
+@ApplicationScoped
 @Named("AdminService_CDI")
-@RequestScoped
 public class AdminService {
 
     private MerchantCollectionDAO merchantDAO;
@@ -26,7 +26,7 @@ public class AdminService {
 
     @Inject
     public AdminService(@Named("Merchant_CDI") MerchantCollectionDAO merchantDAO,
-                        @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO) {
+            @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
     }

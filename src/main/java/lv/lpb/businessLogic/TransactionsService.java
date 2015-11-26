@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
@@ -19,8 +19,8 @@ import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 import lv.lpb.rest.params.TransactionFilterParams;
 
+@ApplicationScoped
 @Named("TransactionsService_CDI")
-@RequestScoped
 public class TransactionsService {
 
     private MerchantCollectionDAOImpl merchantDAO;
@@ -31,7 +31,7 @@ public class TransactionsService {
 
     @Inject
     public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAOImpl transactionDAO, @Named(
-                               "Merchant_CDI") MerchantCollectionDAOImpl merchantDAO) {
+            "Merchant_CDI") MerchantCollectionDAOImpl merchantDAO) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
     }
