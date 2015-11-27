@@ -5,20 +5,23 @@ import java.util.Comparator;
 import lv.lpb.database.DAOQualifier;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.PostConstruct;
-import javax.ejb.Stateless;
+import javax.ejb.Lock;
+import static javax.ejb.LockType.READ;
+import static javax.ejb.LockType.WRITE;
+import javax.ejb.Singleton;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 
-@Stateless
+@Singleton
 @DAOQualifier(daoType = DaoType.EJB)
+@Lock(READ)
 public class MerchantCollectionDAOImplEJB implements MerchantCollectionDAO {
 
-    private List<Merchant> merchants = new CopyOnWriteArrayList();
+    private List<Merchant> merchants = new ArrayList<>();
 
     @PostConstruct
     public void init() {
@@ -26,12 +29,14 @@ public class MerchantCollectionDAOImplEJB implements MerchantCollectionDAO {
     }
     
     @Override
+    @Lock(WRITE)    
     public Merchant create(Merchant merchant) {
         merchants.add(merchant);
         return merchant;
     }
 
     @Override
+    @Lock(WRITE)
     public Merchant update(Merchant merchant) {
         merchants.remove(get(merchant.getId()));
         merchants.add(merchant);
