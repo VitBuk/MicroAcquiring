@@ -6,16 +6,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
+import javax.ejb.Stateless;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 
-@ApplicationScoped
-@Named("Merchant_CDI")
-public class MerchantCollectionDAOImpl implements MerchantCollectionDAO{
+@Stateless
+@DAOQualifier(daoType = DaoType.CDI)
+public class MerchantCollectionDAOImplCDI implements MerchantCollectionDAO{
 
     private List<Merchant> merchants = new CopyOnWriteArrayList();
 

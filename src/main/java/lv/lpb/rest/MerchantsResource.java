@@ -1,13 +1,15 @@
 package lv.lpb.rest;
 
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.errorHandling.AppException;
@@ -19,7 +21,7 @@ public class MerchantsResource {
     private MerchantCollectionDAO merchantDAO;
     
     @Inject
-    public MerchantsResource(@Named("Merchant_CDI") MerchantCollectionDAO merchantDAO) {
+    public MerchantsResource(@DAOQualifier(daoType = DaoType.EJB) MerchantCollectionDAO merchantDAO) {
         this.merchantDAO = merchantDAO;
     }
     

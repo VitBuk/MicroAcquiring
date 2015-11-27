@@ -1,4 +1,4 @@
-package lv.lpb.businessLogic;
+package lv.lpb.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,8 +9,9 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.CDI.MerchantCollectionDAOImpl;
-import lv.lpb.database.CDI.TransactionCollectionDAOImpl;
+import lv.lpb.database.CDI.TransactionCollectionDAOImplCDI;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.CancelInfo;
 import lv.lpb.domain.Merchant;
@@ -23,15 +24,15 @@ import lv.lpb.rest.params.TransactionFilterParams;
 @Named("TransactionsService_CDI")
 public class TransactionsService {
 
-    private MerchantCollectionDAOImpl merchantDAO;
+    private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
 
     public TransactionsService() {
     }
 
     @Inject
-    public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAOImpl transactionDAO, @Named(
-            "Merchant_CDI") MerchantCollectionDAOImpl merchantDAO) {
+    public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAOImplCDI transactionDAO, 
+            @DAOQualifier(daoType = DAOQualifier.DaoType.EJB) MerchantCollectionDAO merchantDAO) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
     }

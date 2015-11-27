@@ -14,7 +14,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import lv.lpb.businessLogic.AdminService;
+import lv.lpb.services.AdminService;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;

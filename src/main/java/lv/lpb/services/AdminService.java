@@ -1,11 +1,14 @@
-package lv.lpb.businessLogic;
+package lv.lpb.services;
 
 import java.util.List;
 import java.util.Map;
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.Exporter;
@@ -25,7 +28,7 @@ public class AdminService {
     }
 
     @Inject
-    public AdminService(@Named("Merchant_CDI") MerchantCollectionDAO merchantDAO,
+    public AdminService(@DAOQualifier(daoType = DaoType.EJB) MerchantCollectionDAO merchantDAO,
             @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;

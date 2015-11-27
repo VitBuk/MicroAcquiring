@@ -18,7 +18,7 @@ import lv.lpb.rest.params.PageParams;
 
 @ApplicationScoped
 @Named("Transaction_CDI")
-public class TransactionCollectionDAOImpl implements TransactionCollectionDAO {
+public class TransactionCollectionDAOImplCDI implements TransactionCollectionDAO {
 
     private List<Transaction> transactions = new CopyOnWriteArrayList();
 
