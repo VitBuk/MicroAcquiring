@@ -19,10 +19,13 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Path("/admin")
 public class AdminResource {
 
+    private static final Logger log = LoggerFactory.getLogger(AdminResource.class);
     private AdminService adminService;
 
     @Inject
@@ -37,6 +40,7 @@ public class AdminResource {
             @BeanParam PageParams pageParams,
             @BeanParam MerchantFilterParams filterParams) {
 
+        log.debug("test");
         Map<String, Object> filterParamsMap = new HashMap<>();
         filterParamsMap.put(MerchantFilterParams.ID, filterParams.merchantId);
         filterParamsMap.put(MerchantFilterParams.STATUS, filterParams.status);
