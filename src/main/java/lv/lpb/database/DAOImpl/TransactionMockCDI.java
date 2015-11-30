@@ -1,4 +1,4 @@
-package lv.lpb.database.CDI;
+package lv.lpb.database.DAOImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,7 +18,7 @@ import lv.lpb.rest.params.PageParams;
 
 @ApplicationScoped
 @Named("Transaction_CDI")
-public class TransactionCollectionDAOImplCDI implements TransactionCollectionDAO {
+public class TransactionMockCDI implements TransactionCollectionDAO {
 
     private List<Transaction> transactions = new CopyOnWriteArrayList();
 

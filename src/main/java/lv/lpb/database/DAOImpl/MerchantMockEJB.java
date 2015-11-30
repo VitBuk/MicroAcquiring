@@ -1,4 +1,4 @@
-package lv.lpb.database.EJB;
+package lv.lpb.database.DAOImpl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,7 +19,7 @@ import lv.lpb.rest.params.PageParams;
 @Singleton
 @DAOQualifier(daoType = DaoType.EJB)
 @Lock(READ)
-public class MerchantCollectionDAOImplEJB implements MerchantCollectionDAO {
+public class MerchantMockEJB implements MerchantCollectionDAO {
 
     private List<Merchant> merchants = new ArrayList<>();
 

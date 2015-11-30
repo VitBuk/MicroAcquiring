@@ -1,4 +1,4 @@
-package lv.lpb.database.CDI;
+package lv.lpb.database.DAOImpl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -16,7 +16,7 @@ import lv.lpb.rest.params.PageParams;
 
 @Stateless
 @DAOQualifier(daoType = DaoType.CDI)
-public class MerchantCollectionDAOImplCDI implements MerchantCollectionDAO{
+public class MerchantMockCDI implements MerchantCollectionDAO{
 
     private List<Merchant> merchants = new CopyOnWriteArrayList();
 
