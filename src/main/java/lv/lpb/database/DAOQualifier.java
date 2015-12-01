@@ -13,10 +13,10 @@ import javax.inject.Qualifier;
 @Target(value = {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 public @interface DAOQualifier {
     
-    public DaoType daoType() default DaoType.EJB;
+    public DaoType daoType() default DaoType.MERCH;
     
     public static enum DaoType {
-        CDI,
-        EJB;
+        MERCH,
+        TRAN;
     }
 }

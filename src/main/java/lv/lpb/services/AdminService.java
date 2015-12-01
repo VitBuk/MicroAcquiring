@@ -30,8 +30,8 @@ public class AdminService {
     }
 
     @Inject
-    public AdminService(@DAOQualifier(daoType = DaoType.EJB) MerchantCollectionDAO merchantDAO,
-            @Named("Transaction_CDI") TransactionCollectionDAO transactionDAO) {
+    public AdminService(@DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO,
+            @DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
     }

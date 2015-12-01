@@ -23,6 +23,27 @@
         </rollingPolicy>
 
     </appender>
+    
+    <appender name="FILE-TRACE"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/trace.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${DEV_HOME}/archived/trace.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+    </appender>
 
     <logger name="lv.lpb" level="debug"
                 additivity="false">
@@ -32,5 +53,10 @@
     <root level="error">
         <appender-ref ref="FILE-AUDIT" />
     </root>
+    
+    <logger name="lv.lpb" level="trace">
+         additivity="false">
+        <appender-ref ref="FILE-TRACE" />
+    </logger>
 
 </configuration>

@@ -17,7 +17,7 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(daoType = DaoType.EJB)
+@DAOQualifier(daoType = DaoType.MERCH)
 @Lock(READ)
 public class MerchantMockEJB implements MerchantCollectionDAO {
 

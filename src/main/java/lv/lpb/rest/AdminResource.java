@@ -1,11 +1,8 @@
 package lv.lpb.rest;
 
-import lv.lpb.services.AdminInterceptor;
 import java.util.HashMap;
 import java.util.Map;
-import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

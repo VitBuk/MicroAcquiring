@@ -21,7 +21,7 @@ public class MerchantsResource {
     private MerchantCollectionDAO merchantDAO;
     
     @Inject
-    public MerchantsResource(@DAOQualifier(daoType = DaoType.EJB) MerchantCollectionDAO merchantDAO) {
+    public MerchantsResource(@DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO) {
         this.merchantDAO = merchantDAO;
     }
     

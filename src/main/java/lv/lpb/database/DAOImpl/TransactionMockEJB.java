@@ -19,7 +19,7 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(daoType = DAOQualifier.DaoType.EJB)
+@DAOQualifier(daoType = DAOQualifier.DaoType.TRAN)
 @Lock(READ)
 public class TransactionMockEJB implements TransactionCollectionDAO {
     private List<Transaction> transactions = new ArrayList<>();
