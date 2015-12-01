@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
@@ -18,9 +18,10 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 import lv.lpb.rest.params.TransactionFilterParams;
+import lv.lpb.services.ServiceQualifier.ServiceType;
 
-@ApplicationScoped
-@Named("TransactionsService_CDI")
+@Stateless
+@ServiceQualifier(serviceType = ServiceType.TRAN)
 public class TransactionsService {
 
     private MerchantCollectionDAO merchantDAO;

@@ -1,9 +1,11 @@
 package lv.lpb.rest;
 
+import lv.lpb.services.AdminInterceptor;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,17 +21,16 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lv.lpb.services.ServiceQualifier;
+import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Path("/admin")
 public class AdminResource {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminResource.class);
     private AdminService adminService;
 
     @Inject
-    public AdminResource(@Named("AdminService_CDI") AdminService adminService) {
+    public AdminResource(@ServiceQualifier(serviceType = ServiceType.ADMIN) AdminService adminService) {
         this.adminService = adminService;
     }
 
@@ -40,7 +41,6 @@ public class AdminResource {
             @BeanParam PageParams pageParams,
             @BeanParam MerchantFilterParams filterParams) {
 
-        log.debug("test");
         Map<String, Object> filterParamsMap = new HashMap<>();
         filterParamsMap.put(MerchantFilterParams.ID, filterParams.merchantId);
         filterParamsMap.put(MerchantFilterParams.STATUS, filterParams.status);

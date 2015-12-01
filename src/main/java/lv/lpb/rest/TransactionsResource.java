@@ -3,7 +3,6 @@ package lv.lpb.rest;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,6 +18,8 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.domain.CancelInfo;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
+import lv.lpb.services.ServiceQualifier;
+import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Path("/transactions")
 public class TransactionsResource {
@@ -26,7 +27,7 @@ public class TransactionsResource {
     private TransactionsService transactionsService;
 
     @Inject
-    public TransactionsResource(@Named("TransactionsService_CDI") TransactionsService transactionsService) {
+    public TransactionsResource(@ServiceQualifier(serviceType = ServiceType.TRAN) TransactionsService transactionsService) {
         this.transactionsService = transactionsService;
     }
 

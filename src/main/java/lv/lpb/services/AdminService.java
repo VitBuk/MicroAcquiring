@@ -2,9 +2,10 @@ package lv.lpb.services;
 
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
@@ -15,9 +16,11 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
+import lv.lpb.services.ServiceQualifier.ServiceType;
 
-@ApplicationScoped
-@Named("AdminService_CDI")
+@Stateless
+@ServiceQualifier(serviceType = ServiceType.ADMIN)
+@Interceptors(AdminInterceptor.class)
 public class AdminService {
 
     private MerchantCollectionDAO merchantDAO;
