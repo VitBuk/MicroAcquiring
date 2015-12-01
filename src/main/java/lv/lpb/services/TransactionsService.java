@@ -9,7 +9,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.DAOImpl.TransactionMockCDI;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.TransactionCollectionDAO;
@@ -31,7 +30,7 @@ public class TransactionsService {
     }
 
     @Inject
-    public TransactionsService(@Named("Transaction_CDI") TransactionMockCDI transactionDAO, 
+    public TransactionsService(@Named("Transaction_CDI") TransactionCollectionDAO transactionDAO, 
             @DAOQualifier(daoType = DAOQualifier.DaoType.EJB) MerchantCollectionDAO merchantDAO) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
