@@ -13,13 +13,14 @@ import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
 import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(daoType = DAOQualifier.DaoType.TRAN)
+@DAOQualifier(daoType = DaoType.TRAN)
 @Lock(READ)
 public class TransactionMockEJB implements TransactionCollectionDAO {
     private List<Transaction> transactions = new ArrayList<>();
@@ -62,6 +63,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
     
     @Override
     public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
+        System.out.println("getByParams");
         List<Transaction> transactionsByParams = new ArrayList<>();
         
         transactionsByParams = filter(transactionsByParams, filterParams);
@@ -128,7 +130,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction1.setAmount(new BigDecimal(10));
         transaction1.setCurrency(Currency.EUR);
         transaction1.setStatus(Transaction.Status.INIT);
-        transaction1.setCreated(LocalDate.of(2015, Month.NOVEMBER, 1));
+        transaction1.setCreated(LocalDate.now().plusDays(5L));
         create(transaction1);
 
         Transaction transaction2 = new Transaction();
@@ -137,8 +139,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction2.setAmount(new BigDecimal(12));
         transaction2.setCurrency(Currency.USD);
         transaction2.setStatus(Transaction.Status.INIT);
-        transaction2.setCreated(LocalDate.of(LocalDate.now().getYear(),
-                LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth() - 2));
+        transaction2.setCreated(LocalDate.now().minusDays(2L));
         create(transaction2);
 
         Transaction transaction3 = new Transaction();
@@ -147,7 +148,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction3.setAmount(new BigDecimal(35));
         transaction3.setCurrency(Currency.RUB);
         transaction3.setStatus(Transaction.Status.INIT);
-        transaction3.setCreated(LocalDate.of(2015, Month.NOVEMBER, 17));
+        transaction3.setCreated(LocalDate.now().plusDays(2L));
         create(transaction3);
 
         Transaction transaction4 = new Transaction();
@@ -156,7 +157,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction4.setAmount(new BigDecimal(99));
         transaction4.setCurrency(Currency.EUR);
         transaction4.setStatus(Transaction.Status.CLOSE);
-        transaction4.setCreated(LocalDate.of(2015, Month.NOVEMBER, 10));
+        transaction4.setCreated(LocalDate.now().plusDays(1L));
         create(transaction4);
 
         Transaction transaction5 = new Transaction();
@@ -165,7 +166,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction5.setAmount(new BigDecimal(112));
         transaction5.setCurrency(Currency.USD);
         transaction5.setStatus(Transaction.Status.INIT);
-        transaction5.setCreated(LocalDate.of(1970, Month.AUGUST, 20));
+        transaction5.setCreated(LocalDate.now().plusDays(1000L));
         create(transaction5);
     }
 }

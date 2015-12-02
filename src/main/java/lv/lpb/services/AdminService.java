@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.inject.Named;
 import javax.interceptor.Interceptors;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
@@ -37,6 +36,7 @@ public class AdminService {
     }
 
     public List<Merchant> getMerchants(Map<String, Object> filterParams, Map<String, Object> pageParams) {
+        System.out.println("getMerchants() in AdminService");
         List<Merchant> merchants = merchantDAO.getByParams(filterParams, pageParams);
 
         if (merchants.isEmpty()) {
@@ -62,7 +62,8 @@ public class AdminService {
         return merchant;
     }
 
-    public List<Transaction> getTransactions(Map<String, Object> filterParams, Map<String, Object> pageParams) {
+    public List<Transaction> getTransactions(Map<String, Object> filterParams, 
+            Map<String, Object> pageParams) {
         List<Transaction> transactions = transactionDAO.getByParams(filterParams, pageParams);
 
         if (transactions.isEmpty()) {

@@ -12,11 +12,15 @@ public class AdminInterceptor {
     @AroundInvoke
     public Object intercept(InvocationContext context) throws Exception {
         log.trace(context.getMethod().getName());
-        log.trace(context.getContextData().entrySet().toString());
+
+        long startTime = System.nanoTime();
+        
         // not necessarily Object, can switch it, if know return type of my EJB method
-        
         Object result = context.proceed();
+
+        long endTime = System.nanoTime();
         
+        log.trace("Method execution time={}", (endTime - startTime)/1000000);
         return result;
     }
 }
