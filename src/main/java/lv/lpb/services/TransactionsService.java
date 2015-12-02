@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.Map;
+import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
@@ -18,14 +19,18 @@ import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 import lv.lpb.rest.params.TransactionFilterParams;
 import lv.lpb.services.ServiceQualifier.ServiceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Stateless
 @ServiceQualifier(serviceType = ServiceType.TRAN)
 public class TransactionsService {
 
+    private static final Logger log = LoggerFactory.getLogger(AdminInterceptor.class);
+    
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
-
+    
     public TransactionsService() {
     }
 
@@ -92,5 +97,10 @@ public class TransactionsService {
         }
 
         return transactions;
+    }
+    
+    @Schedule(dayOfWeek = "*", hour="0", minute = "0", second = "0")
+    public void dayTotalAmount() {
+        log.debug(transactionDAO.dayTotalAmount().toString());
     }
 }

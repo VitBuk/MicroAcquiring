@@ -1,10 +1,13 @@
 package lv.lpb.services;
 
 import javax.interceptor.AroundInvoke;
+import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@InterceptorQualifier
+@Interceptor
 public class AdminInterceptor {
 
     private static final Logger log = LoggerFactory.getLogger(AdminInterceptor.class);
@@ -20,7 +23,7 @@ public class AdminInterceptor {
 
         long endTime = System.nanoTime();
         
-        log.trace("Method execution time={}", (endTime - startTime)/1000000);
+        log.trace("Method execution time={} milis", (endTime - startTime)/1000000);
         return result;
     }
 }

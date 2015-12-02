@@ -19,7 +19,8 @@ import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Stateless
 @ServiceQualifier(serviceType = ServiceType.ADMIN)
-@Interceptors(AdminInterceptor.class)
+//@Interceptors(AdminInterceptor.class)
+@InterceptorQualifier
 public class AdminService {
 
     private MerchantCollectionDAO merchantDAO;

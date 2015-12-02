@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -77,6 +78,16 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         }
 
         return transactionsByParams;
+    }
+    
+    @Override
+    public BigDecimal dayTotalAmount() {
+        BigDecimal totalAmount = getAll().stream()
+                .filter(t -> t.getCreated().getChronology() == LocalDate.now().minusDays(1L).getChronology())
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        
+        return totalAmount;
     }
     
     private List<Transaction> filter(List<Transaction> transactionsByParams, Map<String,Object> filterParams) {
