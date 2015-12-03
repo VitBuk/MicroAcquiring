@@ -126,7 +126,6 @@ public class TransactionsService {
         }
         
         log.trace("Total day amount={} ", totalAmountMap);
-        reportSender.send("Total amount: " + totalAmountMap);
-        log.trace("report={} ", reportReceiver.getGreet());
+        reportSender.send(totalAmountMap);
     }
 }

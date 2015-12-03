@@ -1,19 +1,18 @@
 package lv.lpb.services;
 
-import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-@SessionScoped
-public class ReportReceiver implements EventReceiver, Serializable {
-    private String greet = "Empty report";
+@RequestScoped
+public class ReportReceiver {
+    
+    private static final Logger log = LoggerFactory.getLogger(ReportReceiver.class);
+    
+    private static final String emptyReport = "Empty report";
 
-    void receive(@Observes String greet) {
-        this.greet = greet;
-    }
-
-    @Override
-    public String getGreet() {
-        return greet;
+    void receive(@Observes String report) {
+        log.trace(report==null || report.isEmpty() ? emptyReport : report);
     }
 }
