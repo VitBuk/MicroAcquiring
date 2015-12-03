@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import static javax.ejb.LockType.READ;
@@ -80,26 +81,16 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
     }
     
     @Override
-    public Map<Currency, BigDecimal> dayTotalAmount() {
-        //failed cause of BigDecimal
-//        Map<Currency, BigDecimal> totalAmount = getAll().stream()
-//                .collect(Collectors.groupingBy(Transaction::getCurrency, Collectors.summingInt((Transaction::getAmount)));
-      
-        List<Transaction> transactions = getAll();
-        Map<Currency, BigDecimal> totalAmountMap = new HashMap<>();
-        
-        for (Currency currency : Currency.values()) {
-            BigDecimal currencySum = BigDecimal.ZERO;
-            for (Transaction transaction : transactions) {
-                if (transaction.getCurrency() == currency) {
-                    currencySum = currencySum.add(transaction.getAmount());
-                    transactions.remove(transaction);
-                }
+    public List<Transaction> lastDayTransactions() {
+        List<Transaction> transactionsByDate = new ArrayList<>();
+        for (Transaction transaction : getAll()) {
+            //LocalDate.now().minusDays(1L) for 00:00
+            if (transaction.getCreated().isEqual(LocalDate.now())) {
+                transactionsByDate.add(transaction);
             }
-            totalAmountMap.put(currency, currencySum);
         }
         
-        return totalAmountMap;
+        return transactionsByDate;
     }
     
     private List<Transaction> filter(List<Transaction> transactionsByParams, Map<String,Object> filterParams) {
@@ -153,7 +144,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction1.setAmount(new BigDecimal(10));
         transaction1.setCurrency(Currency.EUR);
         transaction1.setStatus(Transaction.Status.INIT);
-        transaction1.setCreated(LocalDate.now().plusDays(5L));
+        transaction1.setCreated(LocalDate.now());
         create(transaction1);
 
         Transaction transaction2 = new Transaction();
@@ -162,7 +153,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction2.setAmount(new BigDecimal(12));
         transaction2.setCurrency(Currency.USD);
         transaction2.setStatus(Transaction.Status.INIT);
-        transaction2.setCreated(LocalDate.now().minusDays(2L));
+        transaction2.setCreated(LocalDate.now());
         create(transaction2);
 
         Transaction transaction3 = new Transaction();
@@ -171,7 +162,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction3.setAmount(new BigDecimal(35));
         transaction3.setCurrency(Currency.RUB);
         transaction3.setStatus(Transaction.Status.INIT);
-        transaction3.setCreated(LocalDate.now().plusDays(2L));
+        transaction3.setCreated(LocalDate.now());
         create(transaction3);
 
         Transaction transaction4 = new Transaction();
@@ -180,7 +171,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction4.setAmount(new BigDecimal(99));
         transaction4.setCurrency(Currency.EUR);
         transaction4.setStatus(Transaction.Status.CLOSE);
-        transaction4.setCreated(LocalDate.now().plusDays(1L));
+        transaction4.setCreated(LocalDate.now());
         create(transaction4);
 
         Transaction transaction5 = new Transaction();

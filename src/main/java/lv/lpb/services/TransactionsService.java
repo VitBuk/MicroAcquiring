@@ -3,8 +3,10 @@ package lv.lpb.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.CancelInfo;
+import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
@@ -103,11 +106,27 @@ public class TransactionsService {
         return transactions;
     }
     
-    @Schedule(dayOfWeek = "*", hour="0", minute = "0", second = "0")
+    @Schedule(dayOfWeek = "*", hour="17", minute = "12", second = "0")
     public void dayTotalAmount() {
-        String totalAmount = transactionDAO.dayTotalAmount().toString();
-        log.debug("Total day amount: " + totalAmount);
-        reportSender.send("TotalAmount: " + totalAmount);
-        reportReceiver.getGreet();
+        List<Transaction> transactions = new CopyOnWriteArrayList<>();
+        for (Transaction transaction : transactionDAO.lastDayTransactions()) {
+            transactions.add(transaction);
+        }
+        
+        Map<Currency, BigDecimal> totalAmountMap = new HashMap<>();
+        for (Currency currency : Currency.values()) {
+            BigDecimal currencySum = BigDecimal.ZERO;
+            for (Transaction transaction : transactions) {
+                if (transaction.getCurrency() == currency) {
+                    currencySum = currencySum.add(transaction.getAmount());
+                    transactions.remove(transaction);
+                }
+            }
+            totalAmountMap.put(currency, currencySum);
+        }
+        
+        log.trace("Total day amount={} ", totalAmountMap);
+        reportSender.send("Total amount: " + totalAmountMap);
+        log.trace("report={} ", reportReceiver.getGreet());
     }
 }
