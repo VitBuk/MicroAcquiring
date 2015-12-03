@@ -2,7 +2,6 @@ package lv.lpb.database.DAOImpl;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -81,13 +80,26 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
     }
     
     @Override
-    public BigDecimal dayTotalAmount() {
-        BigDecimal totalAmount = getAll().stream()
-                .filter(t -> t.getCreated().getChronology() == LocalDate.now().minusDays(1L).getChronology())
-                .map(Transaction::getAmount)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    public Map<Currency, BigDecimal> dayTotalAmount() {
+        //failed cause of BigDecimal
+//        Map<Currency, BigDecimal> totalAmount = getAll().stream()
+//                .collect(Collectors.groupingBy(Transaction::getCurrency, Collectors.summingInt((Transaction::getAmount)));
+      
+        List<Transaction> transactions = getAll();
+        Map<Currency, BigDecimal> totalAmountMap = new HashMap<>();
         
-        return totalAmount;
+        for (Currency currency : Currency.values()) {
+            BigDecimal currencySum = BigDecimal.ZERO;
+            for (Transaction transaction : transactions) {
+                if (transaction.getCurrency() == currency) {
+                    currencySum = currencySum.add(transaction.getAmount());
+                    transactions.remove(transaction);
+                }
+            }
+            totalAmountMap.put(currency, currencySum);
+        }
+        
+        return totalAmountMap;
     }
     
     private List<Transaction> filter(List<Transaction> transactionsByParams, Map<String,Object> filterParams) {

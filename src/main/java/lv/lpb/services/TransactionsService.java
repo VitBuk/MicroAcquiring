@@ -30,15 +30,19 @@ public class TransactionsService {
     
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
+    private ReportSender reportSender;
+    private ReportReceiver reportReceiver;
     
     public TransactionsService() {
     }
 
     @Inject
     public TransactionsService(@DAOQualifier(daoType = DAOQualifier.DaoType.TRAN) TransactionCollectionDAO transactionDAO, 
-            @DAOQualifier(daoType = DAOQualifier.DaoType.MERCH) MerchantCollectionDAO merchantDAO) {
+            @DAOQualifier(daoType = DAOQualifier.DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
+        this.reportSender = reportSender;
+        this.reportReceiver = reportReceiver;
     }
 
     public Transaction create(Long merchantId, Transaction transaction) {
@@ -101,6 +105,9 @@ public class TransactionsService {
     
     @Schedule(dayOfWeek = "*", hour="0", minute = "0", second = "0")
     public void dayTotalAmount() {
-        log.debug(transactionDAO.dayTotalAmount().toString());
+        String totalAmount = transactionDAO.dayTotalAmount().toString();
+        log.debug("Total day amount: " + totalAmount);
+        reportSender.send("TotalAmount: " + totalAmount);
+        reportReceiver.getGreet();
     }
 }
