@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 //@XmlRootElement(name="Transaction")
 public class Transaction {
-
     //@XmlElement(name="id")
     private Long id;
     //@XmlElement(name="merchantId")
@@ -22,6 +21,8 @@ public class Transaction {
     // @XmlTransient
     @JsonIgnore
     private LocalDate updated; // last status update time
+    
+    private Long batchId;
 
     public Transaction() {}
     
@@ -81,11 +82,19 @@ public class Transaction {
         this.updated = updated;
     }
 
+    public Long getBatchId() {
+        return batchId;
+    }
+
+    public void setBatchId(Long batchId) {
+        this.batchId = batchId;
+    }
+
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + '}';
+        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + '}';
     }
-    
+
     public static enum Status {
         //after transaction creation
         DEPOSITED,
@@ -95,6 +104,5 @@ public class Transaction {
         REVERSED,
         //after unsuccefull creation
         DECLINED;
-
     }
 }

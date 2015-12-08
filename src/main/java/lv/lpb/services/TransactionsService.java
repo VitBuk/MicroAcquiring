@@ -32,22 +32,20 @@ import org.slf4j.LoggerFactory;
 public class TransactionsService {
 
     private static final Logger log = LoggerFactory.getLogger(AdminInterceptor.class);
-    
+
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
     private ReportSender reportSender;
-    private ReportReceiver reportReceiver;
-    
+
     public TransactionsService() {
     }
 
     @Inject
-    public TransactionsService(@DAOQualifier(daoType = DAOQualifier.DaoType.TRAN) TransactionCollectionDAO transactionDAO, 
+    public TransactionsService(@DAOQualifier(daoType = DAOQualifier.DaoType.TRAN) TransactionCollectionDAO transactionDAO,
             @DAOQualifier(daoType = DAOQualifier.DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
         this.reportSender = reportSender;
-        this.reportReceiver = reportReceiver;
     }
 
     public Transaction create(Long merchantId, Transaction transaction) {
@@ -108,14 +106,14 @@ public class TransactionsService {
 
         return transactions;
     }
-    
-    @Schedule(dayOfWeek = "*", hour="17", minute = "12", second = "0")
+
+    @Schedule(dayOfWeek = "*", hour = "0", minute = "0", second = "1")
     public void dayTotalAmount() {
         List<Transaction> transactions = new CopyOnWriteArrayList<>();
         for (Transaction transaction : transactionDAO.lastDayTransactions()) {
             transactions.add(transaction);
         }
-        
+
         Map<Currency, BigDecimal> totalAmountMap = new HashMap<>();
         for (Currency currency : Currency.values()) {
             BigDecimal currencySum = BigDecimal.ZERO;
@@ -127,7 +125,7 @@ public class TransactionsService {
             }
             totalAmountMap.put(currency, currencySum);
         }
-        
+
         log.trace("Total day amount={} ", totalAmountMap);
         reportSender.send(totalAmountMap);
     }

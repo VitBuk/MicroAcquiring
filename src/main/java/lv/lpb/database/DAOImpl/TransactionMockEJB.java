@@ -4,10 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.annotation.PostConstruct;
 import javax.ejb.Lock;
 import static javax.ejb.LockType.READ;
@@ -84,8 +82,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
     public List<Transaction> lastDayTransactions() {
         List<Transaction> transactionsByDate = new ArrayList<>();
         for (Transaction transaction : getAll()) {
-            //LocalDate.now().minusDays(1L) for 00:00
-            if (transaction.getCreated().isEqual(LocalDate.now())) {
+            if (transaction.getCreated().isEqual(LocalDate.now().minusDays(1L))) {
                 transactionsByDate.add(transaction);
             }
         }
