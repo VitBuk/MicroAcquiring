@@ -8,6 +8,7 @@ import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
 import lv.lpb.database.BatchCollectionDAO;
 import lv.lpb.domain.Batch;
+import lv.lpb.Constants;
 
 @Singleton
 @Lock(READ)
@@ -17,6 +18,8 @@ public class BatchMockEJB implements BatchCollectionDAO {
     @Override
     @Lock(WRITE)
     public Batch create(Batch batch) {
+        // id added by "DB"
+        batch.setId(Constants.TEST_MERCHANT_ID);
         batches.add(batch);
         return batch;
     }
@@ -44,6 +47,4 @@ public class BatchMockEJB implements BatchCollectionDAO {
     public List<Batch> getAll() {
         return batches;
     }
-    
-    
 }

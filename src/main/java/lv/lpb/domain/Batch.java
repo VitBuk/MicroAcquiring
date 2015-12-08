@@ -1,11 +1,12 @@
 package lv.lpb.domain;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Batch {
     private Long id;
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
     private Long merchantId;
     private LocalDate date;
 
@@ -46,10 +47,12 @@ public class Batch {
         this.date = date;
     }
 
+    public void add(Transaction transaction) {
+        transactions.add(transaction);
+    }
+    
     @Override
     public String toString() {
         return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchantId=" + merchantId + ", date=" + date + '}';
     }
-    
-    
 }

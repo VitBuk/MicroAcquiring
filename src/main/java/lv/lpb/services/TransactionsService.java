@@ -1,5 +1,6 @@
 package lv.lpb.services;
 
+import lv.lpb.Constants;
 import lv.lpb.services.events.ReportSender;
 import lv.lpb.services.events.ReportReceiver;
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.database.TransactionCollectionDAO;
 import lv.lpb.domain.CancelInfo;
@@ -29,20 +31,20 @@ import org.slf4j.LoggerFactory;
 
 @Stateless
 @ServiceQualifier(serviceType = ServiceType.TRAN)
+@InterceptorQualifier
 public class TransactionsService {
 
-    private static final Logger log = LoggerFactory.getLogger(AdminInterceptor.class);
+    private static final Logger log = LoggerFactory.getLogger(TransactionsService.class);
 
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
     private ReportSender reportSender;
 
-    public TransactionsService() {
-    }
+    public TransactionsService() {}
 
     @Inject
-    public TransactionsService(@DAOQualifier(daoType = DAOQualifier.DaoType.TRAN) TransactionCollectionDAO transactionDAO,
-            @DAOQualifier(daoType = DAOQualifier.DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
+    public TransactionsService(@DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO,
+            @DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
         this.reportSender = reportSender;

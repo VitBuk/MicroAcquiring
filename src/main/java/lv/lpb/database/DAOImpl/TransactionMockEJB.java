@@ -62,7 +62,6 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
     
     @Override
     public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
-        System.out.println("getByParams");
         List<Transaction> transactionsByParams = new ArrayList<>();
         
         transactionsByParams = filter(transactionsByParams, filterParams);
@@ -76,6 +75,18 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         }
 
         return transactionsByParams;
+    }
+    
+    @Override
+    public List<Transaction> getByMerchantId(Long merchantId) {
+        List<Transaction> transactions = new ArrayList<>();
+        for (Transaction transaction : getAll()) {
+            if (merchantId.equals(transaction.getMerchantId())) {
+                transactions.add(transaction);
+            }
+        }
+        
+        return transactions;
     }
     
     @Override
@@ -137,7 +148,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
     private void generateTransactions() {
         Transaction transaction1 = new Transaction();
         transaction1.setId(1L);
-        transaction1.setMerchantId(1L);
+        transaction1.setMerchantId(0L);
         transaction1.setAmount(new BigDecimal(10));
         transaction1.setCurrency(Currency.EUR);
         transaction1.setStatus(Transaction.Status.DEPOSITED);
@@ -173,11 +184,11 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
 
         Transaction transaction5 = new Transaction();
         transaction5.setId(5L);
-        transaction5.setMerchantId(1L);
+        transaction5.setMerchantId(0L);
         transaction5.setAmount(new BigDecimal(112));
         transaction5.setCurrency(Currency.USD);
         transaction5.setStatus(Transaction.Status.DEPOSITED);
-        transaction5.setCreated(LocalDate.now().plusDays(1000L));
+        transaction5.setCreated(LocalDate.now());
         create(transaction5);
     }
 }

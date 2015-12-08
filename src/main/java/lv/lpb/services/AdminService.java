@@ -24,8 +24,7 @@ public class AdminService {
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
 
-    public AdminService() {
-    }
+    public AdminService() {}
 
     @Inject
     public AdminService(@DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO,

@@ -10,6 +10,7 @@ import javax.ejb.Lock;
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
+import lv.lpb.Constants;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
 import lv.lpb.domain.Currency;
@@ -116,7 +117,7 @@ public class MerchantMockEJB implements MerchantCollectionDAO {
     }
     
     private void generateMerchants() {
-        Merchant merchant1 = new Merchant(1L);
+        Merchant merchant1 = new Merchant(Constants.TEST_MERCHANT_ID);
         merchant1.add(Currency.JPY);
         merchant1.setStatus(Merchant.Status.ACTIVE);
         create(merchant1);

@@ -90,6 +90,10 @@ public class Transaction {
         this.batchId = batchId;
     }
 
+    public boolean inBatch() {
+        return getBatchId() != null;
+    }
+    
     @Override
     public String toString() {
         return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + '}';

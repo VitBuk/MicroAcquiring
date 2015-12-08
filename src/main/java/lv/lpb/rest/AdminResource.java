@@ -48,7 +48,6 @@ public class AdminResource {
         pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
         pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
 
-        System.out.println("end of getMerchants() in Admin");
         return Response.ok(adminService.getMerchants(filterParamsMap, pageParamsMap)).build();
     }
 

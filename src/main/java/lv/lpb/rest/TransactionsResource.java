@@ -52,7 +52,6 @@ public class TransactionsResource {
         pageParamsMap.put(PageParams.OFFSET, pageParams.offset);
         pageParamsMap.put(PageParams.LIMIT, pageParams.limit);
 
-        transactionsService.dayTotalAmount();
         return Response.ok(transactionsService.getByMerchant(filterParamsMap, pageParamsMap)).build();
     }
 

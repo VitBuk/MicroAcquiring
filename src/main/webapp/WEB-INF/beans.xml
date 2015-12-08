@@ -5,7 +5,7 @@
        bean-discovery-mode="all">
 
     <interceptors>
-        <class>lv.lpb.services.AdminInterceptor</class>
+        <class>lv.lpb.services.ServiceInterceptor</class>
     </interceptors>
 
 </beans>
