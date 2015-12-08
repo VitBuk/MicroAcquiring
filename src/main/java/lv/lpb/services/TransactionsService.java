@@ -1,5 +1,7 @@
 package lv.lpb.services;
 
+import lv.lpb.services.events.ReportSender;
+import lv.lpb.services.events.ReportReceiver;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
@@ -68,16 +70,15 @@ public class TransactionsService {
     public Transaction cancel(CancelInfo cancelInfo) {
         Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
 
-        if (transaction.getStatus() == Transaction.Status.CLOSE) {
-            throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_CLOSED);
+        if (transaction.getStatus() == Transaction.Status.DECLINED) {
+            throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_DECLINED);
         }
-        if (transaction.getStatus() == Transaction.Status.CANCEL) {
-            throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_CANCELED);
+        if (transaction.getStatus() == Transaction.Status.REVERSED) {
+            throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_REVERSED);
         }
 
         if (transaction.getAmount().compareTo(cancelInfo.getAmount()) == -1) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_LIMIT_EXCESS);
-
         }
         if (cancelInfo.getAmount() == BigDecimal.ZERO) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_ZERO);
@@ -87,10 +88,12 @@ public class TransactionsService {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_WRONG_CURRENCY);
         }
 
-        if (Period.between(transaction.getCreated(), LocalDate.now()).getDays() > 3) {
+        if (Period.between(transaction.getCreated(), LocalDate.now()).getDays() > Constants.DAY_CANCEL_LIMIT) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_OVERDUE);
         }
 
+        transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
+        transaction.setStatus(Transaction.Status.REVERSED);
         transactionDAO.update(transaction);
 
         return transaction;

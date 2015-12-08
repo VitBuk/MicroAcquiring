@@ -1,4 +1,4 @@
-package lv.lpb.services;
+package lv.lpb.services.events;
 
 public interface EventReceiver {
     String getReport();

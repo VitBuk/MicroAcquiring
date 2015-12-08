@@ -1,5 +1,6 @@
-package lv.lpb.services;
+package lv.lpb.services.events;
 
+import lv.lpb.services.events.EventSender;
 import java.math.BigDecimal;
 import java.util.Map;
 import javax.enterprise.event.Event;

@@ -1,8 +1,8 @@
 package lv.lpb.rest.errorHandling;
 
 public class Errors {
-    public static final String CANCEL_CLOSED = "You cant cancel closed transaction";
-    public static final String CANCEL_CANCELED = "You cant cancel canceled transaction";
+    public static final String CANCEL_DECLINED = "You cant cancel declined transaction";
+    public static final String CANCEL_REVERSED = "You cant cancel reversed transaction";
     public static final String CANCEL_LIMIT_EXCESS = "Cancelable amount bigger than transaction amount";
     public static final String CANCEL_ZERO = "You wanna cancel transaction for 0 amount, lol";
     public static final String CANCEL_WRONG_CURRENCY = "Wrong currency";

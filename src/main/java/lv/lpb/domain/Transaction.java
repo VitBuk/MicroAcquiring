@@ -87,20 +87,14 @@ public class Transaction {
     }
     
     public static enum Status {
-        INIT("Initialized"),
-        CANCEL("Canceled"),
-        CANCEL_PART("Canceled in a part"),
-        CLOSE("Closed");
+        //after transaction creation
+        DEPOSITED,
+        //after batch closing
+        PROCESSED,
+        //after transaction canceled (full/part)
+        REVERSED,
+        //after unsuccefull creation
+        DECLINED;
 
-        private String name;
-
-        Status(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return name;
-        }
     }
 }

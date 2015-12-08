@@ -1,4 +1,4 @@
-package lv.lpb.services;
+package lv.lpb.services.events;
 
 import java.math.BigDecimal;
 import java.util.Map;

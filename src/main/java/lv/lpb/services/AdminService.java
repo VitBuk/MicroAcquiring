@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.interceptor.Interceptors;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
@@ -19,7 +18,6 @@ import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Stateless
 @ServiceQualifier(serviceType = ServiceType.ADMIN)
-//@Interceptors(AdminInterceptor.class)
 @InterceptorQualifier
 public class AdminService {
 

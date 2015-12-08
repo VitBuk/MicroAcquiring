@@ -1,4 +1,4 @@
-package lv.lpb.services;
+package lv.lpb.services.events;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.event.Observes;

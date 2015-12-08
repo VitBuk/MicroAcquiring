@@ -143,7 +143,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction1.setMerchantId(1L);
         transaction1.setAmount(new BigDecimal(10));
         transaction1.setCurrency(Currency.EUR);
-        transaction1.setStatus(Transaction.Status.INIT);
+        transaction1.setStatus(Transaction.Status.DEPOSITED);
         transaction1.setCreated(LocalDate.now());
         create(transaction1);
 
@@ -152,7 +152,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction2.setMerchantId(2L);
         transaction2.setAmount(new BigDecimal(12));
         transaction2.setCurrency(Currency.USD);
-        transaction2.setStatus(Transaction.Status.INIT);
+        transaction2.setStatus(Transaction.Status.DEPOSITED);
         transaction2.setCreated(LocalDate.now());
         create(transaction2);
 
@@ -161,7 +161,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction3.setMerchantId(3L);
         transaction3.setAmount(new BigDecimal(35));
         transaction3.setCurrency(Currency.RUB);
-        transaction3.setStatus(Transaction.Status.INIT);
+        transaction3.setStatus(Transaction.Status.DEPOSITED);
         transaction3.setCreated(LocalDate.now());
         create(transaction3);
 
@@ -170,7 +170,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction4.setMerchantId(2L);
         transaction4.setAmount(new BigDecimal(99));
         transaction4.setCurrency(Currency.EUR);
-        transaction4.setStatus(Transaction.Status.CLOSE);
+        transaction4.setStatus(Transaction.Status.DEPOSITED);
         transaction4.setCreated(LocalDate.now());
         create(transaction4);
 
@@ -179,7 +179,7 @@ public class TransactionMockEJB implements TransactionCollectionDAO {
         transaction5.setMerchantId(1L);
         transaction5.setAmount(new BigDecimal(112));
         transaction5.setCurrency(Currency.USD);
-        transaction5.setStatus(Transaction.Status.INIT);
+        transaction5.setStatus(Transaction.Status.DEPOSITED);
         transaction5.setCreated(LocalDate.now().plusDays(1000L));
         create(transaction5);
     }
