@@ -73,7 +73,7 @@ public class TransactionsService {
         if (transaction.getStatus() == Transaction.Status.DECLINED) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_DECLINED);
         }
-        if (transaction.getStatus() == Transaction.Status.REVERSED) {
+        if (transaction.getStatus() == Transaction.Status.REVERSED && transaction.getAmount() == BigDecimal.ZERO) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_REVERSED);
         }
 
