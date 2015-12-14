@@ -1,12 +1,34 @@
 package lv.lpb.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import lv.lpb.Constants;
 
-public class Merchant {
+@Entity
+@Table(name = "MERCHANT")
+@NamedQueries({
+    @NamedQuery(name = "Merchant.findAll", query = "SELECT m FROM Merchant m")
+})
+public class Merchant implements Serializable {
+    private static final long serialVersionUID = 0L;
+    
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
+    
     private List<Currency> currencyList;
+    
+    @Column(length = Constants.MERCH_STATUS_MAX_LENGTH )
     private Status status;
     
     public Merchant() {

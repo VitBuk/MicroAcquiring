@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     providedCompile 'javax:javaee-api:7.0'
+    providedCompile 'org.eclipse.persistence:eclipselink:2.5.1'
     compile 'com.fasterxml.jackson.jaxrs:jackson-jaxrs-json-provider:2.5.1'
     compile 'javax.ws.rs:javax.ws.rs-api:2.0'
     compile 'org.slf4j:slf4j-api:1.7.12'
