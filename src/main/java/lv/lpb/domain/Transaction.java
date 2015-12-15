@@ -1,27 +1,61 @@
 package lv.lpb.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 //@XmlRootElement(name="Transaction")
-public class Transaction {
+@Entity
+@Table(name = "TRANSACTION")
+@NamedQueries({
+    @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t")
+})
+public class Transaction implements Serializable{
+    private static final long serialVersionUID = 0L;
+    
     //@XmlElement(name="id")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
     //@XmlElement(name="merchantId")
+    @Column (name = "MERCHANT_ID")
     private Long merchantId;
+    
     //@XmlElement(name="amount")
+    @Column
     private BigDecimal amount;
+    
     //@XmlElement(name="currency")
+    @Enumerated(EnumType.STRING)
     private Currency currency;
+    
     //@XmlElement(name="status")
+    @Enumerated(EnumType.STRING)
     private Status status;
+    
     // @XmlElement(name="initDate")
+    // TODO: check how map LocalDate with JPA
+    @Column
     private LocalDate created;
+    
     // @XmlTransient
     @JsonIgnore
+    @Column
     private LocalDate updated; // last status update time
     
+    @Column (name = "BATCH_ID")
     private Long batchId;
 
     public Transaction() {}

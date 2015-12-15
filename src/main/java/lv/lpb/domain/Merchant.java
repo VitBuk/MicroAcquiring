@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import lv.lpb.Constants;
 
 @Entity
 @Table(name = "MERCHANT")
@@ -26,9 +27,10 @@ public class Merchant implements Serializable {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
     
+    @Column (name = "CURRENCY_LIST")
     private List<Currency> currencyList;
     
-    @Column(length = Constants.MERCH_STATUS_MAX_LENGTH )
+    @Enumerated(EnumType.STRING)
     private Status status;
     
     public Merchant() {

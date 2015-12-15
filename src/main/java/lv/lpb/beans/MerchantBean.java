@@ -17,6 +17,6 @@ public class MerchantBean {
     }
     
     public List<Merchant> getAll() {
-        return entityManager.createNamedQuery("Merchants.findAll", Merchant.class).getResultList();
+        return entityManager.createNamedQuery("Merchant.findAll", Merchant.class).getResultList();
     }
 }
