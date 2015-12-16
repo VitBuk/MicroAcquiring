@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 //@XmlRootElement(name="Transaction")
 @Entity
@@ -52,7 +53,7 @@ public class Transaction implements Serializable{
     
     // @XmlTransient
     @JsonIgnore
-    @Column
+    @Transient
     private LocalDate updated; // last status update time
     
     @Column (name = "BATCH_ID")

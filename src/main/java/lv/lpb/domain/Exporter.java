@@ -27,6 +27,4 @@ public class Exporter {
     public void setList(List list) {
         this.list = list;
     }
-    
-    
 }

@@ -26,7 +26,7 @@ public class Batch implements Serializable{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
-    @JoinColumn
+    @JoinColumn (name = "TRANSACTIONS")
     private List<Transaction> transactions = new ArrayList<>();
     
     @Column (name = "MERCHANT_ID")
