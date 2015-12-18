@@ -1,4 +1,4 @@
-package lv.lpb.domain;
+package lv.lpb;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -8,13 +8,13 @@ import javax.persistence.Converter;
 @Converter(autoApply = true)
 public class LocalDateAttributeConverter implements AttributeConverter<LocalDate, Date> {
 
-     @Override
+    @Override
     public Date convertToDatabaseColumn(LocalDate locDate) {
-    	return (locDate == null ? null : Date.valueOf(locDate));
+        return (locDate == null ? null : Date.valueOf(locDate));
     }
 
     @Override
     public LocalDate convertToEntityAttribute(Date sqlDate) {
-    	return (sqlDate == null ? null : sqlDate.toLocalDate());
+        return (sqlDate == null ? null : sqlDate.toLocalDate());
     }
 }
