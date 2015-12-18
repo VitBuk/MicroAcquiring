@@ -1,6 +1,7 @@
 package lv.lpb.beans;
 
 import java.util.List;
+import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -17,9 +18,7 @@ public class TransactionBeanImpl implements TransactionBean {
 
     @Override
     public void persist(Transaction transaction) {
-//        entityManager.getTransaction().begin();
         entityManager.persist(transaction);
-//        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -53,4 +52,8 @@ public class TransactionBeanImpl implements TransactionBean {
     public List<Transaction> getAll() {
         return entityManager.createNamedQuery("Tranasaction.findAll", Transaction.class).getResultList();
     }
+    
+//    public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
+//        use Criteria
+//    }
 }

@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
+import lv.lpb.beans.MerchantBean;
+import lv.lpb.beans.TransactionBean;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
@@ -23,18 +25,22 @@ public class AdminService {
 
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
+    private MerchantBean merchantBean;
+    private TransactionBean transactionBean;
 
-    public AdminService() {}
+    public AdminService() {
+    }
 
     @Inject
     public AdminService(@DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO,
-            @DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO) {
+            @DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO, MerchantBean merchantBean, TransactionBean transactionBean) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
+        this.merchantBean = merchantBean;
+        this.transactionBean = transactionBean;
     }
 
     public List<Merchant> getMerchants(Map<String, Object> filterParams, Map<String, Object> pageParams) {
-        System.out.println("getMerchants() in AdminService");
         List<Merchant> merchants = merchantDAO.getByParams(filterParams, pageParams);
 
         if (merchants.isEmpty()) {
@@ -46,8 +52,9 @@ public class AdminService {
 
     public Merchant addMerchant(Merchant merchant) {
         merchant.setStatus(Merchant.Status.ACTIVE);
+        merchantBean.persist(merchant);
         merchantDAO.create(merchant);
-        merchantDAO.get(merchant.getId());
+        merchant = merchantDAO.get(merchant.getId());
 
         return merchant;
     }
@@ -56,11 +63,13 @@ public class AdminService {
         Merchant merchant = merchantDAO.get(merchantId);
         merchant.setStatus(status);
         merchantDAO.update(merchant);
+        
+        merchantBean.update(merchant);
 
         return merchant;
     }
 
-    public List<Transaction> getTransactions(Map<String, Object> filterParams, 
+    public List<Transaction> getTransactions(Map<String, Object> filterParams,
             Map<String, Object> pageParams) {
         List<Transaction> transactions = transactionDAO.getByParams(filterParams, pageParams);
 
@@ -72,14 +81,16 @@ public class AdminService {
     }
 
     public Exporter exportMerchants() {
-        List<Merchant> merchants = merchantDAO.getAll();
+//        List<Merchant> merchants = merchantDAO.getAll();
+        List<Merchant> merchants = merchantBean.getAll();
         Exporter exporter = new Exporter(merchants);
 
         return exporter;
     }
 
     public Exporter exportTransactions() {
-        List<Transaction> transactions = transactionDAO.getAll();
+//        List<Transaction> transactions = transactionDAO.getAll();
+        List<Transaction> transactions = transactionBean.getAll();
         Exporter exporter = new Exporter(transactions);
 
         return exporter;

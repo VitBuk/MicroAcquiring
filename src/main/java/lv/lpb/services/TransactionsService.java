@@ -68,6 +68,7 @@ public class TransactionsService {
         transactionDAO.create(transaction);
 
         transactionBean.persist(transaction);
+        
         return transaction;
     }
 
@@ -99,6 +100,8 @@ public class TransactionsService {
         transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
         transaction.setStatus(Transaction.Status.REVERSED);
         transactionDAO.update(transaction);
+        
+        transactionBean.update(transaction);
 
         return transaction;
     }
