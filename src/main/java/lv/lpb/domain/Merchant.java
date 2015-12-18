@@ -21,28 +21,30 @@ import javax.persistence.Table;
     @NamedQuery(name = "Merchant.findAll", query = "SELECT m FROM Merchant m")
 })
 public class Merchant implements Serializable {
+
     private static final long serialVersionUID = 0L;
-    
+
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    
-    @Column (name = "CURRENCY_LIST")
+
+//    @OneToMany(fetch = FetchType.LAZY)
+//    @OrderColumn(name="CURRENCY_LIST")
     private List<Currency> currencyList;
-    
+
     @Enumerated(EnumType.STRING)
     private Status status;
-    
+
     public Merchant() {
     }
-    
+
     public Merchant(Long id) {
-        this.id = id; 
+        this.id = id;
         this.currencyList = new ArrayList<>();
         currencyList.add(Currency.EUR);
         currencyList.add(Currency.USD);
     }
-    
+
     public void add(Currency currency) {
         currencyList.add(currency);
     }
@@ -50,7 +52,7 @@ public class Merchant implements Serializable {
     public Long getId() {
         return id;
     }
-    
+
     public List<Currency> getCurrencyList() {
         return currencyList;
     }
@@ -71,7 +73,7 @@ public class Merchant implements Serializable {
     public String toString() {
         return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", status=" + status + '}';
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 3;
@@ -92,9 +94,10 @@ public class Merchant implements Serializable {
             return false;
         }
         return true;
-    } 
-    
+    }
+
     public static enum Status {
-        ACTIVE, INACTIVE;
+        ACTIVE,
+        INACTIVE;
     }
 }

@@ -17,7 +17,9 @@ public class TransactionBeanImpl implements TransactionBean {
 
     @Override
     public void persist(Transaction transaction) {
+//        entityManager.getTransaction().begin();
         entityManager.persist(transaction);
+//        entityManager.getTransaction().commit();
     }
 
     @Override

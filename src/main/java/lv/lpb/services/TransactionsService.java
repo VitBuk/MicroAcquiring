@@ -14,6 +14,7 @@ import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
+import lv.lpb.beans.TransactionBean;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
@@ -39,15 +40,17 @@ public class TransactionsService {
     private MerchantCollectionDAO merchantDAO;
     private TransactionCollectionDAO transactionDAO;
     private ReportSender reportSender;
+    private TransactionBean transactionBean;
 
     public TransactionsService() {}
 
     @Inject
     public TransactionsService(@DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO,
-            @DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
+            @DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver, TransactionBean transactionBean) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
         this.reportSender = reportSender;
+        this.transactionBean = transactionBean;
     }
 
     public Transaction create(Long merchantId, Transaction transaction) {
@@ -59,11 +62,12 @@ public class TransactionsService {
         if (!merchant.allowedCurrency(transaction.getCurrency())) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.UNALLOWED_CURRENCY);
         }
-
+        
         transaction.setMerchantId(merchantId);
         transaction.setCreated(LocalDate.now());
         transactionDAO.create(transaction);
 
+        transactionBean.persist(transaction);
         return transaction;
     }
 
@@ -105,7 +109,7 @@ public class TransactionsService {
         if (merchantDAO.get((Long) filterParams.get(TransactionFilterParams.MERCHANT_ID)) == null) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.MERCH_NOT_EXIST);
         }
-
+        
         return transactions;
     }
 
