@@ -1,7 +1,6 @@
 package lv.lpb.beans;
 
 import java.util.List;
-import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;

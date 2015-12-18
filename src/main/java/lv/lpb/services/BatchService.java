@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
+import lv.lpb.beans.BatchBean;
 import lv.lpb.database.BatchCollectionDAO;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantCollectionDAO;
@@ -23,6 +24,7 @@ public class BatchService {
     private BatchCollectionDAO batchDAO;
     private TransactionCollectionDAO transactionDAO;
     private MerchantCollectionDAO merchantDAO;
+    private BatchBean batchBean;
 
     public BatchService() {
     }
@@ -30,10 +32,11 @@ public class BatchService {
     @Inject
     public BatchService(BatchCollectionDAO batchDAO,
             @DAOQualifier(daoType = DAOQualifier.DaoType.TRAN) TransactionCollectionDAO transactionDAO,
-            @DAOQualifier(daoType = DAOQualifier.DaoType.MERCH) MerchantCollectionDAO merchantDAO) {
+            @DAOQualifier(daoType = DAOQualifier.DaoType.MERCH) MerchantCollectionDAO merchantDAO, BatchBean batchBean) {
         this.batchDAO = batchDAO;
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
+        this.batchBean = batchBean;
     }
 
     @Schedule(dayOfWeek = "*", hour = "0", minute = "0", second = "1")
@@ -46,6 +49,7 @@ public class BatchService {
     private Batch create(Long merchantId) {
         LocalDate batchDay = LocalDate.now().minusDays(1L);
         Batch batch = batchDAO.create(new Batch(merchantId, batchDay));
+        batchBean.persist(batch);
         
         for (Transaction transaction : transactionDAO.getByMerchantId(merchantId)) {
             if (transaction.getStatus() == Transaction.Status.DEPOSITED 
@@ -58,6 +62,7 @@ public class BatchService {
         }
         
         batch = batchDAO.update(batch);
+        batchBean.update(batch);
         log.trace("Batch={} for merchant={} ", batch, merchantId);
         return batch;
     }

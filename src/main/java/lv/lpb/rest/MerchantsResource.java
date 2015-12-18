@@ -7,6 +7,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lv.lpb.beans.MerchantBean;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantCollectionDAO;
@@ -18,22 +19,24 @@ import lv.lpb.rest.errorHandling.Errors;
 public class MerchantsResource {
 
     private MerchantCollectionDAO merchantDAO;
-    
+    private MerchantBean merchantBean;
+
     @Inject
-    public MerchantsResource(@DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO) {
+    public MerchantsResource(@DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO, MerchantBean merchantBean) {
         this.merchantDAO = merchantDAO;
     }
-    
+
     @GET
     @Path("/{merchantId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchant(@PathParam("merchantId") Long id) {
-        Merchant merchant = merchantDAO.get(id);
+//        Merchant merchant = merchantDAO.get(id);
         
+        Merchant merchant = merchantBean.find(id);
         if (merchant == null) {
-            throw new AppException(Response.Status.NOT_FOUND.getStatusCode(), Errors.MERCH_NOT_EXIST);            
+            throw new AppException(Response.Status.NOT_FOUND.getStatusCode(), Errors.MERCH_NOT_EXIST);
         }
-        
+
         return Response.ok(merchant).build();
     }
 }
