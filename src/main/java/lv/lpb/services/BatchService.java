@@ -1,6 +1,6 @@
 package lv.lpb.services;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -47,7 +47,7 @@ public class BatchService {
     }
     
     private Batch create(Long merchantId) {
-        LocalDate batchDay = LocalDate.now().minusDays(1L);
+        LocalDateTime batchDay = LocalDateTime.now().minusDays(1L);
         Batch batch = batchDAO.create(new Batch(merchantId, batchDay));
         batchBean.persist(batch);
         

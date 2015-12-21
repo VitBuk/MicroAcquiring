@@ -1,20 +1,17 @@
 package lv.lpb.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -27,23 +24,25 @@ public class Batch implements Serializable {
     private static final long serialVersionUID = 0L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @OrderColumn(name = "TRANSACTIONS")
-    @JoinColumn
+    @JoinColumn(name = "BATCH_ID")
     private List<Transaction> transactions = new ArrayList<>();
 
     @Column(name = "MERCHANT_ID")
+    //Todo: private Merchant merchant
     private Long merchantId;
 
     @Column
-    private LocalDate date;
+    private LocalDateTime date;
 
-    public Batch() {}
+    public Batch() {
+    }
 
-    public Batch(Long merchantId, LocalDate date) {
+    public Batch(Long merchantId, LocalDateTime date) {
         this.merchantId = merchantId;
         this.date = date;
     }
@@ -72,11 +71,11 @@ public class Batch implements Serializable {
         this.merchantId = merchantId;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -88,4 +87,5 @@ public class Batch implements Serializable {
     public String toString() {
         return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchantId=" + merchantId + ", date=" + date + '}';
     }
+
 }

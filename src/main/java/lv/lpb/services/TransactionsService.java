@@ -5,6 +5,7 @@ import lv.lpb.services.events.ReportSender;
 import lv.lpb.services.events.ReportReceiver;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +65,7 @@ public class TransactionsService {
         }
         
         transaction.setMerchantId(merchantId);
-        transaction.setCreated(LocalDate.now());
+        transaction.setCreated(LocalDateTime.now());
         transactionDAO.create(transaction);
 
         transactionBean.persist(transaction);
@@ -93,7 +94,7 @@ public class TransactionsService {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_WRONG_CURRENCY);
         }
 
-        if (Period.between(transaction.getCreated(), LocalDate.now()).getDays() > Constants.DAY_CANCEL_LIMIT) {
+        if (Period.between(transaction.getCreated().toLocalDate(), LocalDate.now()).getDays() > Constants.DAY_CANCEL_LIMIT) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_OVERDUE);
         }
 

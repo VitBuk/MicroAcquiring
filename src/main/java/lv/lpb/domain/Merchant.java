@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -25,13 +24,14 @@ public class Merchant implements Serializable {
     private static final long serialVersionUID = 0L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @OrderColumn(name="CURRENCY_LIST")
     private List<Currency> currencyList;
-
+    // 
+    
     @Enumerated(EnumType.STRING)
     private Status status;
 

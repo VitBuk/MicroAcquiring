@@ -6,7 +6,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 @Converter(autoApply = true)
-public class LocalDateAttributeConverter implements AttributeConverter<LocalDate, Date> {
+public class LocalDateConverter implements AttributeConverter<LocalDate, Date> {
 
     @Override
     public Date convertToDatabaseColumn(LocalDate locDate) {

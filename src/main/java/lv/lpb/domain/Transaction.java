@@ -3,7 +3,7 @@ package lv.lpb.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,45 +22,47 @@ import javax.persistence.Transient;
 @NamedQueries({
     @NamedQuery(name = "Transaction.findAll", query = "SELECT t FROM Transaction t")
 })
-public class Transaction implements Serializable{
+public class Transaction implements Serializable {
+
     private static final long serialVersionUID = 0L;
-    
+
     //@XmlElement(name="id")
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     //@XmlElement(name="merchantId")
-    @Column (name = "MERCHANT_ID")
+    @Column(name = "MERCHANT_ID")
     private Long merchantId;
-    
+
     //@XmlElement(name="amount")
     @Column
     private BigDecimal amount;
-    
+
     //@XmlElement(name="currency")
     @Enumerated(EnumType.STRING)
     private Currency currency;
-    
+
     //@XmlElement(name="status")
     @Enumerated(EnumType.STRING)
     private Status status;
-    
+
     // @XmlElement(name="initDate")
     // TODO: check how map LocalDate with JPA
     @Column
-    private LocalDate created;
-    
+    private LocalDateTime created;
+
     // @XmlTransient
     @JsonIgnore
     @Transient
-    private LocalDate updated; // last status update time
-    
-    @Column (name = "BATCH_ID")
+    private LocalDateTime updated; // last status update time
+
+    @Column(name = "BATCH_ID")
     private Long batchId;
 
-    public Transaction() {}
-    
+    public Transaction() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -101,19 +103,19 @@ public class Transaction implements Serializable{
         this.status = status;
     }
 
-    public LocalDate getCreated() {
+    public LocalDateTime getCreated() {
         return created;
     }
 
-    public void setCreated(LocalDate created) {
+    public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
-    public LocalDate getUpdated() {
+    public LocalDateTime getUpdated() {
         return updated;
     }
 
-    public void setUpdated(LocalDate updated) {
+    public void setUpdated(LocalDateTime updated) {
         this.updated = updated;
     }
 
@@ -128,7 +130,7 @@ public class Transaction implements Serializable{
     public boolean inBatch() {
         return getBatchId() != null;
     }
-    
+
     @Override
     public String toString() {
         return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + '}';

@@ -1,5 +1,7 @@
 package lv.lpb.beans;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -7,6 +9,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import lv.lpb.domain.Transaction;
 
 @Stateless
@@ -51,6 +56,17 @@ public class TransactionBeanImpl implements TransactionBean {
     public List<Transaction> getAll() {
         return entityManager.createNamedQuery("Tranasaction.findAll", Transaction.class).getResultList();
     }
+    
+    //GQL
+//    public List<Transaction> lastDayTransactions() {
+//        List<Transaction> transactions = new ArrayList<>();
+//        
+//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+//        CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
+//        Root<Transaction> transaction = criteriaQuery.from(Transaction.class);
+//        criteriaQuery.select(transaction).where(criteriaBuilder.equal(transaction.get("created"), LocalDate.now().minusDays(1L)));
+//      
+//    }
     
 //    public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
 //        use Criteria
