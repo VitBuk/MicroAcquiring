@@ -61,7 +61,9 @@ public class Merchant implements Serializable {
     }
 
     public boolean allowedCurrency(Currency currency) {
-        return currencyList.contains(currency);
+        // TODO: refactor after oneToMany relation
+        return true;
+        //return currencyList.contains(currency);
     }
 
     public Status getStatus() {

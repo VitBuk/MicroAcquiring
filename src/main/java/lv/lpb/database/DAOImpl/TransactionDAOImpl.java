@@ -10,7 +10,6 @@ import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.TransactionDAO;
-import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 
 @Singleton

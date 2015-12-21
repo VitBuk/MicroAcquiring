@@ -63,7 +63,7 @@ public class Transaction implements Serializable {
 
     @Version
     private int version;
-    
+
     public Transaction() {
     }
 
@@ -149,7 +149,9 @@ public class Transaction implements Serializable {
     }
 
     public static enum Status {
+
         //after transaction creation
+
         DEPOSITED,
         //after batch closing
         PROCESSED,

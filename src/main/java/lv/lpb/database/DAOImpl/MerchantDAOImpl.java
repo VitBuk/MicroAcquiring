@@ -14,15 +14,15 @@ import lv.lpb.domain.Merchant;
 
 @Singleton
 @DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
-public class MerchantDAOImpl implements MerchantDAO{
+public class MerchantDAOImpl implements MerchantDAO {
 
     @PersistenceContext(unitName = "MySql")
     EntityManager entityManager;
-     
+
     @Override
     public Merchant create(Merchant merchant) {
         entityManager.persist(merchant);
-        return merchant; 
+        return merchant;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class MerchantDAOImpl implements MerchantDAO{
         merchantFromDB.setStatus(merchant.getStatus());
         entityManager.merge(merchantFromDB);
         entityManager.flush();
-        
+
         return merchant;
     }
 
@@ -47,10 +47,10 @@ public class MerchantDAOImpl implements MerchantDAO{
     public List<Merchant> getAll() {
         return entityManager.createNamedQuery("Merchant.findAll", Merchant.class).getResultList();
     }
-    
+
     @Override
     public List<Merchant> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -30,7 +29,7 @@ public class Batch implements Serializable {
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @OrderColumn(name = "TRANSACTIONS")
-    @JoinColumn(name = "BATCH_ID")
+//    @JoinColumn(name = "BATCH_ID")
     private List<Transaction> transactions = new ArrayList<>();
 
     @Column(name = "MERCHANT_ID")
