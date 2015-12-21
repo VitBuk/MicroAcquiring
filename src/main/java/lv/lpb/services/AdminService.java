@@ -5,7 +5,6 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import lv.lpb.beans.TransactionBean;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantDAO;
@@ -24,17 +23,15 @@ public class AdminService {
 
     private MerchantDAO merchantDAO;
     private TransactionDAO transactionDAO;
-    private TransactionBean transactionBean;
 
     public AdminService() {
     }
 
     @Inject
     public AdminService(@DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO,
-            @DAOQualifier(daoType = DaoType.DATABASE) TransactionDAO transactionDAO, TransactionBean transactionBean) {
+            @DAOQualifier(daoType = DaoType.DATABASE) TransactionDAO transactionDAO) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
-        this.transactionBean = transactionBean;
     }
 
     public List<Merchant> getMerchants(Map<String, Object> filterParams, Map<String, Object> pageParams) {
@@ -83,8 +80,7 @@ public class AdminService {
     }
 
     public Exporter exportTransactions() {
-//        List<Transaction> transactions = transactionDAO.getAll();
-        List<Transaction> transactions = transactionBean.getAll();
+        List<Transaction> transactions = transactionDAO.getAll();
         Exporter exporter = new Exporter(transactions);
 
         return exporter;

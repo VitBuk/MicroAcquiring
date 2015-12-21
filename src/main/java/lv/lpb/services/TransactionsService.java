@@ -15,7 +15,6 @@ import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import lv.lpb.beans.TransactionBean;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantDAO;
@@ -41,18 +40,16 @@ public class TransactionsService {
     private MerchantDAO merchantDAO;
     private TransactionDAO transactionDAO;
     private ReportSender reportSender;
-    private TransactionBean transactionBean;
 
     public TransactionsService() {
     }
 
     @Inject
     public TransactionsService(@DAOQualifier(daoType = DaoType.DATABASE) TransactionDAO transactionDAO,
-            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver, TransactionBean transactionBean) {
+            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
         this.reportSender = reportSender;
-        this.transactionBean = transactionBean;
     }
 
     public Transaction create(Long merchantId, Transaction transaction) {
@@ -69,15 +66,11 @@ public class TransactionsService {
         transaction.setCreated(LocalDateTime.now());
         transactionDAO.create(transaction);
 
-        transactionBean.persist(transaction);
-
         return transaction;
     }
 
     public Transaction cancel(CancelInfo cancelInfo) {
-//        Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
-        System.out.println("im here");
-        Transaction transaction = transactionBean.find(cancelInfo.getTransactionId());
+        Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
 
         if (transaction.getStatus() == Transaction.Status.DECLINED) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_DECLINED);
@@ -103,10 +96,9 @@ public class TransactionsService {
 
         transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
         transaction.setStatus(Transaction.Status.REVERSED);
-        //transactionDAO.update(transaction);
 
-        transactionBean.update(transaction);
-        transaction = transactionBean.find(transaction.getId());
+        transactionDAO.update(transaction);
+        transaction = transactionDAO.get(transaction.getId());
 
         return transaction;
     }

@@ -1,34 +1,40 @@
-package lv.lpb.beans;
+package lv.lpb.database.DAOImpl;
 
 import java.util.List;
-import javax.ejb.Stateless;
+import java.util.Map;
+import javax.ejb.Singleton;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.TransactionDAO;
+import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 
-@Stateless
-public class TransactionBeanImpl implements TransactionBean {
-
+@Singleton
+@DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
+public class TransactionDAOImpl implements TransactionDAO{
+    
     @PersistenceContext(unitName = "MySql")
     EntityManager entityManager;
 
     @Override
-    public void persist(Transaction transaction) {
+    public Transaction create(Transaction transaction) {
         entityManager.persist(transaction);
+        return transaction;
     }
 
     @Override
-    public Transaction find(Long id) {
+    public Transaction get(Long id) {
         return entityManager.find(Transaction.class, id);
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
-    public void update(Transaction transaction) {
-        Transaction transactionFromDB = find(transaction.getId());
+    public Transaction update(Transaction transaction) {
+        Transaction transactionFromDB = get(transaction.getId());
         entityManager.lock(transactionFromDB, LockModeType.OPTIMISTIC);
         transactionFromDB.setAmount(transaction.getAmount());
         transactionFromDB.setBatchId(transaction.getBatchId());
@@ -39,11 +45,8 @@ public class TransactionBeanImpl implements TransactionBean {
 
         entityManager.merge(transactionFromDB);
         entityManager.flush();
-    }
-
-    @Override
-    public void delete(Long id) {
-        entityManager.remove(find(id));
+        
+        return transaction;
     }
 
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -52,21 +55,16 @@ public class TransactionBeanImpl implements TransactionBean {
         return entityManager.createNamedQuery("Tranasaction.findAll", Transaction.class).getResultList();
     }
     
-    //GQL
-//    public List<Transaction> lastDayTransactions() {
-//        List<Transaction> transactions = new ArrayList<>();
-//        
-//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
-//        Root<Transaction> transaction = criteriaQuery.from(Transaction.class);
-//        criteriaQuery.select(transaction).where(criteriaBuilder.equal(transaction.get("created"), LocalDate.now().minusDays(1L)));
-//      
-//    }
+    @Override
+    public List<Transaction> getByMerchantId(Long merchantId) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
-//    public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
-//        use Criteria
-//    }
-
+    @Override
+    public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     public List<Transaction> lastDayTransactions() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

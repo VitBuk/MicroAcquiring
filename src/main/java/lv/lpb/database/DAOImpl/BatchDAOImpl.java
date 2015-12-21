@@ -13,7 +13,7 @@ import lv.lpb.domain.Batch;
 
 @Singleton
 @DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
-public class BatchDaoImpl implements BatchDAO {
+public class BatchDAOImpl implements BatchDAO {
 
     @PersistenceContext(unitName = "MySql")
     EntityManager entityManager;
