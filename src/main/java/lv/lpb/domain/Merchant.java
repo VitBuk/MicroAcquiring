@@ -1,9 +1,10 @@
 package lv.lpb.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,9 +30,9 @@ public class Merchant implements Serializable {
 
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @OrderColumn(name="CURRENCY_LIST")
-    private List<Currency> currencyList;
+    private Set<Currency> currencyList;
     // 
-    
+
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -40,7 +41,7 @@ public class Merchant implements Serializable {
 
     public Merchant(Long id) {
         this.id = id;
-        this.currencyList = new ArrayList<>();
+        this.currencyList = new HashSet<>();
         currencyList.add(Currency.EUR);
         currencyList.add(Currency.USD);
     }
@@ -53,7 +54,7 @@ public class Merchant implements Serializable {
         return id;
     }
 
-    public List<Currency> getCurrencyList() {
+    public Set<Currency> getCurrencyList() {
         return currencyList;
     }
 
@@ -97,6 +98,7 @@ public class Merchant implements Serializable {
     }
 
     public static enum Status {
+
         ACTIVE,
         INACTIVE;
     }

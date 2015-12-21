@@ -5,18 +5,7 @@ import lv.lpb.domain.Transaction;
 
 public interface TransactionBean extends Bean<Transaction> {
 
-    @Override
-    public void persist(Transaction transaction);
-
-    @Override
-    public Transaction find(Long id);
-
-    @Override
-    public void update(Transaction transaction);
-
-    @Override
-    public void delete(Long id);
+    // only specific for TransactionBean
     
-    @Override
-    public List<Transaction> getAll();
+    public List<Transaction> lastDayTransactions();
 }
