@@ -43,7 +43,8 @@ public class TransactionsService {
     private ReportSender reportSender;
     private TransactionBean transactionBean;
 
-    public TransactionsService() {}
+    public TransactionsService() {
+    }
 
     @Inject
     public TransactionsService(@DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO,
@@ -63,18 +64,20 @@ public class TransactionsService {
         if (!merchant.allowedCurrency(transaction.getCurrency())) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.UNALLOWED_CURRENCY);
         }
-        
+
         transaction.setMerchantId(merchantId);
         transaction.setCreated(LocalDateTime.now());
         transactionDAO.create(transaction);
 
         transactionBean.persist(transaction);
-        
+
         return transaction;
     }
 
     public Transaction cancel(CancelInfo cancelInfo) {
-        Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
+//        Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
+        System.out.println("im here");
+        Transaction transaction = transactionBean.find(cancelInfo.getTransactionId());
 
         if (transaction.getStatus() == Transaction.Status.DECLINED) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.CANCEL_DECLINED);
@@ -100,9 +103,10 @@ public class TransactionsService {
 
         transaction.setAmount(transaction.getAmount().subtract(cancelInfo.getAmount()));
         transaction.setStatus(Transaction.Status.REVERSED);
-        transactionDAO.update(transaction);
-        
+        //transactionDAO.update(transaction);
+
         transactionBean.update(transaction);
+        transaction = transactionBean.find(transaction.getId());
 
         return transaction;
     }
@@ -113,7 +117,7 @@ public class TransactionsService {
         if (merchantDAO.get((Long) filterParams.get(TransactionFilterParams.MERCHANT_ID)) == null) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.MERCH_NOT_EXIST);
         }
-        
+
         return transactions;
     }
 

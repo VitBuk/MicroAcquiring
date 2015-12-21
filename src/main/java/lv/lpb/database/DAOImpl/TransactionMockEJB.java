@@ -1,7 +1,6 @@
 package lv.lpb.database.DAOImpl;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;

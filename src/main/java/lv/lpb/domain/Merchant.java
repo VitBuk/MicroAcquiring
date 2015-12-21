@@ -2,7 +2,6 @@ package lv.lpb.domain;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -14,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "MERCHANT")
@@ -31,11 +31,13 @@ public class Merchant implements Serializable {
 //    @OneToMany(fetch = FetchType.LAZY)
 //    @OrderColumn(name="CURRENCY_LIST")
     private Set<Currency> currencyList;
-    // 
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @Version
+    private int version;
+    
     public Merchant() {
     }
 
@@ -70,11 +72,19 @@ public class Merchant implements Serializable {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", status=" + status + '}';
+    public int getVersion() {
+        return version;
     }
 
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", status=" + status + ", version=" + version + '}';
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

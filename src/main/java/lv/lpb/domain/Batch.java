@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 @Entity
 @Table(name = "BATCH")
@@ -38,6 +39,9 @@ public class Batch implements Serializable {
 
     @Column
     private LocalDateTime date;
+
+    @Version
+    private int version;
 
     public Batch() {
     }
@@ -83,9 +87,16 @@ public class Batch implements Serializable {
         transactions.add(transaction);
     }
 
-    @Override
-    public String toString() {
-        return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchantId=" + merchantId + ", date=" + date + '}';
+    public int getVersion() {
+        return version;
     }
 
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchantId=" + merchantId + ", date=" + date + ", version=" + version + '}';
+    }
 }

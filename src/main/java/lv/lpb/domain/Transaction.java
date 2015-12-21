@@ -15,6 +15,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 
 //@XmlRootElement(name="Transaction")
 @Entity
@@ -60,6 +61,9 @@ public class Transaction implements Serializable {
     @Column(name = "BATCH_ID")
     private Long batchId;
 
+    @Version
+    private int version;
+    
     public Transaction() {
     }
 
@@ -131,9 +135,17 @@ public class Transaction implements Serializable {
         return getBatchId() != null;
     }
 
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + '}';
+        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + ", version=" + version + '}';
     }
 
     public static enum Status {
