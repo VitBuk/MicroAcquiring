@@ -12,15 +12,15 @@ import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
 import lv.lpb.Constants;
 import lv.lpb.database.DAOQualifier.DaoType;
-import lv.lpb.database.MerchantCollectionDAO;
+import lv.lpb.database.MerchantDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(daoType = DaoType.MERCH)
+@DAOQualifier(daoType = DaoType.COLLECTION)
 @Lock(READ)
-public class MerchantMockEJB implements MerchantCollectionDAO {
+public class MerchantMockEJB implements MerchantDAO {
 
     private List<Merchant> merchants = new ArrayList<>();
 

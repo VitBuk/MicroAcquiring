@@ -18,8 +18,8 @@ import javax.ws.rs.core.Response;
 import lv.lpb.beans.TransactionBean;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
-import lv.lpb.database.MerchantCollectionDAO;
-import lv.lpb.database.TransactionCollectionDAO;
+import lv.lpb.database.MerchantDAO;
+import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.CancelInfo;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
@@ -38,8 +38,8 @@ public class TransactionsService {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionsService.class);
 
-    private MerchantCollectionDAO merchantDAO;
-    private TransactionCollectionDAO transactionDAO;
+    private MerchantDAO merchantDAO;
+    private TransactionDAO transactionDAO;
     private ReportSender reportSender;
     private TransactionBean transactionBean;
 
@@ -47,8 +47,8 @@ public class TransactionsService {
     }
 
     @Inject
-    public TransactionsService(@DAOQualifier(daoType = DaoType.TRAN) TransactionCollectionDAO transactionDAO,
-            @DAOQualifier(daoType = DaoType.MERCH) MerchantCollectionDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver, TransactionBean transactionBean) {
+    public TransactionsService(@DAOQualifier(daoType = DaoType.DATABASE) TransactionDAO transactionDAO,
+            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver, TransactionBean transactionBean) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
         this.reportSender = reportSender;

@@ -13,15 +13,15 @@ import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
-import lv.lpb.database.TransactionCollectionDAO;
+import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(daoType = DaoType.TRAN)
+@DAOQualifier(daoType = DaoType.COLLECTION)
 @Lock(READ)
-public class TransactionMockEJB implements TransactionCollectionDAO {
+public class TransactionMockEJB implements TransactionDAO {
     private List<Transaction> transactions = new ArrayList<>();
 
     @PostConstruct

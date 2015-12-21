@@ -6,13 +6,13 @@ import javax.ejb.Lock;
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
-import lv.lpb.database.BatchCollectionDAO;
+import lv.lpb.database.BatchDAO;
 import lv.lpb.domain.Batch;
 import lv.lpb.Constants;
 
 @Singleton
 @Lock(READ)
-public class BatchMockEJB implements BatchCollectionDAO {
+public class BatchMockEJB implements BatchDAO {
     private List<Batch> batches = new ArrayList<>();
 
     @Override
