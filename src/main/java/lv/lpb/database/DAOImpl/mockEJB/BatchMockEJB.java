@@ -1,4 +1,4 @@
-package lv.lpb.database.DAOImpl;
+package lv.lpb.database.DAOImpl.mockEJB;
 
 import java.util.ArrayList;
 import java.util.List;

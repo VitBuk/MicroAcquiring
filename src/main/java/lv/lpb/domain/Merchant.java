@@ -7,11 +7,14 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -28,42 +31,44 @@ public class Merchant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @OrderColumn(name="CURRENCY_LIST")
-    private Set<Currency> currencyList;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MERCHANT_AGREEMENT_ID")
+    private Set<MerchantAgreement> merchantAgreements;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Version
     private int version;
-    
+
     public Merchant() {
     }
 
     public Merchant(Long id) {
         this.id = id;
-        this.currencyList = new HashSet<>();
-        currencyList.add(Currency.EUR);
-        currencyList.add(Currency.USD);
+        this.merchantAgreements = new HashSet<>();
+        MerchantAgreement merchantAgreement1 = new MerchantAgreement();
+        merchantAgreement1.setCurrency(Currency.EUR);
+        MerchantAgreement merchantAgreement2 = new MerchantAgreement();
+        merchantAgreement2.setCurrency(Currency.USD);
     }
 
     public void add(Currency currency) {
-        currencyList.add(currency);
+        MerchantAgreement merchantAgreement = new MerchantAgreement();
+        merchantAgreement.setCurrency(currency);
+        merchantAgreements.add(merchantAgreement);
     }
 
     public Long getId() {
         return id;
     }
 
-    public Set<Currency> getCurrencyList() {
-        return currencyList;
+    public Set<MerchantAgreement> getMerchantAgreements() {
+        return merchantAgreements;
     }
 
     public boolean allowedCurrency(Currency currency) {
-        // TODO: refactor after oneToMany relation
-        return true;
-        //return currencyList.contains(currency);
+        return merchantAgreements.contains(currency);
     }
 
     public Status getStatus() {
@@ -84,9 +89,9 @@ public class Merchant implements Serializable {
 
     @Override
     public String toString() {
-        return "Merchant{" + "id=" + id + ", currencyList=" + currencyList + ", status=" + status + ", version=" + version + '}';
+        return "Merchant{" + "id=" + id + ", currencyList=" + merchantAgreements + ", status=" + status + ", version=" + version + '}';
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 3;

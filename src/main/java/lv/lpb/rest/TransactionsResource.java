@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 import lv.lpb.services.TransactionsService;
 import lv.lpb.domain.Transaction;
 import lv.lpb.domain.CancelInfo;
+import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
 import lv.lpb.services.ServiceQualifier;
@@ -38,7 +39,7 @@ public class TransactionsResource {
             @PathParam("merchantId") Long id,
             @BeanParam PageParams pageParams,
             @BeanParam TransactionFilterParams filterParams) {
-
+        
         Map<String, Object> filterParamsMap = new HashMap<>();
         filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, id);
         filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);

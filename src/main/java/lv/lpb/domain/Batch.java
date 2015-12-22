@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -32,9 +33,8 @@ public class Batch implements Serializable {
 //    @JoinColumn(name = "BATCH_ID")
     private List<Transaction> transactions = new ArrayList<>();
 
-    @Column(name = "MERCHANT_ID")
-    //Todo: private Merchant merchant
-    private Long merchantId;
+    @JoinColumn(name = "MERCHANT")
+    private Merchant merchant;
 
     @Column
     private LocalDateTime date;
@@ -45,8 +45,8 @@ public class Batch implements Serializable {
     public Batch() {
     }
 
-    public Batch(Long merchantId, LocalDateTime date) {
-        this.merchantId = merchantId;
+    public Batch(Merchant merchant, LocalDateTime date) {
+        this.merchant = merchant;
         this.date = date;
     }
 
@@ -66,12 +66,12 @@ public class Batch implements Serializable {
         this.transactions = transactions;
     }
 
-    public Long getMerchantId() {
-        return merchantId;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
     }
 
     public LocalDateTime getDate() {
@@ -96,6 +96,6 @@ public class Batch implements Serializable {
 
     @Override
     public String toString() {
-        return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchantId=" + merchantId + ", date=" + date + ", version=" + version + '}';
+        return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchant=" + merchant + ", date=" + date + ", version=" + version + '}';
     }
 }

@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -33,8 +34,8 @@ public class Transaction implements Serializable {
     private Long id;
 
     //@XmlElement(name="merchantId")
-    @Column(name = "MERCHANT_ID")
-    private Long merchantId;
+    @JoinColumn(name = "MERCHANT")
+    private Merchant merchant;
 
     //@XmlElement(name="amount")
     @Column
@@ -75,12 +76,12 @@ public class Transaction implements Serializable {
         this.id = id;
     }
 
-    public Long getMerchantId() {
-        return merchantId;
+    public Merchant getMerchant() {
+        return merchant;
     }
 
-    public void setMerchantId(Long merchantId) {
-        this.merchantId = merchantId;
+    public void setMerchant(Merchant merchant) {
+        this.merchant = merchant;
     }
 
     public BigDecimal getAmount() {
@@ -145,13 +146,12 @@ public class Transaction implements Serializable {
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchantId=" + merchantId + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + ", version=" + version + '}';
+        return "Transaction{" + "id=" + id + ", merchant=" + merchant + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + ", version=" + version + '}';
     }
 
     public static enum Status {
 
         //after transaction creation
-
         DEPOSITED,
         //after batch closing
         PROCESSED,

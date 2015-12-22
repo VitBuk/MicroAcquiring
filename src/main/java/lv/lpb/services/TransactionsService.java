@@ -55,6 +55,7 @@ public class TransactionsService {
     public Transaction create(Long merchantId, Transaction transaction) {
         Merchant merchant = merchantDAO.get(merchantId);
 
+        System.out.println("TransactionCreate merchant: " + merchant);
         if (merchant.getStatus() == Merchant.Status.INACTIVE) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.MERCH_INACTIVE);
         }
@@ -62,7 +63,7 @@ public class TransactionsService {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.UNALLOWED_CURRENCY);
         }
 
-        transaction.setMerchantId(merchantId);
+        transaction.setMerchant(merchant);
         transaction.setCreated(LocalDateTime.now());
         transactionDAO.create(transaction);
 

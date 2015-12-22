@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class BatchService {
 
     private static final Logger log = LoggerFactory.getLogger(BatchService.class);
-    
+
     private BatchDAO batchDAO;
     private TransactionDAO transactionDAO;
     private MerchantDAO merchantDAO;
@@ -43,22 +43,23 @@ public class BatchService {
             create(merchant.getId());
         }
     }
-    
+
     private Batch create(Long merchantId) {
         LocalDateTime batchDay = LocalDateTime.now().minusDays(1L);
-        Batch batch = batchDAO.create(new Batch(merchantId, batchDay));
+        Merchant merchant = merchantDAO.get(merchantId);
+        Batch batch = batchDAO.create(new Batch(merchant, batchDay));
         batchDAO.create(batch);
-        
+
         for (Transaction transaction : transactionDAO.getByMerchantId(merchantId)) {
-            if (transaction.getStatus() == Transaction.Status.DEPOSITED 
-                    && !transaction.inBatch() 
+            if (transaction.getStatus() == Transaction.Status.DEPOSITED
+                    && !transaction.inBatch()
                     && (batchDay.isAfter(transaction.getCreated()) || batchDay.isEqual(transaction.getCreated()))) {
                 transaction.setStatus(Transaction.Status.PROCESSED);
                 transaction.setBatchId(batch.getId());
                 batch.add(transaction);
             }
         }
-        
+
         batch = batchDAO.update(batch);
         log.trace("Batch={} for merchant={} ", batch, merchantId);
         return batch;
