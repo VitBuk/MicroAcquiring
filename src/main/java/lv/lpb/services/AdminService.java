@@ -47,7 +47,6 @@ public class AdminService {
     public Merchant addMerchant(Merchant merchant) {
         merchant.setStatus(Merchant.Status.ACTIVE);
         merchantDAO.create(merchant);
-        merchantDAO.create(merchant);
         merchant = merchantDAO.get(merchant.getId());
 
         return merchant;

@@ -31,9 +31,9 @@ public class Merchant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, targetEntity = MerchantAgreement.class)
     @JoinColumn(name = "MERCHANT_AGREEMENT_ID")
-    private Set<MerchantAgreement> merchantAgreements;
+    private Set<MerchantAgreement> merchantAgreements = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -46,7 +46,6 @@ public class Merchant implements Serializable {
 
     public Merchant(Long id) {
         this.id = id;
-        this.merchantAgreements = new HashSet<>();
         MerchantAgreement merchantAgreement1 = new MerchantAgreement();
         merchantAgreement1.setCurrency(Currency.EUR);
         MerchantAgreement merchantAgreement2 = new MerchantAgreement();
