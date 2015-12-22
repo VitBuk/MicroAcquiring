@@ -6,12 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -28,9 +30,7 @@ public class Batch implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    @OrderColumn(name = "TRANSACTIONS")
-//    @JoinColumn(name = "BATCH_ID")
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
 
     @JoinColumn(name = "MERCHANT")
@@ -98,4 +98,5 @@ public class Batch implements Serializable {
     public String toString() {
         return "Batch{" + "id=" + id + ", transactions=" + transactions + ", merchant=" + merchant + ", date=" + date + ", version=" + version + '}';
     }
+
 }

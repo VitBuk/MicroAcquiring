@@ -80,7 +80,7 @@ public class AdminResource {
         filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, filterParams.merchantId);
         filterParamsMap.put(TransactionFilterParams.CURRENCY, filterParams.currency);
         filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
-        filterParamsMap.put(TransactionFilterParams.INIT_DATE, filterParams.initDate);
+        filterParamsMap.put(TransactionFilterParams.CREATED, filterParams.initDate);
 
         Map<String, Object> pageParamsMap = new HashMap<>();
         pageParamsMap.put(PageParams.SORT, pageParams.sort);

@@ -1,5 +1,6 @@
 package lv.lpb.database.DAOImpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Singleton;
@@ -8,9 +9,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.domain.Merchant;
+import lv.lpb.rest.params.PageParams;
 
 @Singleton
 @DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
@@ -48,9 +51,5 @@ public class MerchantDAOImpl implements MerchantDAO {
         return entityManager.createNamedQuery("Merchant.findAll", Merchant.class).getResultList();
     }
 
-    @Override
-    public List<Merchant> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
 }
