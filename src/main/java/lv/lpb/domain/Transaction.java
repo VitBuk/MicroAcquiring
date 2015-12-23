@@ -17,6 +17,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import lv.lpb.Constants;
+import sun.security.util.Length;
 
 //@XmlRootElement(name="Transaction")
 @Entity
@@ -43,10 +45,12 @@ public class Transaction implements Serializable {
 
     //@XmlElement(name="currency")
     @Enumerated(EnumType.STRING)
+    @Column (length = Constants.CURRENCY_LENGTH)
     private Currency currency;
 
     //@XmlElement(name="status")
     @Enumerated(EnumType.STRING)
+    @Column (length = Constants.TRAN_STATUS_MAX_LENGTH)
     private Status status;
 
     // @XmlElement(name="initDate")

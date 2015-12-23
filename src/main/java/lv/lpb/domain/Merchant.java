@@ -19,6 +19,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import lv.lpb.Constants;
 
 @Entity
 @Table(name = "MERCHANT")
@@ -38,6 +39,7 @@ public class Merchant implements Serializable {
     private Set<MerchantAgreement> merchantAgreements = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
+    @Column (length = Constants.MERCH_STATUS_MAX_LENGTH)
     private Status status;
 
     @Column

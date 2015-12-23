@@ -14,8 +14,8 @@ import lv.lpb.domain.Transaction;
 
 @Singleton
 @DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
-public class TransactionDAOImpl implements TransactionDAO{
-    
+public class TransactionDAOImpl implements TransactionDAO {
+
     @PersistenceContext(unitName = "MySql")
     EntityManager entityManager;
 
@@ -44,7 +44,7 @@ public class TransactionDAOImpl implements TransactionDAO{
 
         entityManager.merge(transactionFromDB);
         entityManager.flush();
-        
+
         return transaction;
     }
 
@@ -53,19 +53,20 @@ public class TransactionDAOImpl implements TransactionDAO{
     public List<Transaction> getAll() {
         return entityManager.createNamedQuery("Tranasaction.findAll", Transaction.class).getResultList();
     }
-    
+
     @Override
     public List<Transaction> getByMerchantId(Long merchantId) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
     @Override
     public List<Transaction> lastDayTransactions() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return entityManager.createNativeQuery("SELECT * FROM Transaction WHERE created "
+                + "= CURDATE() - INTERVAL 1 DAY").getResultList();
     }
 }
