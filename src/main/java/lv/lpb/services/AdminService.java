@@ -56,7 +56,7 @@ public class AdminService {
         Merchant merchant = merchantDAO.get(merchantId);
         merchant.setStatus(status);
         merchantDAO.update(merchant);
-        
+
         return merchant;
     }
 

@@ -1,9 +1,11 @@
 package lv.lpb.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -37,6 +39,9 @@ public class Merchant implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    @Column
+    private LocalDateTime created;
 
     @Version
     private int version;
@@ -78,6 +83,14 @@ public class Merchant implements Serializable {
         this.status = status;
     }
 
+    public LocalDateTime getCreated() {
+        return created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
     public int getVersion() {
         return version;
     }
@@ -88,7 +101,7 @@ public class Merchant implements Serializable {
 
     @Override
     public String toString() {
-        return "Merchant{" + "id=" + id + ", currencyList=" + merchantAgreements + ", status=" + status + ", version=" + version + '}';
+        return "Merchant{" + "id=" + id + ", merchantAgreements=" + merchantAgreements + ", status=" + status + ", created=" + created + ", version=" + version + '}';
     }
 
     @Override

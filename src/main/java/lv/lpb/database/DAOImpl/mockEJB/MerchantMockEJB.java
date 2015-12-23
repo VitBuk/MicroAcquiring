@@ -26,11 +26,11 @@ public class MerchantMockEJB implements MerchantDAO {
 
     @PostConstruct
     public void init() {
-        generateMerchants();    
+        generateMerchants();
     }
-    
+
     @Override
-    @Lock(WRITE)    
+    @Lock(WRITE)
     public Merchant create(Merchant merchant) {
         merchants.add(merchant);
         return merchant;
@@ -84,7 +84,7 @@ public class MerchantMockEJB implements MerchantDAO {
                 }
             }
         }
-        
+
         return merchantsByParams;
     }
 
@@ -112,21 +112,21 @@ public class MerchantMockEJB implements MerchantDAO {
             border = merchantsByParams.size();
         }
         merchantsByParams = merchantsByParams.subList(offset, border);
-        
+
         return merchantsByParams;
     }
-    
+
     private void generateMerchants() {
         Merchant merchant1 = new Merchant(Constants.TEST_MERCHANT_ID);
         merchant1.add(Currency.JPY);
         merchant1.setStatus(Merchant.Status.ACTIVE);
         create(merchant1);
-        
+
         Merchant merchant2 = new Merchant(2L);
         merchant2.add(Currency.RUB);
         merchant2.setStatus(Merchant.Status.ACTIVE);
         create(merchant2);
-        
+
         Merchant merchant3 = new Merchant(3L);
         merchant3.add(Currency.GBP);
         merchant3.add(Currency.RUB);
