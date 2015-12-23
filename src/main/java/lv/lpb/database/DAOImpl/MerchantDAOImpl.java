@@ -57,15 +57,15 @@ public class MerchantDAOImpl implements MerchantDAO {
         List<Merchant> merchantsByParams = new ArrayList<>();
         Query query;
         boolean hasStatus = false;
-        String queryString = "SELECT m ";
+        String queryString = "SELECT m";
 
         if (filterParams.get(MerchantFilterParams.ID) != null) {
             merchantsByParams.add(get(Long.parseLong(filterParams.get(MerchantFilterParams.ID) + "")));
             return merchantsByParams;
         } else if (filterParams.get(MerchantFilterParams.STATUS) == null) {
-            queryString += "FROM Merchant m";
+            queryString += " FROM Merchant m";
         } else {
-            queryString += "FROM Merchant m WHERE m.status = :status";
+            queryString += " FROM Merchant m WHERE m.status = :status";
             hasStatus = true;
         }
 
@@ -89,13 +89,13 @@ public class MerchantDAOImpl implements MerchantDAO {
     private String sort(String sortParam, String order) {
         String queryString = "";
         if ("id".equals(sortParam)) {
-            queryString += "ORDER BY id ";
+            queryString += " ORDER BY id";
         } else if ("created".equals(sortParam)) {
-            queryString += "ORDER BY created ";
+            queryString += " ORDER BY created";
         }
 
         if ("reverse".equals(order)) {
-            queryString += "DESC";
+            queryString += " DESC";
         }
 
         return queryString;
