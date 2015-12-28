@@ -13,6 +13,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
+import lv.lpb.database.MerchantDAO;
 import lv.lpb.services.TransactionsService;
 import lv.lpb.domain.Transaction;
 import lv.lpb.domain.CancelInfo;
@@ -26,10 +29,13 @@ import lv.lpb.services.ServiceQualifier.ServiceType;
 public class TransactionsResource {
 
     private TransactionsService transactionsService;
+    private MerchantDAO merchantDAO;
 
     @Inject
-    public TransactionsResource(@ServiceQualifier(serviceType = ServiceType.TRAN) TransactionsService transactionsService) {
+    public TransactionsResource(@ServiceQualifier(serviceType = ServiceType.TRAN) TransactionsService transactionsService,
+    @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
         this.transactionsService = transactionsService;
+        this.merchantDAO = merchantDAO;
     }
 
     @GET
@@ -40,12 +46,14 @@ public class TransactionsResource {
             @BeanParam PageParams pageParams,
             @BeanParam TransactionFilterParams filterParams) {
         
+        Merchant merchant = merchantDAO.get(id);
+        
         Map<String, Object> filterParamsMap = new HashMap<>();
-        filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, id);
+        filterParamsMap.put(TransactionFilterParams.MERCHANT, merchant);
         filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);
         filterParamsMap.put(TransactionFilterParams.CURRENCY, filterParams.currency);
         filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
-        filterParamsMap.put(TransactionFilterParams.CREATED, filterParams.initDate);
+        filterParamsMap.put(TransactionFilterParams.CREATED, filterParams.created);
 
         Map<String, Object> pageParamsMap = new HashMap<>();
         pageParamsMap.put(PageParams.SORT, pageParams.sort);

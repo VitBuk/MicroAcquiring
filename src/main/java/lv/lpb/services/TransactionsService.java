@@ -107,7 +107,8 @@ public class TransactionsService {
     public List<Transaction> getByMerchant(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         List<Transaction> transactions = transactionDAO.getByParams(filterParams, pageParams);
 
-        if (merchantDAO.get((Long) filterParams.get(TransactionFilterParams.MERCHANT_ID)) == null) {
+        Merchant merchant = (Merchant) filterParams.get(TransactionFilterParams.MERCHANT);
+        if (merchantDAO.get(merchant.getId()) == null) {
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.MERCH_NOT_EXIST);
         }
 

@@ -77,10 +77,10 @@ public class AdminResource {
             @BeanParam TransactionFilterParams filterParams) {
         Map<String, Object> filterParamsMap = new HashMap<>();
         filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);
-        filterParamsMap.put(TransactionFilterParams.MERCHANT_ID, filterParams.merchantId);
+        filterParamsMap.put(TransactionFilterParams.MERCHANT, filterParams.merchant);
         filterParamsMap.put(TransactionFilterParams.CURRENCY, filterParams.currency);
         filterParamsMap.put(TransactionFilterParams.STATUS, filterParams.status);
-        filterParamsMap.put(TransactionFilterParams.CREATED, filterParams.initDate);
+        filterParamsMap.put(TransactionFilterParams.CREATED, filterParams.created);
 
         Map<String, Object> pageParamsMap = new HashMap<>();
         pageParamsMap.put(PageParams.SORT, pageParams.sort);

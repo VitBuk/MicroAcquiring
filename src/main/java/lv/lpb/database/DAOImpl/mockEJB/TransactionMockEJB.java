@@ -15,6 +15,7 @@ import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
+import lv.lpb.rest.params.TransactionFilterParams;
 
 @Singleton
 @DAOQualifier(daoType = DaoType.COLLECTION)
@@ -102,10 +103,10 @@ public class TransactionMockEJB implements TransactionDAO {
 
     private List<Transaction> filter(List<Transaction> transactionsByParams, Map<String, Object> filterParams) {
         for (Transaction transaction : getAll()) {
-            if (filterParams.get("merchantId") == null || filterParams.get("merchantId").equals(transaction.getMerchant())) {
-                if (filterParams.get("currency") == null || filterParams.get("currency").equals(transaction.getCurrency())) {
-                    if (filterParams.get("status") == null || filterParams.get("status").equals(transaction.getStatus())) {
-                        if (filterParams.get("initDate") == null || filterParams.get("initDate").equals(transaction.getCreated())) {
+            if (filterParams.get(TransactionFilterParams.MERCHANT) == null || filterParams.get(TransactionFilterParams.MERCHANT).equals(transaction.getMerchant())) {
+                if (filterParams.get(TransactionFilterParams.CURRENCY) == null || filterParams.get(TransactionFilterParams.CURRENCY).equals(transaction.getCurrency())) {
+                    if (filterParams.get(TransactionFilterParams.STATUS) == null || filterParams.get(TransactionFilterParams.STATUS).equals(transaction.getStatus())) {
+                        if (filterParams.get(TransactionFilterParams.CREATED) == null || filterParams.get(TransactionFilterParams.CREATED).equals(transaction.getCreated())) {
                             transactionsByParams.add(transaction);
                         }
                     }

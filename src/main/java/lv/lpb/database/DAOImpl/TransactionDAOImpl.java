@@ -1,5 +1,7 @@
 package lv.lpb.database.DAOImpl;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Singleton;
@@ -8,9 +10,21 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.TransactionDAO;
+import lv.lpb.domain.Currency;
+import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
+import lv.lpb.rest.params.PageParams;
+import lv.lpb.rest.params.TransactionFilterParams;
 
 @Singleton
 @DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
@@ -61,12 +75,96 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     @Override
     public List<Transaction> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Transaction> criteriaQuery = criteriaBuilder.createQuery(Transaction.class);
+        Root<Transaction> transaction = criteriaQuery.from(Transaction.class);
+        criteriaQuery.select(transaction);
+        criteriaQuery.orderBy(sort(criteriaBuilder, transaction, pageParams));
+
+        List<Predicate> criteria = new ArrayList<Predicate>();
+        if (filterParams.get(TransactionFilterParams.MERCHANT) != null) {
+            ParameterExpression<Merchant> p = criteriaBuilder.parameter(Merchant.class, TransactionFilterParams.MERCHANT);
+            criteria.add(criteriaBuilder.equal(transaction.get("merchant"), p));
+        }
+
+        if (filterParams.get(TransactionFilterParams.CURRENCY) != null) {
+            ParameterExpression<Currency> p = criteriaBuilder.parameter(Currency.class, TransactionFilterParams.CURRENCY);
+            criteria.add(criteriaBuilder.equal(transaction.get("currency"), p));
+        }
+
+        if (filterParams.get(TransactionFilterParams.STATUS) != null) {
+            ParameterExpression<Transaction.Status> p = criteriaBuilder.parameter(Transaction.Status.class, TransactionFilterParams.STATUS);
+            criteria.add(criteriaBuilder.equal(transaction.get("status"), p));
+        }
+
+        if (filterParams.get(TransactionFilterParams.CREATED) != null) {
+            ParameterExpression<LocalDateTime> p = criteriaBuilder.parameter(LocalDateTime.class, TransactionFilterParams.CREATED);
+            criteria.add(criteriaBuilder.equal(transaction.get("created"), p));
+        }
+
+        if (criteria.size() == 0) {
+            throw new RuntimeException("no criteria");
+        } else if (criteria.size() == 1) {
+            criteriaQuery.where(criteria.get(0));
+        } else {
+            criteriaQuery.where(criteriaBuilder.and(criteria.toArray(new Predicate[0])));
+        }
+
+        TypedQuery<Transaction> typedQuery = entityManager.createQuery(criteriaQuery);
+        if (filterParams.get(TransactionFilterParams.MERCHANT) != null) {
+            typedQuery.setParameter(TransactionFilterParams.MERCHANT,
+                    filterParams.get(TransactionFilterParams.MERCHANT));
+        }
+        if (filterParams.get(TransactionFilterParams.CURRENCY) != null) {
+            typedQuery.setParameter(TransactionFilterParams.CURRENCY,
+                    filterParams.get(TransactionFilterParams.CURRENCY));
+        }
+        if (filterParams.get(TransactionFilterParams.STATUS) != null) {
+            typedQuery.setParameter(TransactionFilterParams.STATUS,
+                    filterParams.get(TransactionFilterParams.STATUS));
+        }
+        if (filterParams.get(TransactionFilterParams.CREATED) != null) {
+            typedQuery.setParameter(TransactionFilterParams.CREATED,
+                    filterParams.get(TransactionFilterParams.CREATED));
+        }
+
+        if ((pageParams.get(PageParams.OFFSET) instanceof java.lang.Object) == true
+                && (pageParams.get(PageParams.LIMIT) instanceof java.lang.Object) == true) {
+            typedQuery.setFirstResult((Integer) pageParams.get(PageParams.OFFSET));
+            typedQuery.setMaxResults((Integer) pageParams.get(PageParams.LIMIT));
+        }
+
+        return typedQuery.getResultList();
     }
 
     @Override
     public List<Transaction> lastDayTransactions() {
         return entityManager.createNativeQuery("SELECT * FROM Transaction WHERE created "
                 + "= CURDATE() - INTERVAL 1 DAY").getResultList();
+    }
+
+    private List<Order> sort(CriteriaBuilder criteriaBuilder, Root<Transaction> transaction, Map<String, Object> pageParams) {
+        List<Order> orderList = new ArrayList<>();
+        if ("id".equals(pageParams.get(PageParams.SORT))) {
+            if ("reverse".equals(pageParams.get(PageParams.ORDER))) {
+                orderList.add(criteriaBuilder.desc(transaction.get("id")));
+            } else {
+                orderList.add(criteriaBuilder.asc(transaction.get("id")));
+            }
+        }
+
+        if ("created".equals(pageParams.get(PageParams.SORT))) {
+            if ("reverse".equals(pageParams.get(PageParams.ORDER))) {
+                orderList.add(criteriaBuilder.desc(transaction.get("created")));
+            } else {
+                orderList.add(criteriaBuilder.asc(transaction.get("created")));
+            }
+        }
+
+        if (orderList.isEmpty()) {
+            orderList.add(criteriaBuilder.asc(transaction.get("id")));
+        }
+
+        return orderList;
     }
 }
