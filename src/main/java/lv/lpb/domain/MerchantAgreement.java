@@ -1,5 +1,6 @@
 package lv.lpb.domain;
 
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -7,7 +8,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
@@ -47,4 +47,27 @@ public class MerchantAgreement {
     public String toString() {
         return "MerchantAgreement{" + "id=" + id + ", currency=" + currency + '}';
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 11 * hash + Objects.hashCode(this.currency);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final MerchantAgreement other = (MerchantAgreement) obj;
+        if (this.currency != other.currency) {
+            return false;
+        }
+        return true;
+    }
+    
 }

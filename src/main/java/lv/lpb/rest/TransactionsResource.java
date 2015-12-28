@@ -33,7 +33,7 @@ public class TransactionsResource {
 
     @Inject
     public TransactionsResource(@ServiceQualifier(serviceType = ServiceType.TRAN) TransactionsService transactionsService,
-    @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
+            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
         this.transactionsService = transactionsService;
         this.merchantDAO = merchantDAO;
     }
@@ -45,9 +45,9 @@ public class TransactionsResource {
             @PathParam("merchantId") Long id,
             @BeanParam PageParams pageParams,
             @BeanParam TransactionFilterParams filterParams) {
-        
+
         Merchant merchant = merchantDAO.get(id);
-        
+
         Map<String, Object> filterParamsMap = new HashMap<>();
         filterParamsMap.put(TransactionFilterParams.MERCHANT, merchant);
         filterParamsMap.put(TransactionFilterParams.ID, filterParams.transactionId);

@@ -35,12 +35,12 @@ public class Merchant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH},targetEntity = MerchantAgreement.class)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH}, targetEntity = MerchantAgreement.class)
     @JoinColumn(name = "MERCHANT_AGREEMENT_ID")
     private Set<MerchantAgreement> merchantAgreements = new HashSet<>();
 
     @Enumerated(EnumType.STRING)
-    @Column (length = Constants.MERCH_STATUS_MAX_LENGTH)
+    @Column(length = Constants.MERCH_STATUS_MAX_LENGTH)
     private Status status;
 
     @Column
@@ -75,7 +75,9 @@ public class Merchant implements Serializable {
     }
 
     public boolean allowedCurrency(Currency currency) {
-        return merchantAgreements.contains(currency);
+        MerchantAgreement merchantAgreement = new MerchantAgreement();
+        merchantAgreement.setCurrency(currency);
+        return merchantAgreements.contains(merchantAgreement);
     }
 
     public Status getStatus() {

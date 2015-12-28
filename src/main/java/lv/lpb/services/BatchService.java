@@ -66,6 +66,8 @@ public class BatchService {
         }
 
         batch = batchDAO.update(batch);
+        batch.getTransactions().get(0).getMerchant().getMerchantAgreements().stream().
+                forEach(aggrement -> log.trace("MerchantAgreement={} ", aggrement.getCurrency()));
         log.trace("Batch={} for merchant={} ", batch, merchantId);
         
         return batch;
