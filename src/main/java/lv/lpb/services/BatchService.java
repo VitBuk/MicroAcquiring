@@ -48,9 +48,8 @@ public class BatchService {
         LocalDateTime batchDay = LocalDateTime.now().minusDays(1L);
         Merchant merchant = merchantDAO.get(merchantId);
         Batch batch = batchDAO.create(new Batch(merchant, batchDay));
-        batchDAO.create(batch);
 
-        for (Transaction transaction : transactionDAO.getByMerchantId(merchantId)) {
+        for (Transaction transaction : transactionDAO.getByMerchant(merchant)) {
             if (transaction.getStatus() == Transaction.Status.DEPOSITED
                     && !transaction.inBatch()
                     && (batchDay.isAfter(transaction.getCreated()) || batchDay.isEqual(transaction.getCreated()))) {

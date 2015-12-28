@@ -13,6 +13,7 @@ import javax.ejb.Singleton;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.TransactionDAO;
+import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
@@ -78,10 +79,10 @@ public class TransactionMockEJB implements TransactionDAO {
     }
 
     @Override
-    public List<Transaction> getByMerchantId(Long merchantId) {
+    public List<Transaction> getByMerchant(Merchant merchant) {
         List<Transaction> transactions = new ArrayList<>();
         for (Transaction transaction : getAll()) {
-            if (merchantId.equals(transaction.getMerchant())) {
+            if (merchant.equals(transaction.getMerchant())) {
                 transactions.add(transaction);
             }
         }

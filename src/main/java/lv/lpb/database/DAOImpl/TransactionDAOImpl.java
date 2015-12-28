@@ -10,6 +10,7 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -69,8 +70,11 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public List<Transaction> getByMerchantId(Long merchantId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Transaction> getByMerchant(Merchant merchant) {
+        Query query = entityManager.createQuery("SELECT t FROM Transaction t WHERE t.merchant = :merchant");
+        query.setParameter("merchant", merchant);
+        
+        return query.getResultList();
     }
 
     @Override

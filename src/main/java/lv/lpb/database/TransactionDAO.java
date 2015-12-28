@@ -2,6 +2,7 @@ package lv.lpb.database;
 
 import java.util.List;
 import java.util.Map;
+import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 
 public interface TransactionDAO extends DAO<Transaction> {
@@ -10,5 +11,5 @@ public interface TransactionDAO extends DAO<Transaction> {
 
     public List<Transaction> lastDayTransactions();
 
-    public List<Transaction> getByMerchantId(Long merchantId);
+    public List<Transaction> getByMerchant(Merchant merchant);
 }
