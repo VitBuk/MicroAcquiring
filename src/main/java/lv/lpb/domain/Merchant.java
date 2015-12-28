@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -34,7 +35,7 @@ public class Merchant implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(fetch = FetchType.LAZY, targetEntity = MerchantAgreement.class)
+    @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.REFRESH},targetEntity = MerchantAgreement.class)
     @JoinColumn(name = "MERCHANT_AGREEMENT_ID")
     private Set<MerchantAgreement> merchantAgreements = new HashSet<>();
 
@@ -103,7 +104,7 @@ public class Merchant implements Serializable {
 
     @Override
     public String toString() {
-        return "Merchant{" + "id=" + id + ", merchantAgreements=" + merchantAgreements + ", status=" + status + ", created=" + created + ", version=" + version + '}';
+        return "Merchant{" + "id=" + id + ", merchantAgreements=" + getMerchantAgreements() + ", status=" + status + ", created=" + created + ", version=" + version + '}';
     }
 
     @Override

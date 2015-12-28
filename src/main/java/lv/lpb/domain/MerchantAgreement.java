@@ -43,4 +43,8 @@ public class MerchantAgreement {
         this.currency = currency;
     }
 
+    @Override
+    public String toString() {
+        return "MerchantAgreement{" + "id=" + id + ", currency=" + currency + '}';
+    }
 }

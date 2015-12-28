@@ -1,6 +1,7 @@
 package lv.lpb.services;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
@@ -37,7 +38,7 @@ public class BatchService {
         this.merchantDAO = merchantDAO;
     }
 
-    @Schedule(dayOfWeek = "*", hour = "0", minute = "0", second = "1")
+    @Schedule(dayOfWeek = "*", hour = "*", minute = "*", second = "30")
     public void closeBatch() {
         for (Merchant merchant : merchantDAO.getAll()) {
             create(merchant.getId());
@@ -49,7 +50,12 @@ public class BatchService {
         Merchant merchant = merchantDAO.get(merchantId);
         Batch batch = batchDAO.create(new Batch(merchant, batchDay));
 
-        for (Transaction transaction : transactionDAO.getByMerchant(merchant)) {
+        List<Transaction> transactions = transactionDAO.getByMerchant(merchant);
+        if (transactions.isEmpty()) { 
+            return null; 
+        }
+        
+        for (Transaction transaction : transactions) {
             if (transaction.getStatus() == Transaction.Status.DEPOSITED
                     && !transaction.inBatch()
                     && (batchDay.isAfter(transaction.getCreated()) || batchDay.isEqual(transaction.getCreated()))) {
@@ -61,6 +67,7 @@ public class BatchService {
 
         batch = batchDAO.update(batch);
         log.trace("Batch={} for merchant={} ", batch, merchantId);
+        
         return batch;
     }
 }

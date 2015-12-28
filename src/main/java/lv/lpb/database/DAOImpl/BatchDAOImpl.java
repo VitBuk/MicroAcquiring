@@ -32,11 +32,11 @@ public class BatchDAOImpl implements BatchDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public Batch update(Batch batch) {
-        Batch batchFromDB = get(batch.getId());
-        entityManager.lock(batchFromDB, LockModeType.OPTIMISTIC);
-        batchFromDB.setTransactions(batch.getTransactions());
-        entityManager.merge(batchFromDB);
-        entityManager.flush();
+        //Batch batchFromDB = get(batch.getId());
+        //entityManager.lock(batchFromDB, LockModeType.OPTIMISTIC);
+        //batchFromDB.setTransactions(batch.getTransactions());
+        entityManager.merge(batch);       
+        //entityManager.flush();
         
         return batch;
     }

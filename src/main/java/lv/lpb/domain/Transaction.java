@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
@@ -35,6 +37,8 @@ public class Transaction implements Serializable {
     private Long id;
 
     //@XmlElement(name="merchantId")
+    //@JoinColumn(name = "MERCHANT")
+    @OneToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "MERCHANT")
     private Merchant merchant;
 
