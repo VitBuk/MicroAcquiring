@@ -7,11 +7,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import lv.lpb.database.BatchDAO;
-import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAO;
 import lv.lpb.domain.Batch;
 
 @Stateless
-@DAOQualifier
+@DAO
 public class BatchDAOImpl implements BatchDAO {
 
     @PersistenceContext(unitName = "MySql")

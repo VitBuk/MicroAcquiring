@@ -1,8 +1,8 @@
-package lv.lpb.database.DAOImpl.mockEJB;
+package lv.lpb.database.DAOMockImpl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAO;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -11,16 +11,16 @@ import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
 import lv.lpb.Constants;
-import lv.lpb.database.DAOQualifier.DaoType;
+import lv.lpb.database.DAO.Type;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(DaoType.COLLECTION)
+@DAO(Type.COLLECTION)
 @Lock(READ)
-public class MerchantMockEJB implements MerchantDAO {
+public class MerchantDAOMockImpl implements MerchantDAO {
 
     private List<Merchant> merchants = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package lv.lpb.database.DAOImpl.mockEJB;
+package lv.lpb.database.DAOMockImpl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import javax.ejb.Lock;
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
 import javax.ejb.Singleton;
-import lv.lpb.database.DAOQualifier;
-import lv.lpb.database.DAOQualifier.DaoType;
+import lv.lpb.database.DAO;
+import lv.lpb.database.DAO.Type;
 import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
@@ -19,9 +19,9 @@ import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
 
 @Singleton
-@DAOQualifier(DaoType.COLLECTION)
+@DAO(Type.COLLECTION)
 @Lock(READ)
-public class TransactionMockEJB implements TransactionDAO {
+public class TransactionDAOMockImpl implements TransactionDAO {
 
     private List<Transaction> transactions = new ArrayList<>();
 

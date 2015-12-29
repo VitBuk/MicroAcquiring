@@ -1,4 +1,4 @@
-package lv.lpb.database.DAOImpl.mockEJB;
+package lv.lpb.database.DAOMockImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,13 +9,13 @@ import javax.ejb.Stateless;
 import lv.lpb.database.BatchDAO;
 import lv.lpb.domain.Batch;
 import lv.lpb.Constants;
-import lv.lpb.database.DAOQualifier;
-import lv.lpb.database.DAOQualifier.DaoType;
+import lv.lpb.database.DAO;
+import lv.lpb.database.DAO.Type;
 
 @Stateless
 @Lock(READ)
-@DAOQualifier(DaoType.COLLECTION)
-public class BatchMockEJB implements BatchDAO {
+@DAO(Type.COLLECTION)
+public class BatchDAOMockImpl implements BatchDAO {
     private List<Batch> batches = new ArrayList<>();
 
     @Override

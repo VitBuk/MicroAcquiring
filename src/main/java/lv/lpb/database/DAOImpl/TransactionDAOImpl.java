@@ -17,7 +17,7 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAO;
 import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
@@ -26,7 +26,7 @@ import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
 
 @Stateless
-@DAOQualifier
+@DAO
 public class TransactionDAOImpl implements TransactionDAO {
 
     @PersistenceContext(unitName = "MySql")

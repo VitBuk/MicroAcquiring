@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
-import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAO;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.database.TransactionDAO;
 import lv.lpb.rest.params.Exporter;
@@ -26,8 +26,8 @@ public class AdminService {
     }
 
     @Inject
-    public AdminService(@DAOQualifier MerchantDAO merchantDAO,
-            @DAOQualifier TransactionDAO transactionDAO) {
+    public AdminService(@DAO MerchantDAO merchantDAO,
+            @DAO TransactionDAO transactionDAO) {
         this.merchantDAO = merchantDAO;
         this.transactionDAO = transactionDAO;
     }

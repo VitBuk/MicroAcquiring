@@ -9,14 +9,14 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAO;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 
 @Stateless
-@DAOQualifier
+@DAO
 public class MerchantDAOImpl implements MerchantDAO {
 
     @PersistenceContext(unitName = "MySql")

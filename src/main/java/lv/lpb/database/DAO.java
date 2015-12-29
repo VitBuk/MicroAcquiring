@@ -11,11 +11,12 @@ import javax.inject.Qualifier;
 @Retention(RetentionPolicy.RUNTIME)
 @Qualifier
 @Target(value = {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
-public @interface DAOQualifier {
-    
-    public DaoType value() default DaoType.DATABASE;
-    
-    public static enum DaoType {
+public @interface DAO {
+
+    public Type value() default Type.DATABASE;
+
+    public static enum Type {
+
         COLLECTION,
         DATABASE;
     }
