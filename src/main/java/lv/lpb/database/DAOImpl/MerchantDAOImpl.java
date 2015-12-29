@@ -3,7 +3,7 @@ package lv.lpb.database.DAOImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
@@ -16,7 +16,7 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 
-@Singleton
+@Stateless
 @DAOQualifier
 public class MerchantDAOImpl implements MerchantDAO {
 

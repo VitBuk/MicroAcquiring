@@ -5,13 +5,16 @@ import java.util.List;
 import javax.ejb.Lock;
 import static javax.ejb.LockType.READ;
 import static javax.ejb.LockType.WRITE;
-import javax.ejb.Singleton;
+import javax.ejb.Stateless;
 import lv.lpb.database.BatchDAO;
 import lv.lpb.domain.Batch;
 import lv.lpb.Constants;
+import lv.lpb.database.DAOQualifier;
+import lv.lpb.database.DAOQualifier.DaoType;
 
-@Singleton
+@Stateless
 @Lock(READ)
+@DAOQualifier(DaoType.COLLECTION)
 public class BatchMockEJB implements BatchDAO {
     private List<Batch> batches = new ArrayList<>();
 
