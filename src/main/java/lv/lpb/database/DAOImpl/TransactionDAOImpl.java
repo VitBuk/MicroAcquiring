@@ -9,12 +9,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Predicate;
@@ -66,14 +67,14 @@ public class TransactionDAOImpl implements TransactionDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public List<Transaction> getAll() {
-        return entityManager.createNamedQuery("Tranasaction.findAll", Transaction.class).getResultList();
+        return entityManager.createNamedQuery("Transaction.findAll", Transaction.class).getResultList();
     }
 
     @Override
     public List<Transaction> getByMerchant(Merchant merchant) {
         Query query = entityManager.createQuery("SELECT t FROM Transaction t WHERE t.merchant = :merchant");
         query.setParameter("merchant", merchant);
-        
+
         return query.getResultList();
     }
 
@@ -107,7 +108,7 @@ public class TransactionDAOImpl implements TransactionDAO {
         }
 
         if (criteria.size() == 0) {
-            throw new RuntimeException("no criteria");
+            return getAll();
         } else if (criteria.size() == 1) {
             criteriaQuery.where(criteria.get(0));
         } else {
