@@ -55,8 +55,6 @@ public class AdminResource {
     @Path("/merchants")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addMerchant(Merchant merchant) {
-        // id produces by database
-
         return Response.ok(adminService.addMerchant(merchant)).build();
     }
 

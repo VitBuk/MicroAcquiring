@@ -54,7 +54,6 @@ public class AdminService {
 
     public Merchant switchOffMerchant(Long merchantId, Merchant.Status status) {
         Merchant merchant = merchantDAO.get(merchantId);
-        System.out.println("Merchant: " + merchant);
         merchant.setStatus(status);
         merchant = merchantDAO.update(merchant);
 

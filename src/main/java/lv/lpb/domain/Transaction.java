@@ -37,7 +37,6 @@ public class Transaction implements Serializable {
     private Long id;
 
     //@XmlElement(name="merchantId")
-    //@JoinColumn(name = "MERCHANT")
     @OneToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "MERCHANT")
     private Merchant merchant;
@@ -57,7 +56,6 @@ public class Transaction implements Serializable {
     private Status status;
 
     // @XmlElement(name="initDate")
-    // TODO: check how map LocalDate with JPA
     @Column
     private LocalDateTime created;
 

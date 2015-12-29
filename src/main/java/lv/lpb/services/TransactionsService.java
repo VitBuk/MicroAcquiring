@@ -65,6 +65,7 @@ public class TransactionsService {
 
         transaction.setMerchant(merchant);
         transaction.setCreated(LocalDateTime.now());
+        transaction.setStatus(Transaction.Status.DEPOSITED);
         transactionDAO.create(transaction);
 
         return transaction;
