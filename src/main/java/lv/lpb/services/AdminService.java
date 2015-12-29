@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.database.TransactionDAO;
-import lv.lpb.domain.Exporter;
+import lv.lpb.rest.params.Exporter;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;

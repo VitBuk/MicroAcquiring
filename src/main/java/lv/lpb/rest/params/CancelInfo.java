@@ -1,6 +1,7 @@
-package lv.lpb.domain;
+package lv.lpb.rest.params;
 
 import java.math.BigDecimal;
+import lv.lpb.domain.Currency;
 
 public class CancelInfo {
     

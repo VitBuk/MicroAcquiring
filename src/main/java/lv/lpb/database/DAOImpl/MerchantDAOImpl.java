@@ -7,7 +7,6 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import lv.lpb.database.DAOQualifier;
@@ -37,12 +36,7 @@ public class MerchantDAOImpl implements MerchantDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public Merchant update(Merchant merchant) {
-        Merchant merchantFromDB = get(merchant.getId());
-        entityManager.lock(merchantFromDB, LockModeType.OPTIMISTIC);
-        merchantFromDB.setStatus(merchant.getStatus());
-        entityManager.merge(merchantFromDB);
-        entityManager.flush();
-
+        entityManager.merge(merchant);
         return merchant;
     }
 

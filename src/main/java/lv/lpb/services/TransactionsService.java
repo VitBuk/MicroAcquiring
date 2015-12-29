@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.database.TransactionDAO;
-import lv.lpb.domain.CancelInfo;
+import lv.lpb.rest.params.CancelInfo;
 import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;

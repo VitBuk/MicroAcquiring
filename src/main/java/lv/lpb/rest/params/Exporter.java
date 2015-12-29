@@ -1,4 +1,4 @@
-package lv.lpb.domain;
+package lv.lpb.rest.params;
 
 import java.util.List;
 

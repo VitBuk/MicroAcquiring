@@ -1,5 +1,6 @@
 package lv.lpb.rest;
 
+import lv.lpb.rest.params.CancelInfo;
 import java.util.HashMap;
 import java.util.Map;
 import javax.inject.Inject;
@@ -17,7 +18,6 @@ import lv.lpb.database.DAOQualifier;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.services.TransactionsService;
 import lv.lpb.domain.Transaction;
-import lv.lpb.domain.CancelInfo;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
