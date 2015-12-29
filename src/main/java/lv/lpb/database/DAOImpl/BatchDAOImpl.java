@@ -31,7 +31,7 @@ public class BatchDAOImpl implements BatchDAO {
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     @Override
     public Batch update(Batch batch) {
-        entityManager.merge(batch);       
+        entityManager.merge(batch);
         return batch;
     }
 

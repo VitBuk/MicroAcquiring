@@ -16,6 +16,7 @@ import lv.lpb.database.DAO.Type;
 @Lock(READ)
 @DAO(Type.COLLECTION)
 public class BatchDAOMockImpl implements BatchDAO {
+
     private List<Batch> batches = new ArrayList<>();
 
     @Override
@@ -42,7 +43,7 @@ public class BatchDAOMockImpl implements BatchDAO {
                 return batch;
             }
         }
-        
+
         return null;
     }
 

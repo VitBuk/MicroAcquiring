@@ -54,7 +54,7 @@ public class MerchantDAOImpl implements MerchantDAO {
         String queryString = "SELECT m";
 
         if (filterParams.get(MerchantFilterParams.ID) != null) {
-            merchantsByParams.add(get(Long.parseLong(filterParams.get(MerchantFilterParams.ID) + "")));
+            merchantsByParams.add(get(Long.parseLong(filterParams.get(MerchantFilterParams.ID).toString())));
             return merchantsByParams;
         } else if (filterParams.get(MerchantFilterParams.STATUS) == null) {
             queryString += " FROM Merchant m";
@@ -63,16 +63,15 @@ public class MerchantDAOImpl implements MerchantDAO {
             hasStatus = true;
         }
 
-        queryString += sort(pageParams.get(PageParams.SORT) + "",
-                pageParams.get(PageParams.ORDER) + "");
+        queryString += sort(String.valueOf(pageParams.get(PageParams.SORT)),
+                String.valueOf(pageParams.get(PageParams.ORDER) + ""));
 
         query = entityManager.createQuery(queryString);
-        if (hasStatus) {
+        if (filterParams.get(MerchantFilterParams.STATUS)!=null) {
             query.setParameter("status", filterParams.get(MerchantFilterParams.STATUS));
         }
 
-        if ((pageParams.get(PageParams.OFFSET) instanceof java.lang.Object) == true
-                && (pageParams.get(PageParams.LIMIT) instanceof java.lang.Object) == true) {
+        if (pageParams.get(PageParams.OFFSET) != null && pageParams.get(PageParams.LIMIT) != null) {
             query.setFirstResult((Integer) pageParams.get(PageParams.OFFSET));
             query.setMaxResults((Integer) pageParams.get(PageParams.LIMIT));
         }
