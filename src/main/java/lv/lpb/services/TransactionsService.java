@@ -57,9 +57,11 @@ public class TransactionsService {
         
         merchant.getMerchantAgreements().size();
         if (merchant.getStatus() == Merchant.Status.INACTIVE) {
+            transaction.setStatus(Transaction.Status.DECLINED);
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.MERCH_INACTIVE);
         }
         if (!merchant.allowedCurrency(transaction.getCurrency())) {
+            transaction.setStatus(Transaction.Status.DECLINED);
             throw new AppException(Response.Status.BAD_REQUEST.getStatusCode(), Errors.UNALLOWED_CURRENCY);
         }
 
