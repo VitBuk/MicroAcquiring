@@ -64,8 +64,8 @@ public class MerchantDAOMockImpl implements MerchantDAO {
     public List<Merchant> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         List<Merchant> merchantsByParams = new ArrayList<>();
         merchantsByParams = filter(merchantsByParams, filterParams);
-        merchantsByParams = sort(merchantsByParams, pageParams.get(PageParams.SORT) + "",
-                pageParams.get(PageParams.ORDER) + "");
+        merchantsByParams = sort(merchantsByParams, pageParams.get(PageParams.SORT).toString(),
+                pageParams.get(PageParams.ORDER).toString());
 
         if ((pageParams.get(PageParams.OFFSET) instanceof java.lang.Object) == true
                 && (pageParams.get(PageParams.LIMIT) instanceof java.lang.Object) == true) {

@@ -66,8 +66,8 @@ public class TransactionDAOMockImpl implements TransactionDAO {
         List<Transaction> transactionsByParams = new ArrayList<>();
 
         transactionsByParams = filter(transactionsByParams, filterParams);
-        transactionsByParams = sort(transactionsByParams, pageParams.get(PageParams.SORT) + "",
-                pageParams.get(PageParams.ORDER) + "");
+        transactionsByParams = sort(transactionsByParams, pageParams.get(PageParams.SORT).toString(),
+                pageParams.get(PageParams.ORDER).toString());
 
         if ((pageParams.get(PageParams.OFFSET) instanceof java.lang.Object) == true
                 && (pageParams.get(PageParams.LIMIT) instanceof java.lang.Object) == true) {
