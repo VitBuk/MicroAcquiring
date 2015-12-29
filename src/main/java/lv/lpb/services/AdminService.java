@@ -3,6 +3,8 @@ package lv.lpb.services;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAO;
@@ -50,6 +52,7 @@ public class AdminService {
         return merchant;
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Merchant switchOffMerchant(Long merchantId, Merchant.Status status) {
         Merchant merchant = merchantDAO.get(merchantId);
         merchant.setStatus(status);

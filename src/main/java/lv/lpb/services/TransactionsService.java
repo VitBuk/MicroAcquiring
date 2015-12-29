@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAO;
@@ -71,6 +73,7 @@ public class TransactionsService {
         return transaction;
     }
 
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public Transaction cancel(CancelInfo cancelInfo) {
         Transaction transaction = transactionDAO.get(cancelInfo.getTransactionId());
 

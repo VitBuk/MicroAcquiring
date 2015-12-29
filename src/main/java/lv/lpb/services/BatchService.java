@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import lv.lpb.database.BatchDAO;
 import lv.lpb.database.DAO;
@@ -39,6 +41,7 @@ public class BatchService {
     }
 
     @Schedule(dayOfWeek = "*", hour = "*", minute = "*", second = "30")
+    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void closeBatch() {
         for (Merchant merchant : merchantDAO.getAll()) {
             create(merchant.getId());

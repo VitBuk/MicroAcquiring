@@ -109,18 +109,18 @@ public class TransactionDAOMockImpl implements TransactionDAO {
 
         return transactionsByParams;
     }
-    
+
     private boolean hasTransaction(Transaction transaction, Map<String, Object> filterParams) {
         if (filterParams.get(TransactionFilterParams.MERCHANT) == null || filterParams.get(TransactionFilterParams.MERCHANT).equals(transaction.getMerchant())) {
-                if (filterParams.get(TransactionFilterParams.CURRENCY) == null || filterParams.get(TransactionFilterParams.CURRENCY).equals(transaction.getCurrency())) {
-                    if (filterParams.get(TransactionFilterParams.STATUS) == null || filterParams.get(TransactionFilterParams.STATUS).equals(transaction.getStatus())) {
-                        if (filterParams.get(TransactionFilterParams.CREATED) == null || filterParams.get(TransactionFilterParams.CREATED).equals(transaction.getCreated())) {
-                            return true;
-                        }
+            if (filterParams.get(TransactionFilterParams.CURRENCY) == null || filterParams.get(TransactionFilterParams.CURRENCY).equals(transaction.getCurrency())) {
+                if (filterParams.get(TransactionFilterParams.STATUS) == null || filterParams.get(TransactionFilterParams.STATUS).equals(transaction.getStatus())) {
+                    if (filterParams.get(TransactionFilterParams.CREATED) == null || filterParams.get(TransactionFilterParams.CREATED).equals(transaction.getCreated())) {
+                        return true;
                     }
                 }
             }
-        
+        }
+
         return false;
     }
 
