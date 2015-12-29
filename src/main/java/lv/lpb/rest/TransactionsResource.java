@@ -14,7 +14,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
-import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.services.TransactionsService;
 import lv.lpb.domain.Transaction;
@@ -31,7 +30,7 @@ public class TransactionsResource {
 
     @Inject
     public TransactionsResource(TransactionsService transactionsService,
-            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
+            @DAOQualifier MerchantDAO merchantDAO) {
         this.transactionsService = transactionsService;
         this.merchantDAO = merchantDAO;
     }

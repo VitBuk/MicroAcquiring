@@ -7,7 +7,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import lv.lpb.database.BatchDAO;
 import lv.lpb.database.DAOQualifier;
-import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.Batch;
@@ -31,9 +30,9 @@ public class BatchService {
     }
 
     @Inject
-    public BatchService(@DAOQualifier(daoType = DaoType.DATABASE) BatchDAO batchDAO,
-            @DAOQualifier(daoType = DaoType.DATABASE) TransactionDAO transactionDAO,
-            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
+    public BatchService(@DAOQualifier BatchDAO batchDAO,
+            @DAOQualifier TransactionDAO transactionDAO,
+            @DAOQualifier MerchantDAO merchantDAO) {
         this.batchDAO = batchDAO;
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;

@@ -8,8 +8,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import lv.lpb.database.DAOQualifier;
@@ -19,7 +17,7 @@ import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 
 @Singleton
-@DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
+@DAOQualifier
 public class MerchantDAOImpl implements MerchantDAO {
 
     @PersistenceContext(unitName = "MySql")

@@ -19,7 +19,7 @@ import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
 
 @Singleton
-@DAOQualifier(daoType = DaoType.COLLECTION)
+@DAOQualifier(DaoType.COLLECTION)
 @Lock(READ)
 public class TransactionMockEJB implements TransactionDAO {
 

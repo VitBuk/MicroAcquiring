@@ -16,7 +16,6 @@ import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
-import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.CancelInfo;
@@ -44,8 +43,8 @@ public class TransactionsService {
     }
 
     @Inject
-    public TransactionsService(@DAOQualifier(daoType = DaoType.DATABASE) TransactionDAO transactionDAO,
-            @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
+    public TransactionsService(@DAOQualifier TransactionDAO transactionDAO,
+            @DAOQualifier MerchantDAO merchantDAO, ReportSender reportSender, ReportReceiver reportReceiver) {
         this.transactionDAO = transactionDAO;
         this.merchantDAO = merchantDAO;
         this.reportSender = reportSender;

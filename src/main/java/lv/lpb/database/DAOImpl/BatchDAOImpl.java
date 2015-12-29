@@ -5,15 +5,13 @@ import javax.ejb.Singleton;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import lv.lpb.database.BatchDAO;
 import lv.lpb.database.DAOQualifier;
 import lv.lpb.domain.Batch;
 
 @Singleton
-@DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
+@DAOQualifier
 public class BatchDAOImpl implements BatchDAO {
 
     @PersistenceContext(unitName = "MySql")

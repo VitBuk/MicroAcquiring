@@ -8,7 +8,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import lv.lpb.database.DAOQualifier;
-import lv.lpb.database.DAOQualifier.DaoType;
 import lv.lpb.database.MerchantDAO;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.errorHandling.AppException;
@@ -20,7 +19,7 @@ public class MerchantsResource {
     private MerchantDAO merchantDAO;
 
     @Inject
-    public MerchantsResource(@DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
+    public MerchantsResource(@DAOQualifier MerchantDAO merchantDAO) {
         this.merchantDAO = merchantDAO;
     }
 

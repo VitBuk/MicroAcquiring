@@ -2,7 +2,7 @@ package lv.lpb.database;
 
 import java.util.List;
 
-public interface DAO<T> {
+public interface GenericDAO<T> {
 
     public T create(T t);
 

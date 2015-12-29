@@ -9,8 +9,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -29,7 +27,7 @@ import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
 
 @Singleton
-@DAOQualifier(daoType = DAOQualifier.DaoType.DATABASE)
+@DAOQualifier
 public class TransactionDAOImpl implements TransactionDAO {
 
     @PersistenceContext(unitName = "MySql")

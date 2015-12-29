@@ -13,7 +13,7 @@ import javax.inject.Qualifier;
 @Target(value = {ElementType.TYPE, ElementType.FIELD, ElementType.METHOD, ElementType.PARAMETER})
 public @interface DAOQualifier {
     
-    public DaoType daoType() default DaoType.DATABASE;
+    public DaoType value() default DaoType.DATABASE;
     
     public static enum DaoType {
         COLLECTION,

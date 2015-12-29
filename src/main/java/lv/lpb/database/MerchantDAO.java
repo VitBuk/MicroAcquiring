@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import lv.lpb.domain.Merchant;
 
-public interface MerchantDAO extends DAO<Merchant> {
+public interface MerchantDAO extends GenericDAO<Merchant> {
     
     public List<Merchant> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams);
     
