@@ -50,24 +50,15 @@ public class MerchantDAOImpl implements MerchantDAO {
     public List<Merchant> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         List<Merchant> merchantsByParams = new ArrayList<>();
         Query query;
-        boolean hasStatus = false;
-        String queryString = "SELECT m";
 
-        if (filterParams.get(MerchantFilterParams.ID) != null) {
+        if (filterParams.get(MerchantFilterParams.ID) != null && filterParams.get(MerchantFilterParams.STATUS) == null) {
             merchantsByParams.add(get(Long.parseLong(filterParams.get(MerchantFilterParams.ID).toString())));
             return merchantsByParams;
-        } else if (filterParams.get(MerchantFilterParams.STATUS) == null) {
-            queryString += " FROM Merchant m";
-        } else {
-            queryString += " FROM Merchant m WHERE m.status = :status";
-            hasStatus = true;
         }
 
-        queryString += sort(String.valueOf(pageParams.get(PageParams.SORT)),
-                String.valueOf(pageParams.get(PageParams.ORDER) + ""));
+        query = entityManager.createQuery(queryString(filterParams, pageParams));
 
-        query = entityManager.createQuery(queryString);
-        if (filterParams.get(MerchantFilterParams.STATUS)!=null) {
+        if (filterParams.get(MerchantFilterParams.STATUS) != null) {
             query.setParameter("status", filterParams.get(MerchantFilterParams.STATUS));
         }
 
@@ -77,6 +68,18 @@ public class MerchantDAOImpl implements MerchantDAO {
         }
 
         return query.getResultList();
+    }
+
+    private String queryString(Map<String, Object> filterParams, Map<String, Object> pageParams) {
+        String queryString = "SELECT m FROM Merchant m";
+        if (filterParams.get(MerchantFilterParams.STATUS) != null) {
+            queryString += " WHERE m.status = :status";
+        }
+
+        queryString += sort(String.valueOf(pageParams.get(PageParams.SORT)),
+                String.valueOf(pageParams.get(PageParams.ORDER)));
+
+        return queryString;
     }
 
     private String sort(String sortParam, String order) {

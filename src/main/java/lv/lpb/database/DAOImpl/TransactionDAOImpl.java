@@ -119,8 +119,7 @@ public class TransactionDAOImpl implements TransactionDAO {
                     filterParams.get(TransactionFilterParams.CREATED));
         }
 
-        if ((pageParams.get(PageParams.OFFSET) instanceof java.lang.Object) == true
-                && (pageParams.get(PageParams.LIMIT) instanceof java.lang.Object) == true) {
+        if ((pageParams.get(PageParams.OFFSET) != null && (pageParams.get(PageParams.LIMIT) != null))) {
             typedQuery.setFirstResult((Integer) pageParams.get(PageParams.OFFSET));
             typedQuery.setMaxResults((Integer) pageParams.get(PageParams.LIMIT));
         }
