@@ -78,14 +78,20 @@ public class MerchantDAOMockImpl implements MerchantDAO {
 
     private List<Merchant> filter(List<Merchant> merchantsByParams, Map<String, Object> filterParams) {
         for (Merchant merchant : getAll()) {
-            if (filterParams.get("id") == null || filterParams.get("id").equals(merchant.getId())) {
-                if (filterParams.get("status") == null || filterParams.get("status").equals(merchant.getStatus())) {
-                    merchantsByParams.add(merchant);
-                }
-            }
+            hasMerchant(merchant, filterParams);
         }
 
         return merchantsByParams;
+    }
+
+    private boolean hasMerchant(Merchant merchant, Map<String, Object> filterParams) {
+        if (filterParams.get("id") == null || filterParams.get("id").equals(merchant.getId())) {
+            if (filterParams.get("status") == null || filterParams.get("status").equals(merchant.getStatus())) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private List<Merchant> sort(List<Merchant> merchantsByParams, String sortParam, String order) {
@@ -96,7 +102,7 @@ public class MerchantDAOMockImpl implements MerchantDAO {
             }
         }
 
-        if ("initDate".equals(sortParam)) {
+        if ("created".equals(sortParam)) {
             merchantsByParams.sort(Comparator.comparing(Merchant::getStatus));
             if ("reverse".equals(order)) {
                 merchantsByParams.sort(Comparator.comparing(Merchant::getStatus).reversed());

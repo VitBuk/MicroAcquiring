@@ -104,18 +104,24 @@ public class TransactionDAOMockImpl implements TransactionDAO {
 
     private List<Transaction> filter(List<Transaction> transactionsByParams, Map<String, Object> filterParams) {
         for (Transaction transaction : getAll()) {
-            if (filterParams.get(TransactionFilterParams.MERCHANT) == null || filterParams.get(TransactionFilterParams.MERCHANT).equals(transaction.getMerchant())) {
+            hasTransaction(transaction, filterParams);
+        }
+
+        return transactionsByParams;
+    }
+    
+    private boolean hasTransaction(Transaction transaction, Map<String, Object> filterParams) {
+        if (filterParams.get(TransactionFilterParams.MERCHANT) == null || filterParams.get(TransactionFilterParams.MERCHANT).equals(transaction.getMerchant())) {
                 if (filterParams.get(TransactionFilterParams.CURRENCY) == null || filterParams.get(TransactionFilterParams.CURRENCY).equals(transaction.getCurrency())) {
                     if (filterParams.get(TransactionFilterParams.STATUS) == null || filterParams.get(TransactionFilterParams.STATUS).equals(transaction.getStatus())) {
                         if (filterParams.get(TransactionFilterParams.CREATED) == null || filterParams.get(TransactionFilterParams.CREATED).equals(transaction.getCreated())) {
-                            transactionsByParams.add(transaction);
+                            return true;
                         }
                     }
                 }
             }
-        }
-
-        return transactionsByParams;
+        
+        return false;
     }
 
     private List<Transaction> sort(List<Transaction> transactionsByParams, String sortParam, String order) {
@@ -126,7 +132,7 @@ public class TransactionDAOMockImpl implements TransactionDAO {
             }
         }
 
-        if ("initDate".equals(sortParam)) {
+        if ("created".equals(sortParam)) {
             transactionsByParams.sort(Comparator.comparing(Transaction::getCreated));
             if ("reverse".equals(order)) {
                 transactionsByParams.sort(Comparator.comparing(Transaction::getCreated).reversed());
