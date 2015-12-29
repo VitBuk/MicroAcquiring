@@ -14,11 +14,10 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
-import lv.lpb.services.ServiceQualifier.ServiceType;
+import lv.lpb.services.ServiceInterceptor.ProfileExecTime;
 
 @Stateless
-@ServiceQualifier(serviceType = ServiceType.ADMIN)
-@InterceptorQualifier
+@ProfileExecTime
 public class AdminService {
 
     private MerchantDAO merchantDAO;

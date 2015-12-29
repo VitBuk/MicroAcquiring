@@ -18,8 +18,6 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.MerchantFilterParams;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
-import lv.lpb.services.ServiceQualifier;
-import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Path("/admin")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,7 +26,7 @@ public class AdminResource {
     private AdminService adminService;
 
     @Inject
-    public AdminResource(@ServiceQualifier(serviceType = ServiceType.ADMIN) AdminService adminService) {
+    public AdminResource(AdminService adminService) {
         this.adminService = adminService;
     }
 

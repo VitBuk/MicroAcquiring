@@ -13,11 +13,12 @@ import lv.lpb.database.TransactionDAO;
 import lv.lpb.domain.Batch;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
+import lv.lpb.services.ServiceInterceptor.ProfileExecTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@InterceptorQualifier
+@ProfileExecTime
 public class BatchService {
 
     private static final Logger log = LoggerFactory.getLogger(BatchService.class);

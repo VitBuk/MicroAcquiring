@@ -26,13 +26,12 @@ import lv.lpb.domain.Transaction;
 import lv.lpb.rest.errorHandling.AppException;
 import lv.lpb.rest.errorHandling.Errors;
 import lv.lpb.rest.params.TransactionFilterParams;
-import lv.lpb.services.ServiceQualifier.ServiceType;
+import lv.lpb.services.ServiceInterceptor.ProfileExecTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Stateless
-@ServiceQualifier(serviceType = ServiceType.TRAN)
-@InterceptorQualifier
+@ProfileExecTime
 public class TransactionsService {
 
     private static final Logger log = LoggerFactory.getLogger(TransactionsService.class);

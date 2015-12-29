@@ -22,8 +22,6 @@ import lv.lpb.domain.CancelInfo;
 import lv.lpb.domain.Merchant;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
-import lv.lpb.services.ServiceQualifier;
-import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Path("/transactions")
 public class TransactionsResource {
@@ -32,7 +30,7 @@ public class TransactionsResource {
     private MerchantDAO merchantDAO;
 
     @Inject
-    public TransactionsResource(@ServiceQualifier(serviceType = ServiceType.TRAN) TransactionsService transactionsService,
+    public TransactionsResource(TransactionsService transactionsService,
             @DAOQualifier(daoType = DaoType.DATABASE) MerchantDAO merchantDAO) {
         this.transactionsService = transactionsService;
         this.merchantDAO = merchantDAO;

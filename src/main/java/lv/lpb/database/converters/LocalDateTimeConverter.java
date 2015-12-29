@@ -1,4 +1,4 @@
-package lv.lpb;
+package lv.lpb.database.converters;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
