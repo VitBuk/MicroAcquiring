@@ -22,6 +22,7 @@ import lv.lpb.services.ServiceQualifier;
 import lv.lpb.services.ServiceQualifier.ServiceType;
 
 @Path("/admin")
+@Produces(MediaType.APPLICATION_JSON)
 public class AdminResource {
 
     private AdminService adminService;
@@ -33,7 +34,6 @@ public class AdminResource {
 
     @GET
     @Path("/merchants")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getMerchants(
             @BeanParam PageParams pageParams,
             @BeanParam MerchantFilterParams filterParams) {
@@ -54,7 +54,6 @@ public class AdminResource {
     @POST
     @Path("/merchants")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response addMerchant(Merchant merchant) {
         // id produces by database
 
@@ -64,14 +63,12 @@ public class AdminResource {
     @PUT
     @Path("merchants/{merchantId}")
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response switchOffMerchant(@PathParam("merchantId") Long id, Merchant.Status status) {
         return Response.ok(adminService.switchOffMerchant(id, status)).build();
     }
 
     @GET
     @Path("/transactions")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response getTransactions(
             @BeanParam PageParams pageParams,
             @BeanParam TransactionFilterParams filterParams) {
@@ -93,14 +90,12 @@ public class AdminResource {
 
     @GET
     @Path("/merchants/export")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response exportMerchants() {
         return Response.ok(adminService.exportMerchants()).build();
     }
 
     @GET
     @Path("/transactions/export")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response exportTransactions() {
         return Response.ok(adminService.exportTransactions()).build();
     }

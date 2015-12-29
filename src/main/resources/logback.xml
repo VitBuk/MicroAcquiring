@@ -45,8 +45,7 @@
 
     </appender>
 
-    <logger name="lv.lpb" level="debug"
-                additivity="false">
+    <logger name="lv.lpb" level="debug">
         <appender-ref ref="FILE-AUDIT" />
     </logger>
 
@@ -55,7 +54,6 @@
     </root>
     
     <logger name="lv.lpb" level="trace">
-         additivity="false">
         <appender-ref ref="FILE-TRACE" />
     </logger>
 

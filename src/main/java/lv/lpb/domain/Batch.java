@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
@@ -34,6 +35,7 @@ public class Batch implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<Transaction> transactions = new ArrayList<>();
 
+    @OneToOne
     @JoinColumn(name = "MERCHANT")
     private Merchant merchant;
 
