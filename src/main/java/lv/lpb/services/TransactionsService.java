@@ -7,10 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 import javax.ejb.Schedule;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
@@ -119,26 +117,10 @@ public class TransactionsService {
         return transactions;
     }
 
-    @Schedule(dayOfWeek = "*", hour = "0", minute = "0", second = "1")
+    @Schedule(dayOfWeek = "*", hour = "*", minute = "*", second = "30")
     public void dayTotalAmount() {
-        List<Transaction> transactions = new CopyOnWriteArrayList<>();
-        for (Transaction transaction : transactionDAO.lastDayTransactions()) {
-            transactions.add(transaction);
-        }
-
-        Map<Currency, BigDecimal> totalAmountMap = new HashMap<>();
-        for (Currency currency : Currency.values()) {
-            BigDecimal currencySum = BigDecimal.ZERO;
-            for (Transaction transaction : transactions) {
-                if (transaction.getCurrency() == currency) {
-                    currencySum = currencySum.add(transaction.getAmount());
-                    transactions.remove(transaction);
-                }
-            }
-            totalAmountMap.put(currency, currencySum);
-        }
-
-        log.trace("Total day amount={} ", totalAmountMap);
-        reportSender.send(totalAmountMap);
+        Map<Currency, BigDecimal> totalAmount = transactionDAO.totalDayAmount();
+        log.trace("Total day amount={} ", totalAmount);
+        reportSender.send(totalAmount);
     }
 }

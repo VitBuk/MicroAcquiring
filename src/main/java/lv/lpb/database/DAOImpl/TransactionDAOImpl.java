@@ -1,7 +1,9 @@
 package lv.lpb.database.DAOImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -131,6 +133,20 @@ public class TransactionDAOImpl implements TransactionDAO {
     public List<Transaction> lastDayTransactions() {
         return entityManager.createNativeQuery("SELECT * FROM Transaction WHERE created "
                 + "= CURDATE() - INTERVAL 1 DAY").getResultList();
+    }
+
+    @Override
+    public Map<Currency, BigDecimal> totalDayAmount() {
+        Map<Currency, BigDecimal> totalAmount = new HashMap<>();
+        for (Currency currency : Currency.values()) {
+            Query query = entityManager.createQuery("SELECT t SUM(amount) FROM"
+                    + " Transaction t WHERE t.created = CURDATE() AND t.currency = :currency");
+            query.setParameter("currency", currency);
+            BigDecimal sum = (BigDecimal) query.getSingleResult();
+            totalAmount.put(currency, sum);
+        }
+
+        return totalAmount;
     }
 
     private List<Order> sort(CriteriaBuilder criteriaBuilder, Root<Transaction> transaction, Map<String, Object> pageParams) {

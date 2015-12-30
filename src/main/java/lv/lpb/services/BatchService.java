@@ -54,10 +54,10 @@ public class BatchService {
         Batch batch = batchDAO.create(new Batch(merchant, batchDay));
 
         List<Transaction> transactions = transactionDAO.getByMerchant(merchant);
-        if (transactions.isEmpty()) { 
-            return null; 
+        if (transactions.isEmpty()) {
+            return null;
         }
-        
+
         for (Transaction transaction : transactions) {
             if (transaction.getStatus() == Transaction.Status.DEPOSITED
                     && !transaction.inBatch()
@@ -69,10 +69,8 @@ public class BatchService {
         }
 
         batch = batchDAO.update(batch);
-        batch.getTransactions().get(0).getMerchant().getMerchantAgreements().stream().
-                forEach(aggrement -> log.trace("MerchantAgreement={} ", aggrement.getCurrency()));
         log.trace("Batch={} for merchant={} ", batch, merchantId);
-        
+
         return batch;
     }
 }

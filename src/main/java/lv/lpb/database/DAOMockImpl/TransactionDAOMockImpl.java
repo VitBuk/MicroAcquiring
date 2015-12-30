@@ -1,5 +1,6 @@
 package lv.lpb.database.DAOMockImpl;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,6 +14,7 @@ import javax.ejb.Singleton;
 import lv.lpb.database.DAO;
 import lv.lpb.database.DAO.Type;
 import lv.lpb.database.TransactionDAO;
+import lv.lpb.domain.Currency;
 import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
@@ -199,5 +201,10 @@ public class TransactionDAOMockImpl implements TransactionDAO {
 //        transaction5.setStatus(Transaction.Status.DEPOSITED);
 //        transaction5.setCreated(LocalDateTime.now());
 //        create(transaction5);
+    }
+
+    @Override
+    public Map<Currency, BigDecimal> totalDayAmount() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
