@@ -112,6 +112,8 @@ public class MerchantDAOMockImpl implements MerchantDAO {
 
         if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
             merchantsByParams.sort(comparator.reversed());
+        } else {
+            merchantsByParams.sort(comparator);
         }
         return merchantsByParams;
     }
