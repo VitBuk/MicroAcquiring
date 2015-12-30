@@ -66,8 +66,7 @@ public class TransactionDAOMockImpl implements TransactionDAO {
         List<Transaction> transactionsByParams = new ArrayList<>();
 
         transactionsByParams = filter(transactionsByParams, filterParams);
-        transactionsByParams = sort(transactionsByParams, String.valueOf(pageParams.get(PageParams.SORT)),
-                String.valueOf(pageParams.get(PageParams.ORDER)));
+        transactionsByParams = sort(transactionsByParams, pageParams);
 
         if ((pageParams.get(PageParams.OFFSET) != null && (pageParams.get(PageParams.LIMIT) != null))) {
             transactionsByParams = getByOffset(transactionsByParams, (Integer) pageParams.get(PageParams.OFFSET),
@@ -123,19 +122,23 @@ public class TransactionDAOMockImpl implements TransactionDAO {
         return false;
     }
 
-    private List<Transaction> sort(List<Transaction> transactionsByParams, String sortParam, String order) {
-        if ("id".equals(sortParam)) {
+    private List<Transaction> sort(List<Transaction> transactionsByParams, Map<String, Object> sortParams) {
+        if ("id".equals(String.valueOf(sortParams.get(PageParams.SORT)))
+                && "created".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
+            transactionsByParams.sort(Comparator.comparing(Transaction::getCreated).thenComparing(Transaction::getId));
+        } else if ("id".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
             transactionsByParams.sort(Comparator.comparing(Transaction::getId));
-            if ("reverse".equals(order)) {
+            if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
                 transactionsByParams.sort(Comparator.comparing(Transaction::getId).reversed());
             }
-        }
 
-        if ("created".equals(sortParam)) {
-            transactionsByParams.sort(Comparator.comparing(Transaction::getCreated));
-            if ("reverse".equals(order)) {
-                transactionsByParams.sort(Comparator.comparing(Transaction::getCreated).reversed());
+            if ("created".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
+                transactionsByParams.sort(Comparator.comparing(Transaction::getCreated));
+                if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
+                    transactionsByParams.sort(Comparator.comparing(Transaction::getCreated).reversed());
+                }
             }
+
         }
 
         return transactionsByParams;

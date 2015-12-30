@@ -64,8 +64,10 @@ public class MerchantDAOMockImpl implements MerchantDAO {
     public List<Merchant> getByParams(Map<String, Object> filterParams, Map<String, Object> pageParams) {
         List<Merchant> merchantsByParams = new ArrayList<>();
         merchantsByParams = filter(merchantsByParams, filterParams);
-        merchantsByParams = sort(merchantsByParams, String.valueOf(pageParams.get(PageParams.SORT)),
-                String.valueOf(pageParams.get(PageParams.ORDER)));
+        merchantsByParams = sort(merchantsByParams, pageParams);
+//        
+//        String.valueOf(pageParams.get(PageParams.SORT)),
+//                String.valueOf(pageParams.get(PageParams.ORDER))
 
         if ((pageParams.get(PageParams.OFFSET) != null && (pageParams.get(PageParams.LIMIT) != null))) {
             merchantsByParams = getByOffset(merchantsByParams, (Integer) pageParams.get(PageParams.OFFSET),
@@ -93,19 +95,23 @@ public class MerchantDAOMockImpl implements MerchantDAO {
         return false;
     }
 
-    private List<Merchant> sort(List<Merchant> merchantsByParams, String sortParam, String order) {
-        if ("id".equals(sortParam)) {
+    private List<Merchant> sort(List<Merchant> merchantsByParams, Map<String, Object> sortParams) {
+        if ("id".equals(String.valueOf(sortParams.get(PageParams.SORT)))
+                && "created".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
+            merchantsByParams.sort(Comparator.comparing(Merchant::getCreated).thenComparing(Merchant::getId));
+        } else if ("id".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
             merchantsByParams.sort(Comparator.comparing(Merchant::getId));
-            if ("reverse".equals(order)) {
+            if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
                 merchantsByParams.sort(Comparator.comparing(Merchant::getId).reversed());
             }
-        }
 
-        if ("created".equals(sortParam)) {
-            merchantsByParams.sort(Comparator.comparing(Merchant::getStatus));
-            if ("reverse".equals(order)) {
-                merchantsByParams.sort(Comparator.comparing(Merchant::getStatus).reversed());
+            if ("created".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
+                merchantsByParams.sort(Comparator.comparing(Merchant::getCreated));
+                if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
+                    merchantsByParams.sort(Comparator.comparing(Merchant::getCreated).reversed());
+                }
             }
+
         }
 
         return merchantsByParams;

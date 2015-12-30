@@ -131,7 +131,7 @@ public class Merchant implements Serializable {
         return true;
     }
 
-    public static enum Status{
+    public static enum Status {
 
         ACTIVE,
         INACTIVE;
