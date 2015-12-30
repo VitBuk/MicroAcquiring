@@ -96,24 +96,23 @@ public class MerchantDAOMockImpl implements MerchantDAO {
     }
 
     private List<Merchant> sort(List<Merchant> merchantsByParams, Map<String, Object> sortParams) {
+        Comparator<Merchant> comparator = null;
+
         if ("id".equals(String.valueOf(sortParams.get(PageParams.SORT)))
                 && "created".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
-            merchantsByParams.sort(Comparator.comparing(Merchant::getCreated).thenComparing(Merchant::getId));
+            comparator = Comparator.comparing(Merchant::getCreated).thenComparing(Merchant::getId);
         } else if ("id".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
-            merchantsByParams.sort(Comparator.comparing(Merchant::getId));
-            if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
-                merchantsByParams.sort(Comparator.comparing(Merchant::getId).reversed());
-            }
+            comparator = Comparator.comparing(Merchant::getId);
 
             if ("created".equals(String.valueOf(sortParams.get(PageParams.SORT)))) {
-                merchantsByParams.sort(Comparator.comparing(Merchant::getCreated));
-                if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
-                    merchantsByParams.sort(Comparator.comparing(Merchant::getCreated).reversed());
-                }
+                comparator = Comparator.comparing(Merchant::getCreated);
             }
 
         }
 
+        if ("reverse".equals(String.valueOf(sortParams.get(PageParams.ORDER)))) {
+            merchantsByParams.sort(comparator.reversed());
+        }
         return merchantsByParams;
     }
 
