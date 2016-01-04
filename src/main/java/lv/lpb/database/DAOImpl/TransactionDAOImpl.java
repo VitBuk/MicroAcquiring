@@ -178,4 +178,11 @@ public class TransactionDAOImpl implements TransactionDAO {
 
         return orderList;
     }
+
+    @Override
+    public List<Transaction> beforeToday() {
+        return entityManager.createQuery("SELECT t FROM Transaction t WHERE t.created "
+                + "< CURRENT_DATE AND t.batchId IS NULL").getResultList();
+    }
+
 }

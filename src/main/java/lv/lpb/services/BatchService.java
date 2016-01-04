@@ -40,7 +40,7 @@ public class BatchService {
         this.merchantDAO = merchantDAO;
     }
 
-    @Schedule(dayOfWeek = "*", hour = "0", minute = "0", second = "30")
+    @Schedule(dayOfWeek = "*", hour = "*", minute = "*", second = "00")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void closeBatch() {
         for (Merchant merchant : merchantDAO.getAll()) {
@@ -53,19 +53,15 @@ public class BatchService {
         Merchant merchant = merchantDAO.get(merchantId);
         Batch batch = batchDAO.create(new Batch(merchant, batchDay));
 
-        List<Transaction> transactions = transactionDAO.getByMerchant(merchant);
+        List<Transaction> transactions = transactionDAO.beforeToday();
         if (transactions.isEmpty()) {
             return null;
         }
 
         for (Transaction transaction : transactions) {
-            if (transaction.getStatus() == Transaction.Status.DEPOSITED
-                    && !transaction.inBatch()
-                    && (batchDay.isAfter(transaction.getCreated()) || batchDay.isEqual(transaction.getCreated()))) {
-                transaction.setStatus(Transaction.Status.PROCESSED);
-                transaction.setBatchId(batch.getId());
-                batch.add(transaction);
-            }
+            transaction.setStatus(Transaction.Status.PROCESSED);
+            transaction.setBatchId(batch.getId());
+            batch.add(transaction);
         }
 
         batch = batchDAO.update(batch);

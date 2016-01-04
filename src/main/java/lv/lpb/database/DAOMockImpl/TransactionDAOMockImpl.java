@@ -207,4 +207,9 @@ public class TransactionDAOMockImpl implements TransactionDAO {
     public Map<Currency, BigDecimal> dayTotalAmount() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public List<Transaction> beforeToday() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
