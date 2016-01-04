@@ -40,7 +40,7 @@ public class BatchService {
         this.merchantDAO = merchantDAO;
     }
 
-    @Schedule(dayOfWeek = "*", hour = "*", minute = "*", second = "30")
+    @Schedule(dayOfWeek = "*", hour = "0", minute = "0", second = "30")
     @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public void closeBatch() {
         for (Merchant merchant : merchantDAO.getAll()) {

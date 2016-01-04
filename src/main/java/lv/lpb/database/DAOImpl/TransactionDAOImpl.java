@@ -26,10 +26,15 @@ import lv.lpb.domain.Merchant;
 import lv.lpb.domain.Transaction;
 import lv.lpb.rest.params.PageParams;
 import lv.lpb.rest.params.TransactionFilterParams;
+import lv.lpb.services.TransactionsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Stateless
 @DAO
 public class TransactionDAOImpl implements TransactionDAO {
+
+    private static final Logger log = LoggerFactory.getLogger(TransactionsService.class);
 
     @PersistenceContext(unitName = "MySql")
     EntityManager entityManager;
@@ -136,14 +141,14 @@ public class TransactionDAOImpl implements TransactionDAO {
     }
 
     @Override
-    public Map<Currency, BigDecimal> totalDayAmount() {
+    public Map<Currency, BigDecimal> dayTotalAmount() {
         Map<Currency, BigDecimal> totalAmount = new HashMap<>();
-        for (Currency currency : Currency.values()) {
-            Query query = entityManager.createQuery("SELECT t SUM(amount) FROM"
-                    + " Transaction t WHERE t.created = CURDATE() AND t.currency = :currency");
-            query.setParameter("currency", currency);
-            BigDecimal sum = (BigDecimal) query.getSingleResult();
-            totalAmount.put(currency, sum);
+        Query query = entityManager.createQuery("SELECT NEW lv.lpb.database.DAOImpl.CurrencyAmount(t.currency, SUM(t.amount)) FROM"
+                + " Transaction t WHERE t.created = CURRENT_DATE GROUP BY t.currency");
+        List<CurrencyAmount> resultList = query.getResultList();
+
+        for (CurrencyAmount curencyAmount : resultList) {
+            totalAmount.put(curencyAmount.getCurrency(), curencyAmount.getAmount());
         }
 
         return totalAmount;

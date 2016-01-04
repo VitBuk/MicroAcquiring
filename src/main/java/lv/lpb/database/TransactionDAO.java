@@ -15,5 +15,5 @@ public interface TransactionDAO extends GenericDAO<Transaction> {
 
     public List<Transaction> getByMerchant(Merchant merchant);
     
-    public Map<Currency, BigDecimal> totalDayAmount();
+    public Map<Currency, BigDecimal> dayTotalAmount();
 }

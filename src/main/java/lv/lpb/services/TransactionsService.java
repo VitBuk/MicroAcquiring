@@ -119,7 +119,7 @@ public class TransactionsService {
 
     @Schedule(dayOfWeek = "*", hour = "*", minute = "*", second = "30")
     public void dayTotalAmount() {
-        Map<Currency, BigDecimal> totalAmount = transactionDAO.totalDayAmount();
+        Map<Currency, BigDecimal> totalAmount = transactionDAO.dayTotalAmount();
         log.trace("Total day amount={} ", totalAmount);
         reportSender.send(totalAmount);
     }
