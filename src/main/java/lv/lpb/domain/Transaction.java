@@ -21,7 +21,6 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import lv.lpb.Constants;
 
-//@XmlRootElement(name="Transaction")
 @Entity
 @Table(name = "TRANSACTION")
 @NamedQueries({
@@ -31,35 +30,28 @@ public class Transaction implements Serializable {
 
     private static final long serialVersionUID = 0L;
 
-    //@XmlElement(name="id")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@XmlElement(name="merchantId")
     @OneToOne(cascade = {CascadeType.REFRESH})
     @JoinColumn(name = "MERCHANT")
     private Merchant merchant;
 
-    //@XmlElement(name="amount")
     @Column
     private BigDecimal amount;
 
-    //@XmlElement(name="currency")
     @Enumerated(EnumType.STRING)
     @Column(length = Constants.CURRENCY_LENGTH)
     private Currency currency;
 
-    //@XmlElement(name="status")
     @Enumerated(EnumType.STRING)
     @Column(length = Constants.TRAN_STATUS_MAX_LENGTH)
     private Status status;
 
-    // @XmlElement(name="initDate")
     @Column
     private LocalDateTime created;
 
-    // @XmlTransient
     @JsonIgnore
     @Transient
     private LocalDateTime updated; // last status update time
