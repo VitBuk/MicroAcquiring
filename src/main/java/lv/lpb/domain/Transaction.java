@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +14,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -55,9 +57,6 @@ public class Transaction implements Serializable {
     @JsonIgnore
     @Transient
     private LocalDateTime updated; // last status update time
-
-    @Column(name = "BATCH_ID")
-    private Long batchId;
 
     @Version
     private int version;
@@ -121,18 +120,6 @@ public class Transaction implements Serializable {
         this.updated = updated;
     }
 
-    public Long getBatchId() {
-        return batchId;
-    }
-
-    public void setBatchId(Long batchId) {
-        this.batchId = batchId;
-    }
-
-    public boolean inBatch() {
-        return getBatchId() != null;
-    }
-
     public int getVersion() {
         return version;
     }
@@ -143,7 +130,7 @@ public class Transaction implements Serializable {
 
     @Override
     public String toString() {
-        return "Transaction{" + "id=" + id + ", merchant=" + merchant + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", batchId=" + batchId + ", version=" + version + '}';
+        return "Transaction{" + "id=" + id + ", merchant=" + merchant + ", amount=" + amount + ", currency=" + currency + ", status=" + status + ", created=" + created + ", updated=" + updated + ", version=" + version + '}';
     }
 
     public static enum Status {

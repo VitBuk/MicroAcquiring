@@ -181,8 +181,12 @@ public class TransactionDAOImpl implements TransactionDAO {
 
     @Override
     public List<Transaction> beforeToday() {
-        return entityManager.createQuery("SELECT t FROM Transaction t WHERE t.created "
-                + "< CURRENT_DATE AND t.batchId IS NULL").getResultList();
+//        return entityManager.createNativeQuery("SELECT * FROM Transaction"
+//                + " t LEFT JOIN batch_transaction bt on (bt.transactions_ID=t.ID) "
+//                + "WHERE t.created < CURDATE() AND bt.transactions_ID IS NULL").getResultList();
+        //return entityManager.createQuery("SELECT t FROm Transactions t"
+          //      + " LEFT JOIN batch.transactions bt WHERE bt.transactions_id IS NULL").getResultList();
+        return null;
     }
 
 }

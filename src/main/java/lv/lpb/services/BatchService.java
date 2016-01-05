@@ -60,7 +60,6 @@ public class BatchService {
 
         for (Transaction transaction : transactions) {
             transaction.setStatus(Transaction.Status.PROCESSED);
-            transaction.setBatchId(batch.getId());
             batch.add(transaction);
         }
 

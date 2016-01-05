@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -34,6 +35,10 @@ public class Batch implements Serializable {
     private Long id;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    @JoinTable(name = "batch_transaction",
+            joinColumns={@JoinColumn(name="batch_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "transactions_ID", referencedColumnName = "ID")}
+            )
     private List<Transaction> transactions = new ArrayList<>();
 
     @OneToOne
