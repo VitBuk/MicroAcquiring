@@ -7,6 +7,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lv.lpb.database.BatchDAO;
 import lv.lpb.database.DAO;
 import lv.lpb.database.MerchantDAO;
@@ -28,6 +30,9 @@ public class BatchService {
     private TransactionDAO transactionDAO;
     private MerchantDAO merchantDAO;
 
+    @PersistenceContext(unitName = "MySql")
+    EntityManager entityManager;
+
     public BatchService() {
     }
 
@@ -48,24 +53,32 @@ public class BatchService {
         }
     }
 
-    private Batch create(Long merchantId) {
+    private void create(Long merchantId) {
         LocalDateTime batchDay = LocalDateTime.now().minusDays(1L);
         Merchant merchant = merchantDAO.get(merchantId);
         Batch batch = batchDAO.create(new Batch(merchant, batchDay));
 
         List<Transaction> transactions = transactionDAO.beforeToday();
-        if (transactions.isEmpty()) {
-            return null;
+        if (transactions == null || transactions.isEmpty()) {
+            return;
         }
+        
+        entityManager.flush();
+        List<Transaction> testerino = entityManager.createQuery
+        ("SELECT t FROM Transaction t WHERE NOT EXISTS(SELECT bt FROM Batch b "
+                + "JOIN b.transactions bt WHERE t = bt)").getResultList();
+   //     ("SELECT t FROM Transaction t LEFT JOIN Batch b JOIN FETCH b.transactions bt WHERE bt.id IS NULL").getResultList();
+        log.trace("Transactions={}", testerino);
 
         for (Transaction transaction : transactions) {
             transaction.setStatus(Transaction.Status.PROCESSED);
             batch.add(transaction);
+            transactionDAO.update(transaction);
         }
 
         batch = batchDAO.update(batch);
+        
         log.trace("Batch={} for merchant={} ", batch, merchantId);
 
-        return batch;
     }
 }
