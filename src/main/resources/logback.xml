@@ -4,7 +4,7 @@
     <property name="DEV_HOME" value="c:/logs" />
 
     <appender name="FILE-AUDIT"
-                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${DEV_HOME}/debug.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
@@ -25,8 +25,29 @@
     </appender>
     
     <appender name="FILE-TRACE"
-                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${DEV_HOME}/trace.log</file>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>${DEV_HOME}/archived/trace.%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+    </appender>
+    
+    <appender name="FILE-PERSISTENCE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${DEV_HOME}/output.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
                 %d{yyyy-MM-dd HH:mm:ss} - %msg%n
@@ -57,4 +78,12 @@
         <appender-ref ref="FILE-TRACE" />
     </logger>
 
+    <!-- DEBUG SQL queries -->
+    <logger name="org.eclipse.persistence" level="TRACE" additivity="false">
+        <appender-ref ref="FILE-TRACE" />
+    </logger>
+    <logger name="org.eclipse.persistence.session" level="TRACE" additivity="false">
+        <appender-ref ref="FILE-TRACE" />
+    </logger>
+        
 </configuration>
